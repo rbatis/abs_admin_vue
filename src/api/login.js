@@ -20,7 +20,7 @@ const userApi = {
   SendSms: '/account/sms',
   SendSmsErr: '/account/sms_err',
   // get my info
-  UserInfo: '/user/info',
+  UserInfo: '/sys_user_info',
   UserMenu: '/user/nav'
 }
 
@@ -54,10 +54,8 @@ export function getSmsCaptcha(parameter) {
 export function getInfo() {
   return request({
     url: userApi.UserInfo,
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    method: 'post',
+    data: {}
   })
 }
 

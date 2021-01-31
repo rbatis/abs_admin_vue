@@ -37,9 +37,10 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
-          console.info('resp:',response);
+          console.info('login resp:',response);
           storage.set(ACCESS_TOKEN, response.access_token, 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', response.access_token)
+          console.info('resolve');
           resolve()
         }).catch(error => {
           reject(error)
@@ -52,6 +53,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const result = response;
+          console.info('getInfo resp:',response);
           if (result.role && result.role.permissions.length > 0) {
             const role = result.role
             role.permissions = result.role.permissions
