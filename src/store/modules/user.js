@@ -38,8 +38,8 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           console.info('login resp:',response);
-          storage.set(ACCESS_TOKEN, response.access_token, 24 * 60 * 60 * 1000)
-          commit('SET_TOKEN', response.access_token)
+          storage.set(ACCESS_TOKEN, response.data.access_token, 24 * 60 * 60 * 1000)
+          commit('SET_TOKEN', response.data.access_token)
           console.info('resolve');
           resolve()
         }).catch(error => {
@@ -54,25 +54,28 @@ const user = {
         getInfo().then(response => {
           const result = response;
           console.info('getInfo resp:',response);
-          if (result.role && result.role.permissions.length > 0) {
-            const role = result.role
-            role.permissions = result.role.permissions
-            role.permissions.map(per => {
-              if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
-                const action = per.actionEntitySet.map(action => { return action.action })
-                per.actionList = action
-              }
-            })
-            role.permissionList = role.permissions.map(permission => { return permission.permissionId })
-            commit('SET_ROLES', result.role)
-            commit('SET_INFO', result)
+          var name=null;
+          if (response.data.roles && response.data.roles.length > 0) {
+            var role = response.data.roles[0];
+            role.permissions = response.data.permissions;
+            // role.permissions.map(per => {
+            //   if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
+            //     const action = per.actionEntitySet.map(action => { return action.action })
+            //     per.actionList = action
+            //   }
+            // })
+            name = role.name;
+            commit('SET_ROLES', role);
+            commit('SET_INFO', result);
+            console.info('SET_ROLES:',JSON.stringify(role));
           } else {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
+          commit('SET_NAME', { name: name, welcome: welcome() })
+          //TODO avatar
+          commit('SET_AVATAR', "")
 
-          commit('SET_NAME', { name: result.name, welcome: welcome() })
-          commit('SET_AVATAR', result.avatar)
-
+          console.info('GetInfo RESOLVE');
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -83,6 +86,7 @@ const user = {
     // 登出
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
+        console.info('Logout');
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
