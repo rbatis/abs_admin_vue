@@ -21,6 +21,7 @@
             <span class="table-page-search-submitButtons">
               <a-button type="primary">查询</a-button>
               <a-button style="margin-left: 8px">重置</a-button>
+              <a-button style="margin-left: 8px" type="primary">添加</a-button>
             </span>
           </a-col>
         </a-row>
@@ -33,9 +34,9 @@
         <a-tag v-for="(action, index) in record.actionList" :key="index">{{ action.describe }}</a-tag>
       </span>
 
-      <span slot="status" slot-scope="text">
-        {{ text | statusFilter }}
-      </span>
+<!--      <span slot="status" slot-scope="text">-->
+<!--        {{ text | statusFilter }}-->
+<!--      </span>-->
 
       <span slot="action" slot-scope="text, record">
         <a @click="handleEdit(record)">编辑</a>
@@ -48,9 +49,9 @@
             <a-menu-item>
               <a href="javascript:;">详情</a>
             </a-menu-item>
-            <a-menu-item>
-              <a href="javascript:;">禁用</a>
-            </a-menu-item>
+<!--            <a-menu-item>-->
+<!--              <a href="javascript:;">禁用</a>-->
+<!--            </a-menu-item>-->
             <a-menu-item>
               <a href="javascript:;">删除</a>
             </a-menu-item>
@@ -87,18 +88,18 @@
           <a-input placeholder="起一个名字" v-model="mdl.name" id="permission_name" />
         </a-form-item>
 
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="状态"
-          hasFeedback
-          validateStatus="warning"
-        >
-          <a-select v-model="mdl.status">
-            <a-select-option value="1">正常</a-select-option>
-            <a-select-option value="2">禁用</a-select-option>
-          </a-select>
-        </a-form-item>
+<!--        <a-form-item-->
+<!--          :labelCol="labelCol"-->
+<!--          :wrapperCol="wrapperCol"-->
+<!--          label="状态"-->
+<!--          hasFeedback-->
+<!--          validateStatus="warning"-->
+<!--        >-->
+<!--          <a-select v-model="mdl.status">-->
+<!--            <a-select-option value="1">正常</a-select-option>-->
+<!--            <a-select-option value="2">禁用</a-select-option>-->
+<!--          </a-select>-->
+<!--        </a-form-item>-->
 
         <a-form-item
           :labelCol="labelCol"
@@ -176,11 +177,11 @@ export default {
           dataIndex: 'actions',
           scopedSlots: { customRender: 'actions' }
         },
-        {
-          title: '状态',
-          dataIndex: 'status',
-          scopedSlots: { customRender: 'status' }
-        },
+        // {
+        //   title: '状态',
+        //   dataIndex: 'status',
+        //   scopedSlots: { customRender: 'status' }
+        // },
         {
           title: '操作',
           width: '150px',
@@ -209,13 +210,13 @@ export default {
     }
   },
   filters: {
-    statusFilter (status) {
-      const statusMap = {
-        1: '正常',
-        2: '禁用'
-      }
-      return statusMap[status]
-    }
+    // statusFilter (status) {
+    //   const statusMap = {
+    //     1: '正常',
+    //     2: '禁用'
+    //   }
+    //   return statusMap[status]
+    // }
   },
   created () {
     this.loadPermissionList()
@@ -225,13 +226,13 @@ export default {
       // permissionList
       new Promise(resolve => {
         const data = [
-          { label: '新增', value: 'add', defaultChecked: false },
-          { label: '查询', value: 'get', defaultChecked: false },
-          { label: '修改', value: 'update', defaultChecked: false },
-          { label: '列表', value: 'query', defaultChecked: false },
-          { label: '删除', value: 'delete', defaultChecked: false },
-          { label: '导入', value: 'import', defaultChecked: false },
-          { label: '导出', value: 'export', defaultChecked: false }
+          { label: '新增', value: 'add' },
+          { label: '查询', value: 'get' },
+          { label: '修改', value: 'update' },
+          { label: '列表', value: 'query' },
+          { label: '删除', value: 'delete' },
+          { label: '导入', value: 'import' },
+          { label: '导出', value: 'export' }
         ]
         setTimeout(resolve(data), 1500)
       }).then(res => {
