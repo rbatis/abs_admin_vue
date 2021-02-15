@@ -280,6 +280,19 @@ export const asyncRouterMap = [
             name: 'setting_user',
             component: () => import('@/views/setting/User'),
             meta: { title: '用户管理', keepAlive: true, permission: ['setting'] }
+          },
+          {
+            path: '/setting/role',
+            name: 'setting_role',
+            component: () => import('@/views/setting/Role'),
+            meta: { title: '角色管理', keepAlive: true, permission: ['setting'] }
+          }
+          ,
+          {
+            path: '/setting/res',
+            name: 'setting_res',
+            component: () => import('@/views/setting/Res'),
+            meta: { title: '权限管理', keepAlive: true, permission: ['setting'] }
           }
         ]
       }
