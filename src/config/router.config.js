@@ -267,8 +267,22 @@ export const asyncRouterMap = [
             ]
           }
         ]
+      },
+      {
+        path: '/setting',
+        component: RouteView,
+        redirect: '/setting/user',
+        name: 'setting',
+        meta: { title: '设置', icon: 'setting', keepAlive: true, permission: ['setting'] },
+        children: [
+          {
+            path: '/setting/user',
+            name: 'setting_user',
+            component: () => import('@/views/setting/User'),
+            meta: { title: '用户管理', keepAlive: true, permission: ['setting'] }
+          }
+        ]
       }
-
       // other
       /*
       {
