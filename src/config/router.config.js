@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
+import { UserLayout, BasicLayout, BlankLayout,PageView } from '@/layouts'
 import { bxAnaalyse } from '@/core/icons'
 
 const RouteView = {
@@ -201,8 +201,6 @@ export const asyncRouterMap = [
           }
         ]
       },
-
-      // account
       {
         path: '/account',
         component: RouteView,
@@ -269,36 +267,6 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: '/setting',
-        component: RouteView,
-        redirect: '/setting/user',
-        name: 'setting',
-        meta: { title: '设置', icon: 'setting', keepAlive: true, permission: ['setting'] },
-        children: [
-          {
-            path: '/setting/user',
-            name: 'setting_user',
-            component: () => import('@/views/setting/User'),
-            meta: { title: '用户管理', keepAlive: true, permission: ['setting'] }
-          },
-          {
-            path: '/setting/role',
-            name: 'setting_role',
-            component: () => import('@/views/setting/Role'),
-            meta: { title: '角色管理', keepAlive: true, permission: ['setting'] }
-          }
-          ,
-          {
-            path: '/setting/res',
-            name: 'setting_res',
-            component: () => import('@/views/setting/Res'),
-            meta: { title: '权限管理', keepAlive: true, permission: ['setting'] }
-          }
-        ]
-      }
-      // other
-      /*
-      {
         path: '/other',
         name: 'otherPage',
         component: PageView,
@@ -314,7 +282,7 @@ export const asyncRouterMap = [
           {
             path: '/other/list',
             component: RouteView,
-            meta: { title: '业务布局', icon: 'layout', permission: [ 'support' ] },
+            meta: { title: '业务布局', icon: 'layout', permission: [ 'setting' ] },
             redirect: '/other/list/tree-list',
             children: [
               {
@@ -341,12 +309,12 @@ export const asyncRouterMap = [
                 component: () => import('@/views/other/RoleList'),
                 meta: { title: '角色列表', keepAlive: true }
               },
-              {
-                path: '/other/list/system-role',
-                name: 'SystemRole',
-                component: () => import('@/views/role/RoleList'),
-                meta: { title: '角色列表2', keepAlive: true }
-              },
+              // {
+              //   path: '/other/list/system-role',
+              //   name: 'SystemRole',
+              //   component: () => import('@/views/role/RoleList'),
+              //   meta: { title: '角色列表2', keepAlive: true }
+              // },
               {
                 path: '/other/list/permission-list',
                 name: 'PermissionList',
@@ -356,8 +324,34 @@ export const asyncRouterMap = [
             ]
           }
         ]
+      },
+      {
+        path: '/setting',
+        component: RouteView,
+        redirect: '/setting/user',
+        name: 'setting',
+        meta: { title: '设置', icon: 'setting', keepAlive: true, permission: ['setting'] },
+        children: [
+          {
+            path: '/setting/user',
+            name: 'setting_user',
+            component: () => import('@/views/setting/User'),
+            meta: { title: '用户管理', keepAlive: true, permission: ['setting'] }
+          },
+          {
+            path: '/setting/role',
+            name: 'setting_role',
+            component: () => import('@/views/setting/Role'),
+            meta: { title: '角色管理', keepAlive: true, permission: ['setting'] }
+          },
+          {
+            path: '/setting/res',
+            name: 'setting_res',
+            component: () => import('@/views/setting/Res'),
+            meta: { title: '权限管理', keepAlive: true, permission: ['setting'] }
+          }
+        ]
       }
-      */
     ]
   },
   {
