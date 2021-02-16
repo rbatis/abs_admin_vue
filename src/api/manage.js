@@ -1,6 +1,8 @@
 import request from '@/utils/request'
 
 const api = {
+  sys_res_page: '/sys_res_page',
+
   user: '/user',
   role: '/role',
   service: '/service',
@@ -66,5 +68,14 @@ export function saveSub (sub) {
     url: '/sub',
     method: sub.id === 0 ? 'post' : 'put',
     data: sub
+  })
+}
+
+// 取资源分页
+export function getResPage (arg) {
+  return request({
+    url: api.sys_res_page,
+    method: 'post',
+    data: arg
   })
 }
