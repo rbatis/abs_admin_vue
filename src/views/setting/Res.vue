@@ -36,7 +36,7 @@
       </a-form-item>
     </a-form>
     <div class="operate">
-      <a-button type="dashed" style="width: 100%" icon="plus" @click="addProduct">添加</a-button>
+      <a-button type="dashed" style="width: 100%" icon="plus" @click="addData">添加</a-button>
     </div>
     <a-table :columns="columns"
              :rowKey="record => record.id"
@@ -218,7 +218,7 @@ export default {
       })
     },
 
-    addProduct: function () {
+    addData: function () {
       this.handleDialogCancel()
       this.visible = true
     },
