@@ -115,37 +115,39 @@ const columns = [
   {
     title: 'id',
     dataIndex: 'id',
-    width: '1%',
+    width: '5%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '名称',
     dataIndex: 'name',
-    width: '1%',
+    width: '5%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '权限标识',
     dataIndex: 'permission',
-    width: '1%',
+    width: '5%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '路由',
     dataIndex: 'path',
-    width: '1%',
+    width: '5%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '创建时间',
     dataIndex: 'create_date',
-    width: '1%',
+    width: '5%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '操作',
     // dataIndex: 'create_time',
-    width: '1%',
+    width: '100px',
+    //固定
+    fixed: 'right',
     scopedSlots: {customRender: 'action'},
   },
 ];
