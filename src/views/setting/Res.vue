@@ -151,9 +151,8 @@ const columns = [
 ];
 
 
-import {resPage} from '@/api/manage'
-// import {kvPage, kvAdd, kvUpdate, kvDelete} from '@/api/manage'
-// import {showMsg} from '@/utils/data'
+import {res_page,res_add,res_update,res_delete} from '@/api/manage'
+import {showMsg} from '@/utils/data'
 import moment from 'moment';
 
 export default {
@@ -207,7 +206,7 @@ export default {
         arg.time_end = arg.time_end.format('YYYY-MM-DD hh:mm:ss')
       }
       //取分页数据
-      resPage(arg).then((res) => {
+      res_page(arg).then((res) => {
         //alert(JSON.stringify(res))
         const pagination = {...this.pagination};
         this.loading = false;

@@ -2,6 +2,9 @@ import request from '@/utils/request'
 
 const api = {
   sys_res_page: '/sys_res_page',
+  sys_res_add: '/sys_res_add',
+  sys_res_update: '/sys_res_update',
+  sys_res_delete: '/sys_res_remove',
 
   user: '/user',
   role: '/role',
@@ -72,9 +75,33 @@ export function saveSub (sub) {
 }
 
 // 取资源分页
-export function resPage (arg) {
+export function res_page (arg) {
   return request({
     url: api.sys_res_page,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function res_add (arg) {
+  return request({
+    url: api.sys_res_add,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function res_update (arg) {
+  return request({
+    url: api.sys_res_update,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function res_delete (arg) {
+  return request({
+    url: api.sys_res_delete,
     method: 'post',
     data: arg
   })
