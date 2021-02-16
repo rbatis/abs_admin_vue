@@ -72,7 +72,7 @@ export function saveSub (sub) {
 }
 
 // 取资源分页
-export function getResPage (arg) {
+export function resPage (arg) {
   return request({
     url: api.sys_res_page,
     method: 'post',

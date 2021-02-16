@@ -1,318 +1,291 @@
 <template>
-  <page-header-wrapper>
-    <a-card :bordered="false">
-      <div class="table-page-search-wrapper">
-        <a-form layout="inline">
-          <a-row :gutter="48">
-            <a-col :md="8" :sm="24">
-              <a-form-item label="规则编号">
-                <a-input v-model="queryParam.id" placeholder=""/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item label="使用状态">
-                <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
-                  <a-select-option value="0">全部</a-select-option>
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <template v-if="advanced">
-              <a-col :md="8" :sm="24">
-                <a-form-item label="调用次数">
-                  <a-input-number v-model="queryParam.callNo" style="width: 100%"/>
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-form-item label="更新日期">
-                  <a-date-picker v-model="queryParam.date" style="width: 100%" placeholder="请输入更新日期"/>
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-form-item label="使用状态">
-                  <a-select v-model="queryParam.useStatus" placeholder="请选择" default-value="0">
-                    <a-select-option value="0">全部</a-select-option>
-                    <a-select-option value="1">关闭</a-select-option>
-                    <a-select-option value="2">运行中</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-form-item label="使用状态">
-                  <a-select placeholder="请选择" default-value="0">
-                    <a-select-option value="0">全部</a-select-option>
-                    <a-select-option value="1">关闭</a-select-option>
-                    <a-select-option value="2">运行中</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-            </template>
-            <a-col :md="!advanced && 8 || 24" :sm="24">
-              <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
-                <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
-                <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
-                <a @click="toggleAdvanced" style="margin-left: 8px">
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'"/>
-                </a>
-              </span>
-            </a-col>
-          </a-row>
-        </a-form>
-      </div>
 
-      <div class="table-operator">
-        <a-button type="primary" icon="plus" @click="handleAdd">新建</a-button>
-        <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">
-          <a-menu slot="overlay">
-            <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>
-            <!-- lock | unlock -->
-            <a-menu-item key="2"><a-icon type="lock" />锁定</a-menu-item>
-          </a-menu>
-          <a-button style="margin-left: 8px">
-            批量操作 <a-icon type="down" />
-          </a-button>
-        </a-dropdown>
-      </div>
-
-      <s-table
-        ref="table"
-        size="default"
-        rowKey="key"
-        :columns="columns"
-        :data="loadData"
-        :alert="true"
-        :rowSelection="rowSelection"
-        showPagination="auto"
+  <div class="productBody">
+    <a-form
+      layout="inline"
+    >
+      <!--<a-form-item>-->
+      <!--<a-input-->
+      <!--placeholder="请输入手机号"-->
+      <!--v-model="queryData.phone"-->
+      <!--&gt;-->
+      <!--<a-icon-->
+      <!--slot="prefix"-->
+      <!--type="user"-->
+      <!--style="color:rgba(0,0,0,.25)"-->
+      <!--/>-->
+      <!--</a-input>-->
+      <!--</a-form-item>-->
+      <a-form-item>
+        <a-input
+          v-model="queryData.remark"
+          placeholder="请输入计划备注"
+        >
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        :wrapper-col="{ span: 12, offset: 5 }"
       >
-        <span slot="serial" slot-scope="text, record, index">
-          {{ index + 1 }}
-        </span>
-        <span slot="status" slot-scope="text">
-          <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
-        </span>
-        <span slot="description" slot-scope="text">
-          <ellipsis :length="4" tooltip>{{ text }}</ellipsis>
-        </span>
+        <a-button
+          type="primary"
+          html-type="submit"
+          @click="fetch_no_page"
+        >
+          查询
+        </a-button>
+      </a-form-item>
+    </a-form>
+    <div class="operate">
+      <a-button type="dashed" style="width: 100%" icon="plus" @click="addProduct">添加</a-button>
+    </div>
+    <a-table :columns="columns"
+             :rowKey="record => record.id"
+             :dataSource="data"
+             :pagination="pagination"
+             :loading="loading"
+             :scroll="{ x: 1280 }"
+             @change="handleTableChange"
+    >
+      <!--<template slot="rate" slot-scope="rate">-->
+      <!--{{rate+'%'}}-->
+      <!--</template>-->
+      <template slot="action" slot-scope="scope">
+        <!--{{scope.id}}-->
+        <div style="width: 80px">
+          <a @click="handleEditProduct(scope)">编辑</a>
+          <a-dropdown>
+            <a class="ant-dropdown-link">
+              更多
+              <a-icon type="down"/>
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <a @click="handleDeleteProduct(scope)">删除</a>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+        </div>
 
-        <span slot="action" slot-scope="text, record">
-          <template>
-            <a @click="handleEdit(record)">配置</a>
-            <a-divider type="vertical" />
-            <a @click="handleSub(record)">订阅报警</a>
-          </template>
-        </span>
-      </s-table>
+      </template>
+    </a-table>
 
-      <create-form
-        ref="createModal"
-        :visible="visible"
-        :loading="confirmLoading"
-        :model="mdl"
-        @cancel="handleCancel"
-        @ok="handleOk"
-      />
-      <step-by-step-modal ref="modal" @ok="handleOk"/>
-    </a-card>
-  </page-header-wrapper>
+    <a-modal
+      title="添加"
+      v-model="visible"
+      :width="600"
+      :maskClosable="false"
+      @ok="handleAddProduct"
+
+    >
+      <a-form
+        layout="inline"
+      >
+        <a-form-item>
+          <a-input
+            style="width: 300px"
+            v-model="dialogData.id"
+            placeholder="请输入ID(唯一)">
+          </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-textarea
+            :rows="2"
+            style="width: 300px"
+            v-model="dialogData.value"
+            placeholder="请输入值">
+          </a-textarea>
+        </a-form-item>
+        <a-form-item>
+          <a-input
+            style="width: 300px"
+            v-model="dialogData.remark"
+            placeholder="请输入备注">
+          </a-input>
+        </a-form-item>
+      </a-form>
+
+
+    </a-modal>
+  </div>
+
 </template>
 
 <script>
-import moment from 'moment'
-import { STable, Ellipsis } from '@/components'
-import { getResPage, getRoleList, getServiceList } from '@/api/manage'
-
-import StepByStepModal from './modules/StepByStepModal'
-import CreateForm from './modules/CreateForm'
-
 const columns = [
   {
-    title: '#',
-    scopedSlots: { customRender: 'serial' }
+    title: 'id',
+    dataIndex: 'id',
+    width: '12%',
+    // scopedSlots: {customRender: 'name'},
   },
   {
-    title: '规则编号',
-    dataIndex: 'no'
+    title: '名称',
+    dataIndex: 'name',
+    width: '5%',
+    // scopedSlots: {customRender: 'name'},
   },
   {
-    title: '描述',
-    dataIndex: 'description',
-    scopedSlots: { customRender: 'description' }
+    title: '权限标识',
+    dataIndex: 'permission',
+    width: '5%',
+    // scopedSlots: {customRender: 'name'},
   },
   {
-    title: '服务调用次数',
-    dataIndex: 'callNo',
-    sorter: true,
-    needTotal: true,
-    customRender: (text) => text + ' 次'
+    title: '路由',
+    dataIndex: 'path',
+    width: '5%',
+    // scopedSlots: {customRender: 'name'},
   },
   {
-    title: '状态',
-    dataIndex: 'status',
-    scopedSlots: { customRender: 'status' }
-  },
-  {
-    title: '更新时间',
-    dataIndex: 'updatedAt',
-    sorter: true
+    title: '创建时间',
+    dataIndex: 'create_date',
+    width: '5%',
+    // scopedSlots: {customRender: 'name'},
   },
   {
     title: '操作',
-    dataIndex: 'action',
-    width: '150px',
-    scopedSlots: { customRender: 'action' }
-  }
-]
+    // dataIndex: 'create_time',
+    width: '5%',
+    scopedSlots: {customRender: 'action'},
+  },
+];
 
-const statusMap = {
-  0: {
-    status: 'default',
-    text: '关闭'
-  },
-  1: {
-    status: 'processing',
-    text: '运行中'
-  },
-  2: {
-    status: 'success',
-    text: '已上线'
-  },
-  3: {
-    status: 'error',
-    text: '异常'
-  }
-}
+
+import {resPage} from '@/api/manage'
+// import {kvPage, kvAdd, kvUpdate, kvDelete} from '@/api/manage'
+// import {showMsg} from '@/utils/data'
+import moment from 'moment';
 
 export default {
-  name: 'TableList',
-  components: {
-    STable,
-    Ellipsis,
-    CreateForm,
-    StepByStepModal
+  mounted() {
+    this.fetch();
   },
-  data () {
-    this.columns = columns
+  data() {
     return {
-      // create model
-      visible: false,
-      confirmLoading: false,
-      mdl: null,
-      // 高级搜索 展开/关闭
-      advanced: false,
-      // 查询参数
-      queryParam: {},
-      // 加载数据方法 必须为 Promise 对象
-      loadData: parameter => {
-        const requestParameters = Object.assign({}, parameter, this.queryParam)
-        console.log('loadData request parameters:', requestParameters)
-        return getResPage(requestParameters)
-          .then(res => {
-            return res.data
-          })
+      data: [],
+      pagination: {},
+      loading: false,
+      columns,
+
+      queryData: {
+        id: null,
+        remark: null,
+        value: null,
+        page: 1,
+        size: 5
       },
-      selectedRowKeys: [],
-      selectedRows: []
-    }
-  },
-  filters: {
-    statusFilter (type) {
-      return statusMap[type].text
-    },
-    statusTypeFilter (type) {
-      return statusMap[type].status
-    }
-  },
-  created () {
-    getRoleList({ t: new Date() })
-  },
-  computed: {
-    rowSelection () {
-      return {
-        selectedRowKeys: this.selectedRowKeys,
-        onChange: this.onSelectChange
-      }
+      dialogData: {
+        id: null,
+        remark: null,
+        value: null,
+      },
+      visible: false,
+      dialogMode: "add",
     }
   },
   methods: {
-    handleAdd () {
-      this.mdl = null
-      this.visible = true
+    handleTableChange(pagination, filters, sorter) {
+      console.log(pagination);
+      const pager = {...this.pagination};
+      pager.current = pagination.current;
+      pager.pageSize = 5;
+      this.pagination = pager;
+      this.queryData.page = pagination.current;
+      this.fetch();
     },
-    handleEdit (record) {
-      this.visible = true
-      this.mdl = { ...record }
+    fetch_no_page(){
+      this.pagination.current = 1; this.queryData.page=undefined;
+      this.fetch();
     },
-    handleOk () {
-      const form = this.$refs.createModal.form
-      this.confirmLoading = true
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          console.log('values', values)
-          if (values.id > 0) {
-            // 修改 e.g.
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                resolve()
-              }, 1000)
-            }).then(res => {
-              this.visible = false
-              this.confirmLoading = false
-              // 重置表单数据
-              form.resetFields()
-              // 刷新表格
-              this.$refs.table.refresh()
-
-              this.$message.info('修改成功')
-            })
-          } else {
-            // 新增
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                resolve()
-              }, 1000)
-            }).then(res => {
-              this.visible = false
-              this.confirmLoading = false
-              // 重置表单数据
-              form.resetFields()
-              // 刷新表格
-              this.$refs.table.refresh()
-
-              this.$message.info('新增成功')
-            })
-          }
-        } else {
-          this.confirmLoading = false
-        }
+    fetch() {
+      this.loading = true;
+      var arg = Object.assign({}, this.queryData);
+      if (arg.time_start != null) {
+        arg.time_start = arg.time_start.format('YYYY-MM-DD hh:mm:ss')
+      }
+      if (arg.time_end != null) {
+        arg.time_end = arg.time_end.format('YYYY-MM-DD hh:mm:ss')
+      }
+      //取分页数据
+      resPage(arg).then((res) => {
+        //alert(JSON.stringify(res))
+        const pagination = {...this.pagination};
+        this.loading = false;
+        this.data = res.data.records;
+        pagination.total = res.data.total;
+        pagination.pageSize = res.data.size;
+        this.pagination = pagination;
       })
     },
-    handleCancel () {
-      this.visible = false
 
-      const form = this.$refs.createModal.form
-      form.resetFields() // 清理表单数据（可不做）
+    addProduct: function () {
+      this.handleDialogCancel()
+      this.visible = true
     },
-    handleSub (record) {
-      if (record.status !== 0) {
-        this.$message.info(`${record.no} 订阅成功`)
+    //处理添加产品
+    handleAddProduct: function () {
+      if (this.dialogMode == "add") {
+        // kvAdd(this.dialogData)
+        //   .then((res) => {
+        //     //showMsg(this, res)
+        //     this.visible = false;
+        //     this.fetch();
+        //   })
+      } else if (this.dialogMode == "edit") {
+        // kvUpdate(this.dialogData)
+        //   .then((res) => {
+        //     //showMsg(this, res)
+        //     this.visible = false;
+        //     this.fetch();
+        //   })
       } else {
-        this.$message.error(`${record.no} 订阅失败，规则已关闭`)
+        // kvDelete(this.dialogData)
+        //   .then((res) => {
+        //     showMsg(this, res)
+        //     this.visible = false;
+        //     this.fetch();
+        //   })
       }
     },
-    onSelectChange (selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectedRows = selectedRows
+    //handleEditProduct
+    handleEditProduct: function (scope) {
+      this.visible = true
+      this.dialogMode = "edit";
+      this.dialogData = Object.assign({}, scope);
     },
-    toggleAdvanced () {
-      this.advanced = !this.advanced
+    handleDeleteProduct: function (scope) {
+      let self = this;
+      this.$confirm({
+        title: '你确定要删除?',
+        content: '你确定要删除！',
+        onOk() {
+          // kvDelete(scope)
+          //   .then((res) => {
+          //     showMsg(self, res)
+          //     self.visible = false;
+          //     self.fetch();
+          //   })
+        },
+        onCancel() {
+          // console.log('Cancel');
+        },
+        class: 'test',
+      });
     },
-    resetSearchForm () {
-      this.queryParam = {
-        date: moment(new Date())
+    handleDialogCancel:function() {
+      this.dialogData={
+        id: null,
+        remark: null,
+        value: null,
       }
     }
-  }
+  },
 }
 </script>
+
+<style lang="less">
+.productBody {
+  background: #ffffff;
+  padding: 10px;
+}
+</style>
