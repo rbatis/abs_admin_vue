@@ -176,7 +176,7 @@ export default {
       pager.current = pagination.current;
       pager.pageSize = 5;
       this.pagination = pager;
-      this.queryData.page = pagination.current-1;
+      this.queryData.page = pagination.current;
       this.fetch();
     },
     fetch_no_page(){
@@ -194,15 +194,13 @@ export default {
       //   arg.time_end = arg.time_end.format('YYYY-MM-DD hh:mm:ss')
       // }
       // kvPage(arg).then((res) => {
-      //   //alert(JSON.stringify(res))
-      //   const pagination = {...this.pagination};
-      //   this.loading = false;
-      //   this.data = res.data.content;
-      //   pagination.total = res.data.total;
-      //   pagination.pageSize = res.data.page_size;
-      //
-      //   this.pagination = pagination;
-      //
+      // //alert(JSON.stringify(res))
+      // const pagination = {...this.pagination};
+      // this.loading = false;
+      // this.data = res.data.records;
+      // pagination.total = res.data.total;
+      // pagination.pageSize = res.data.size;
+      // this.pagination = pagination;
       // })
     },
 
