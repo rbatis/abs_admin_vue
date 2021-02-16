@@ -74,7 +74,7 @@
       v-model="visible"
       :width="600"
       :maskClosable="false"
-      @ok="handleAddProduct"
+      @ok="handleAddData"
 
     >
       <a-form
@@ -115,7 +115,7 @@ const columns = [
   {
     title: 'key',
     dataIndex: 'id',
-    width: '12%',
+    width: '5%',
     // scopedSlots: {customRender: 'name'},
   },
   {
@@ -209,7 +209,7 @@ export default {
       this.visible = true
     },
     //处理添加产品
-    handleAddProduct: function () {
+    handleAddData: function () {
       if (this.dialogMode == "add") {
         // kvAdd(this.dialogData)
         //   .then((res) => {

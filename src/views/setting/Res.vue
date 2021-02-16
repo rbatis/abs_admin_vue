@@ -74,7 +74,7 @@
       v-model="visible"
       :width="600"
       :maskClosable="false"
-      @ok="handleAddProduct"
+      @ok="handleAddData"
 
     >
       <a-form
@@ -115,37 +115,37 @@ const columns = [
   {
     title: 'id',
     dataIndex: 'id',
-    width: '12%',
+    width: '1%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '名称',
     dataIndex: 'name',
-    width: '5%',
+    width: '1%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '权限标识',
     dataIndex: 'permission',
-    width: '5%',
+    width: '1%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '路由',
     dataIndex: 'path',
-    width: '5%',
+    width: '1%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '创建时间',
     dataIndex: 'create_date',
-    width: '5%',
+    width: '1%',
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '操作',
     // dataIndex: 'create_time',
-    width: '5%',
+    width: '1%',
     scopedSlots: {customRender: 'action'},
   },
 ];
@@ -222,7 +222,7 @@ export default {
       this.visible = true
     },
     //处理添加产品
-    handleAddProduct: function () {
+    handleAddData: function () {
       if (this.dialogMode == "add") {
         // kvAdd(this.dialogData)
         //   .then((res) => {
