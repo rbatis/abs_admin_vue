@@ -183,7 +183,8 @@ export default {
     },
     fetch_no_page() {
       this.pagination.current = 1
-      this.queryData.page_no = 5
+      this.queryData.page_no = 1
+      this.queryData.page_size = 5
       this.fetch()
     },
     fetch() {
