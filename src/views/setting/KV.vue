@@ -80,14 +80,14 @@
       <a-form
         layout='inline'
       >
-        <a-form-item>
+        <a-form-item label='ID'>
           <a-input
             style='width: 300px'
             v-model='dialogData.id'
             placeholder='请输入ID(唯一)'>
           </a-input>
         </a-form-item>
-        <a-form-item>
+        <a-form-item label=' 值'>
           <a-textarea
             :rows='2'
             style='width: 300px'
@@ -95,7 +95,7 @@
             placeholder='请输入值'>
           </a-textarea>
         </a-form-item>
-        <a-form-item>
+        <a-form-item label='备注'>
           <a-input
             style='width: 300px'
             v-model='dialogData.remark'

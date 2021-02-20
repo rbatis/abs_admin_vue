@@ -80,28 +80,44 @@
       <a-form
         layout='inline'
       >
-        <a-form-item>
+<!--        <a-form-item label='id'>-->
+<!--          <a-input-->
+<!--            style='width: 300px'-->
+<!--            v-model='dialogData.id'-->
+<!--            placeholder='请输入ID(唯一)'>-->
+<!--          </a-input>-->
+<!--        </a-form-item>-->
+
+        <a-form-item label='权限名称'>
           <a-input
             style='width: 300px'
-            v-model='dialogData.id'
-            placeholder='请输入ID(唯一)'>
+            v-model='dialogData.name'
+            placeholder='权限名称'>
           </a-input>
         </a-form-item>
-        <a-form-item>
-          <a-textarea
-            :rows='2'
-            style='width: 300px'
-            v-model='dialogData.value'
-            placeholder='请输入值'>
-          </a-textarea>
-        </a-form-item>
-        <a-form-item>
+        <a-form-item label='父级id'>
           <a-input
             style='width: 300px'
-            v-model='dialogData.remark'
-            placeholder='请输入备注'>
+            v-model='dialogData.parent_id'
+            placeholder='父级id'>
           </a-input>
         </a-form-item>
+        <a-form-item label='路径'>
+          <a-input
+            style='width: 300px'
+            v-model='dialogData.path'
+            placeholder='路径'>
+          </a-input>
+        </a-form-item>
+
+        <a-form-item label='权限标识'>
+          <a-input
+            style='width: 300px'
+            v-model='dialogData.permission'
+            placeholder='权限标识'>
+          </a-input>
+        </a-form-item>
+
       </a-form>
 
 
