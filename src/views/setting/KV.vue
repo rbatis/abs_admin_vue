@@ -210,7 +210,8 @@ export default {
 
     addData: function() {
       this.handleDialogCancel()
-      this.visible = true
+      this.visible = true;
+      this.dialogMode === 'add';
     },
     //处理添加产品
     handleAddData: function() {
@@ -225,13 +226,6 @@ export default {
         // kvUpdate(this.dialogData)
         //   .then((res) => {
         //     //showMsg(this, res)
-        //     this.visible = false;
-        //     this.fetch();
-        //   })
-      } else {
-        // kvDelete(this.dialogData)
-        //   .then((res) => {
-        //     showMsg(this, res)
         //     this.visible = false;
         //     this.fetch();
         //   })

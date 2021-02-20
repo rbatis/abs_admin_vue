@@ -239,31 +239,25 @@ export default {
 
     addData: function() {
       this.handleDialogCancel()
-      this.visible = true
+      this.visible = true;
+      this.dialogMode === 'add';
     },
     //处理添加产品
     handleAddData: function() {
       if (this.dialogMode === 'add') {
-        // kvAdd(this.dialogData)
-        //   .then((res) => {
-        //     //showMsg(this, res)
-        //     this.visible = false;
-        //     this.fetch();
-        //   })
+         res_add(this.dialogData)
+          .then((res) => {
+            //showMsg(this, res)
+            this.visible = false;
+            this.fetch();
+          })
       } else if (this.dialogMode === 'edit') {
-        // kvUpdate(this.dialogData)
-        //   .then((res) => {
-        //     //showMsg(this, res)
-        //     this.visible = false;
-        //     this.fetch();
-        //   })
-      } else {
-        // kvDelete(this.dialogData)
-        //   .then((res) => {
-        //     showMsg(this, res)
-        //     this.visible = false;
-        //     this.fetch();
-        //   })
+        res_update(this.dialogData)
+          .then((res) => {
+            //showMsg(this, res)
+            this.visible = false;
+            this.fetch();
+          })
       }
     },
     //handleEditProduct
@@ -278,12 +272,12 @@ export default {
         title: '你确定要删除?',
         content: '你确定要删除！',
         onOk() {
-          // kvDelete(scope)
-          //   .then((res) => {
-          //     showMsg(self, res)
-          //     self.visible = false;
-          //     self.fetch();
-          //   })
+          res_delete(scope)
+            .then((res) => {
+              showMsg(self, res)
+              self.visible = false;
+              self.fetch();
+            })
         },
         onCancel() {
           // console.log('Cancel');
