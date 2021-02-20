@@ -211,7 +211,7 @@ export default {
     addData: function() {
       this.handleDialogCancel()
       this.visible = true;
-      this.dialogMode === 'add';
+      this.dialogMode = 'add';
     },
     //处理添加产品
     handleAddData: function() {
