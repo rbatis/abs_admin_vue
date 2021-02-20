@@ -214,14 +214,14 @@ export default {
     },
     //处理添加产品
     handleAddData: function() {
-      if (this.dialogMode == 'add') {
+      if (this.dialogMode === 'add') {
         // kvAdd(this.dialogData)
         //   .then((res) => {
         //     //showMsg(this, res)
         //     this.visible = false;
         //     this.fetch();
         //   })
-      } else if (this.dialogMode == 'edit') {
+      } else if (this.dialogMode === 'edit') {
         // kvUpdate(this.dialogData)
         //   .then((res) => {
         //     //showMsg(this, res)
