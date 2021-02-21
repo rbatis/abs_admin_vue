@@ -192,10 +192,10 @@ export default {
 
       var arg = Object.assign({}, this.queryData)
       // if (arg.time_start != null) {
-      //   arg.time_start = arg.time_start.format('YYYY-MM-DD hh:mm:ss')
+      //   arg.time_start = arg.time_start.format('YYYY-MM-DDThh:mm:ss')
       // }
       // if (arg.time_end != null) {
-      //   arg.time_end = arg.time_end.format('YYYY-MM-DD hh:mm:ss')
+      //   arg.time_end = arg.time_end.format('YYYY-MM-DDThh:mm:ss')
       // }
       // kvPage(arg).then((res) => {
       // //alert(JSON.stringify(res))
