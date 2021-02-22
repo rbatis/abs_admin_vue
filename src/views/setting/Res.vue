@@ -44,7 +44,7 @@
              :pagination='pagination'
              :loading='loading'
              :scroll='{ x: 1280 }'
-             :childrenColumnName = '["childs"]'
+             childrenColumnName = "childs"
              @change='handleTableChange'
     >
 
@@ -52,9 +52,9 @@
       <!--<template slot="rate" slot-scope="rate">-->
       <!--{{rate+'%'}}-->
       <!--</template>-->
-      <template slot='action' slot-scope='scope'>
+      <template slot='action' slot-scope='record'>
         <div style='width: 80px;' >
-          <a-button @click='handleEditProduct(scope)'>添加</a-button>
+          <a-button @click='handleAddChildProduct({"parent_id":record.parent_id})'>添加</a-button>
           <a-dropdown>
             <a class='ant-dropdown-link'>
               更多
@@ -62,10 +62,10 @@
             </a>
             <a-menu slot='overlay'>
               <a-menu-item>
-                <a @click='handleEditProduct(scope)'>编辑</a>
+                <a @click='handleEditProduct(record)'>编辑</a>
               </a-menu-item>
               <a-menu-item>
-                <a @click='handleDeleteProduct(scope)'>删除</a>
+                <a @click='handleDeleteProduct(record)'>删除</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -263,6 +263,11 @@ export default {
             this.fetch();
           })
       }
+    },
+    handleAddChildProduct: function(scope) {
+      this.visible = true
+      this.dialogMode = 'add'
+      this.dialogData = Object.assign({}, scope)
     },
     //handleEditProduct
     handleEditProduct: function(scope) {
