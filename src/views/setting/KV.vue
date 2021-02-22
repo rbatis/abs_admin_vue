@@ -1,6 +1,6 @@
 <template>
 
-  <div class='productBody'>
+  <div class='dataBody'>
     <a-form
       layout='inline'
     >
@@ -52,7 +52,7 @@
       <template slot='action' slot-scope='scope'>
         <!--{{scope.id}}-->
         <div style='width: 80px'>
-          <a @click='handleEditProduct(scope)'>编辑</a>
+          <a @click='handleEdit(scope)'>编辑</a>
           <a-dropdown>
             <a class='ant-dropdown-link'>
               更多
@@ -60,7 +60,7 @@
             </a>
             <a-menu slot='overlay'>
               <a-menu-item>
-                <a @click='handleDeleteProduct(scope)'>删除</a>
+                <a @click='handleDelete(scope)'>删除</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -231,13 +231,13 @@ export default {
         //   })
       }
     },
-    //handleEditProduct
-    handleEditProduct: function(scope) {
+    //handleEdit
+    handleEdit: function(scope) {
       this.visible = true
       this.dialogMode = 'edit'
       this.dialogData = Object.assign({}, scope)
     },
-    handleDeleteProduct: function(scope) {
+    handleDelete: function(scope) {
       let self = this
       this.$confirm({
         title: '你确定要删除?',
@@ -268,7 +268,7 @@ export default {
 </script>
 
 <style lang='less'>
-.productBody {
+.dataBody {
   background: #ffffff;
   padding: 10px;
 }

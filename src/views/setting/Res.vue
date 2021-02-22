@@ -1,6 +1,6 @@
 <template>
 
-  <div class='productBody'>
+  <div class='dataBody'>
     <a-form
       layout='inline'
     >
@@ -55,7 +55,7 @@
       <!--</template>-->
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
-          <a style='padding-right: 10px;' @click='handleAddChildProduct({"parent_id":scope.id})'>添加</a>
+          <a style='padding-right: 10px;' @click='handleAddChild({"parent_id":scope.id})'>添加</a>
           <a-dropdown>
             <a class='ant-dropdown-link'>
               更多
@@ -63,10 +63,10 @@
             </a>
             <a-menu slot='overlay'>
               <a-menu-item>
-                <a style='color: #1890ff' @click='handleEditProduct(scope)'>编辑</a>
+                <a style='color: #1890ff' @click='handleEdit(scope)'>编辑</a>
               </a-menu-item>
               <a-menu-item>
-                <a style='color:#f5222d' @click='handleDeleteProduct(scope)'>删除</a>
+                <a style='color:#f5222d' @click='handleDelete(scope)'>删除</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -284,13 +284,13 @@ export default {
           })
       }
     },
-    handleAddChildProduct: function(scope) {
+    handleAddChild: function(scope) {
       this.visible = true
       this.dialogMode = 'add'
       this.dialogData = Object.assign({ is_menu: scope.path === null }, scope)
     },
-    //handleEditProduct
-    handleEditProduct: function(scope) {
+    //handleEdit
+    handleEdit: function(scope) {
       this.visible = true
       this.dialogMode = 'edit'
       this.dialogData = Object.assign({ is_menu: scope.path === null }, scope)
@@ -300,7 +300,7 @@ export default {
         this.dialogData.is_menu = true
       }
     },
-    handleDeleteProduct: function(scope) {
+    handleDelete: function(scope) {
       let self = this
       this.$confirm({
         title: '你确定要删除?',
@@ -333,7 +333,7 @@ export default {
 </script>
 
 <style lang='less'>
-.productBody {
+.dataBody {
   background: #ffffff;
   padding: 10px;
 }
