@@ -16,13 +16,14 @@
       <!--/>-->
       <!--</a-input>-->
       <!--</a-form-item>-->
-<!--      <a-form-item>-->
-<!--        <a-input-->
-<!--          v-model='queryData.remark'-->
-<!--          placeholder='请输入计划备注'-->
-<!--        >-->
-<!--        </a-input>-->
-<!--      </a-form-item>-->
+      <a-form-item>
+        <a-input
+          v-model='queryData.name'
+          placeholder='请输入权限名称'
+          :allowClear="true"
+        >
+        </a-input>
+      </a-form-item>
       <a-form-item
         :wrapper-col='{ span: 12, offset: 5 }'
       >
@@ -54,9 +55,9 @@
       <!--</template>-->
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;' >
-          <a style='padding-right: 10px' @click='handleAddChildProduct({"parent_id":scope.id})'>添加</a>
+          <a style='padding-right: 10px;' @click='handleAddChildProduct({"parent_id":scope.id})'>添加</a>
           <a-dropdown>
-            <a class='ant-dropdown-link'>
+            <a class='ant-dropdown-link' style='color:#f5222d;'>
               更多
               <a-icon type='down' />
             </a>
@@ -183,14 +184,12 @@ export default {
 
       queryData: {
         id: null,
-        remark: null,
-        value: null,
+        name: null,
         page_no: 1,
         page_size: 5
       },
       dialogData: {
         id: null,
-        remark: null,
         value: null
       },
       visible: false,
