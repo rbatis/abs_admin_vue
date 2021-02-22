@@ -1,273 +1,273 @@
 <template>
-  <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="角色名称">
-              <a-input placeholder="请输入" :allowClear="true" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="状态">
-              <a-select placeholder="请选择" default-value="0">
-                <a-select-option value="0">全部</a-select-option>
-                <a-select-option value="1">关闭</a-select-option>
-                <a-select-option value="2">运行中</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <span class="table-page-search-submitButtons">
-              <a-button type="primary">查询</a-button>
-              <a-button style="margin-left: 8px">重置</a-button>
-              <a-button style="margin-left: 8px" type="primary">添加</a-button>
-            </span>
-          </a-col>
-        </a-row>
-      </a-form>
+
+  <div class='productBody'>
+    <a-form
+      layout='inline'
+    >
+      <!--<a-form-item>-->
+      <!--<a-input-->
+      <!--placeholder="请输入手机号"-->
+      <!--v-model="queryData.phone"-->
+      <!--&gt;-->
+      <!--<a-icon-->
+      <!--slot="prefix"-->
+      <!--type="user"-->
+      <!--style="color:rgba(0,0,0,.25)"-->
+      <!--/>-->
+      <!--</a-input>-->
+      <!--</a-form-item>-->
+      <a-form-item>
+        <a-input
+          v-model='queryData.name'
+          placeholder='请输入权限名称'
+          :allowClear='true'
+        >
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        :wrapper-col='{ span: 12, offset: 5 }'
+      >
+        <a-button
+          type='primary'
+          html-type='submit'
+          @click='fetch_no_page'
+        >
+          查询
+        </a-button>
+      </a-form-item>
+    </a-form>
+    <div class='operate'>
+      <a-button type='dashed' style='width: 100%' icon='plus' @click='addData'>添加</a-button>
     </div>
+    <a-table :columns='columns'
+             :rowKey='record => record.id'
+             :dataSource='data'
+             :pagination='pagination'
+             :loading='loading'
+             :indentSize='15'
+             childrenColumnName='childs'
+             @change='handleTableChange'
+    >
 
-    <s-table :columns="columns" :data="loadData">
 
-      <span slot="actions" slot-scope="text, record">
-        <a-tag v-for="(action, index) in record.actionList" :key="index">{{ action.describe }}</a-tag>
-      </span>
+      <!--<template slot="rate" slot-scope="rate">-->
+      <!--{{rate+'%'}}-->
+      <!--</template>-->
+      <template slot='action' slot-scope='scope'>
+        <div style='width: 110px;'>
+          <a-dropdown>
+            <a class='ant-dropdown-link'>
+              更多
+              <a-icon type='down' />
+            </a>
+            <a-menu slot='overlay'>
+              <a-menu-item>
+                <a style='color: #1890ff' @click='handleEditProduct(scope)'>编辑</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a style='color:#f5222d' @click='handleDeleteProduct(scope)'>删除</a>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+        </div>
 
-      <!--      <span slot="status" slot-scope="text">-->
-      <!--        {{ text | statusFilter }}-->
-      <!--      </span>-->
-
-      <span slot="action" slot-scope="text, record">
-        <a @click="handleEdit(record)">编辑</a>
-        <a-divider type="vertical" />
-        <a-dropdown>
-          <a class="ant-dropdown-link">
-            更多 <a-icon type="down" />
-          </a>
-          <a-menu slot="overlay">
-            <a-menu-item>
-              <a href="javascript:;">详情</a>
-            </a-menu-item>
-            <!--            <a-menu-item>-->
-            <!--              <a href="javascript:;">禁用</a>-->
-            <!--            </a-menu-item>-->
-            <a-menu-item>
-              <a href="javascript:;">删除</a>
-            </a-menu-item>
-          </a-menu>
-        </a-dropdown>
-      </span>
-    </s-table>
+      </template>
+    </a-table>
 
     <a-modal
-      title="操作"
-      :width="800"
-      v-model="visible"
-      @ok="handleOk"
+      title='添加'
+      cancelText='取消'
+      okText='确定'
+      v-model='visible'
+      :width='500'
+      :maskClosable='false'
+      @ok='handleAddData'
     >
-      <a-form :autoFormCreate="(form)=>{this.form = form}">
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="唯一识别码"
-          hasFeedback
-          validateStatus="success"
-        >
-          <a-input placeholder="唯一识别码" v-model="mdl.id" id="no" disabled="disabled" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="角色名称"
-          hasFeedback
-          validateStatus="success"
-        >
-          <a-input placeholder="起一个名字" v-model="mdl.name" id="permission_name" />
-        </a-form-item>
-
-        <!--        <a-form-item-->
-        <!--          :labelCol="labelCol"-->
-        <!--          :wrapperCol="wrapperCol"-->
-        <!--          label="状态"-->
-        <!--          hasFeedback-->
-        <!--          validateStatus="warning"-->
-        <!--        >-->
-        <!--          <a-select v-model="mdl.status">-->
-        <!--            <a-select-option value="1">正常</a-select-option>-->
-        <!--            <a-select-option value="2">禁用</a-select-option>-->
-        <!--          </a-select>-->
-        <!--        </a-form-item>-->
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="描述"
-          hasFeedback
-        >
-          <a-textarea :rows="5" v-model="mdl.describe" placeholder="..." id="describe"/>
-        </a-form-item>
-
-        <a-divider />
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="赋予权限"
-          hasFeedback
-        >
-          <a-select
-            style="width: 100%"
-            mode="multiple"
-            v-model="mdl.actions"
-            :allowClear="true"
+      <a-form
+        :labelAlign='right'
+        v-bind='{
+        labelCol: {
+          // xs: { span: 24 },
+          sm: { span: 4 },
+        },
+        wrapperCol: {
+          //xs: { span: 24 },
+          sm: { span: 20 },
+        },
+      }'
+      >
+        <a-form-item label="标识">
+          <a-input
+            v-model='dialogData.permission'
+            placeholder="菜单、权限标识"
           >
-            <a-select-option v-for="(action, index) in permissionList" :key="index" :value="action.value">{{ action.label }}</a-select-option>
-          </a-select>
+          </a-input>
         </a-form-item>
 
       </a-form>
-    </a-modal>
 
-  </a-card>
+
+    </a-modal>
+  </div>
+
 </template>
 
 <script>
-import { STable } from '@/components'
+const columns = [
+  {
+    title: 'id',
+    dataIndex: 'id'
+    // scopedSlots: {customRender: 'name'},
+  },
+  {
+    title: '名称',
+    dataIndex: 'name'
+    // scopedSlots: {customRender: 'name'},
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'create_date'
+    // scopedSlots: {customRender: 'name'},
+  },
+  {
+    title: '操作',
+    // dataIndex: 'create_time',
+    scopedSlots: { customRender: 'action' }
+  }
+]
+
+
+import { role_add, role_delete, role_page, role_update} from '@/api/manage'
+import { showMsg } from '@/utils/data'
 
 export default {
-  name: 'TableList',
-  components: {
-    STable
+  mounted() {
+    this.fetch()
   },
-  data () {
+  data() {
     return {
-      description: '列表使用场景：后台管理中的权限管理以及角色管理，可用于基于 RBAC 设计的角色权限控制，颗粒度细到每一个操作类型。',
+      data: [],
+      pagination: {},
+      loading: false,
+      columns,
 
+      queryData: {
+        id: null,
+        name: null,
+        page_no: 1,
+        page_size: 5
+      },
+      dialogData: {
+        id: null,
+        value: null,
+        is_menu: false
+      },
       visible: false,
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
-      form: null,
-      mdl: {},
+      dialogMode: 'add'
 
-      // 高级搜索 展开/关闭
-      advanced: false,
-      // 查询参数
-      queryParam: {},
-      // 表头
-      columns: [
-        {
-          title: '唯一识别码',
-          dataIndex: 'id'
-        },
-        {
-          title: '角色名称',
-          dataIndex: 'name'
-        },
-        {
-          title: '可操作权限',
-          dataIndex: 'actions',
-          scopedSlots: { customRender: 'actions' }
-        },
-        // {
-        //   title: '状态',
-        //   dataIndex: 'status',
-        //   scopedSlots: { customRender: 'status' }
-        // },
-        {
-          title: '操作',
-          width: '150px',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
-        }
-      ],
-      // 向后端拉取可以用的操作列表
-      permissionList: null,
-      // 加载数据方法 必须为 Promise 对象
-      loadData: parameter => {
-        return this.$http.get('/permission', {
-          params: Object.assign(parameter, this.queryParam)
-        }).then(res => {
-          const result = res.result
-          result.data.map(permission => {
-            permission.actionList = JSON.parse(permission.actionData)
-            return permission
-          })
-          return result
-        })
-      },
-
-      selectedRowKeys: [],
-      selectedRows: []
     }
-  },
-  filters: {
-    // statusFilter (status) {
-    //   const statusMap = {
-    //     1: '正常',
-    //     2: '禁用'
-    //   }
-    //   return statusMap[status]
-    // }
-  },
-  created () {
-    this.loadPermissionList()
   },
   methods: {
-    loadPermissionList () {
-      // permissionList
-      new Promise(resolve => {
-        const data = [
-          { label: '新增', value: 'add' },
-          { label: '查询', value: 'get' },
-          { label: '修改', value: 'update' },
-          { label: '列表', value: 'query' },
-          { label: '删除', value: 'delete' },
-          { label: '导入', value: 'import' },
-          { label: '导出', value: 'export' }
-        ]
-        setTimeout(resolve(data), 1500)
-      }).then(res => {
-        this.permissionList = res
+    handleTableChange(pagination, filters, sorter) {
+      console.log(pagination)
+      const pager = { ...this.pagination }
+      pager.current = pagination.current
+      pager.pageSize = 5
+      this.pagination = pager
+      this.queryData.page_no = pagination.current
+      this.fetch()
+    },
+    fetch_no_page() {
+      this.pagination.current = 1
+      this.queryData.page_no = 1
+      this.queryData.page_size = 5
+      this.fetch()
+    },
+    fetch() {
+      this.loading = true
+      var arg = Object.assign({}, this.queryData)
+      if (arg.time_start != null) {
+        arg.time_start = arg.time_start.format('YYYY-MM-DDThh:mm:ss')
+      }
+      if (arg.time_end != null) {
+        arg.time_end = arg.time_end.format('YYYY-MM-DDThh:mm:ss')
+      }
+      //取分页数据
+      role_page(arg).then((res) => {
+        //alert(JSON.stringify(res))
+        const pagination = { ...this.pagination }
+        this.loading = false
+        this.data = res.data.records
+        pagination.total = res.data.total
+        pagination.pageSize = res.data.page_size
+        this.pagination = pagination
       })
     },
-    handleEdit (record) {
-      this.mdl = Object.assign({}, record)
-      console.log(this.mdl)
-      this.visible = true
-    },
-    handleOk () {
 
+    addData: function() {
+      this.handleDialogCancel()
+      this.visible = true
+      this.dialogMode = 'add'
     },
-    onChange (selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectedRows = selectedRows
-    },
-    toggleAdvanced () {
-      this.advanced = !this.advanced
-    }
-  },
-  watch: {
-    /*
-      'selectedRows': function (selectedRows) {
-        this.needTotalList = this.needTotalList.map(item => {
-          return {
-            ...item,
-            total: selectedRows.reduce( (sum, val) => {
-              return sum + val[item.dataIndex]
-            }, 0)
-          }
-        })
+    //处理添加产品
+    handleAddData: function() {
+      if (this.dialogData.is_menu === false) {
+        this.dialogData.path = null
       }
-      */
+      if (this.dialogMode === 'add') {
+        role_add(this.dialogData)
+          .then((res) => {
+            showMsg(this, res)
+            this.visible = false
+            this.fetch()
+          })
+      } else if (this.dialogMode === 'edit') {
+        role_update(this.dialogData)
+          .then((res) => {
+            //showMsg(this, res)
+            this.visible = false
+            this.fetch()
+          })
+      }
+    },
+    //handleEditProduct
+    handleEditProduct: function(scope) {
+      this.visible = true
+      this.dialogMode = 'edit'
+      this.dialogData = Object.assign({ }, scope)
+    },
+    handleDeleteProduct: function(scope) {
+      let self = this
+      this.$confirm({
+        title: '你确定要删除?',
+        content: '你确定要删除！',
+        onOk() {
+          role_delete(scope)
+            .then((res) => {
+              showMsg(self, res)
+              self.visible = false
+              self.fetch()
+            })
+        },
+        onCancel() {
+          // console.log('Cancel');
+        },
+        class: 'test'
+      })
+    },
+    handleDialogCancel: function() {
+      this.dialogData = {
+        id: null
+      }
+    }
+
   }
 }
 </script>
+
+<style lang='less'>
+.productBody {
+  background: #ffffff;
+  padding: 10px;
+}
+</style>

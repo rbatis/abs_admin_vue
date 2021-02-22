@@ -6,6 +6,11 @@ const api = {
   sys_res_update: '/sys_res_update',
   sys_res_delete: '/sys_res_remove',
 
+  sys_role_page: '/sys_role_page',
+  sys_role_add: '/sys_role_add',
+  sys_role_update: '/sys_role_update',
+  sys_role_delete: '/sys_role_remove',
+
   user: '/user',
   role: '/role',
   service: '/service',
@@ -74,7 +79,7 @@ export function saveSub (sub) {
   })
 }
 
-// 取资源分页
+
 export function res_page (arg) {
   return request({
     url: api.sys_res_page,
@@ -102,6 +107,39 @@ export function res_update (arg) {
 export function res_delete (arg) {
   return request({
     url: api.sys_res_delete,
+    method: 'post',
+    data: arg
+  })
+}
+
+
+export function role_page(arg) {
+  return request({
+    url: api.sys_role_page,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function role_add(arg) {
+  return request({
+    url: api.sys_role_add,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function role_update(arg) {
+  return request({
+    url: api.sys_role_update,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function role_delete(arg) {
+  return request({
+    url: api.sys_role_delete,
     method: 'post',
     data: arg
   })
