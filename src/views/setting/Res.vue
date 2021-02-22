@@ -43,7 +43,7 @@
              :dataSource='data'
              :pagination='pagination'
              :loading='loading'
-             :scroll='{ x: 1280 }'
+             :indentSize='15'
              childrenColumnName = "childs"
              @change='handleTableChange'
     >
@@ -136,37 +136,31 @@ const columns = [
   {
     title: 'id',
     dataIndex: 'id',
-    width: '5%'
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '名称',
     dataIndex: 'name',
-    width: '5%'
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '权限标识',
     dataIndex: 'permission',
-    width: '5%'
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '路由',
     dataIndex: 'path',
-    width: '5%'
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '创建时间',
     dataIndex: 'create_date',
-    width: '5%'
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '操作',
     // dataIndex: 'create_time',
-    width: '100px',
     scopedSlots: { customRender: 'action' }
   }
 ]
