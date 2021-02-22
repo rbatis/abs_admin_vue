@@ -77,11 +77,12 @@
 
     <a-modal
       title='添加'
+      cancelText='取消'
+      okText='确定'
       v-model='visible'
       :width='500'
       :maskClosable='false'
       @ok='handleAddData'
-
     >
       <a-form
         :labelAlign='right'
@@ -127,7 +128,15 @@
         <a-form-item label='是否菜单'>
           <a-row>
             <a-col>
-              <a-switch checked-children='菜单' un-checked-children='权限' v-model='dialogData.is_menu'></a-switch>
+              <a-switch checked-children='菜单'
+                        un-checked-children='权限'
+                        v-model='dialogData.is_menu'
+                        @change='function(val){
+                            if (val===false){
+                               dialogData.path = "";
+                            }
+                        }'
+              ></a-switch>
             </a-col>
             <a-col>
               <a-input
