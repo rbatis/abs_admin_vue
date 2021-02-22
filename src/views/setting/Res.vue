@@ -53,8 +53,8 @@
       <!--{{rate+'%'}}-->
       <!--</template>-->
       <template slot='action' slot-scope='scope'>
-        <div style='width: 80px;' >
-          <a-button @click='handleAddChildProduct({"parent_id":scope.id})'>添加</a-button>
+        <div style='width: 110px;' >
+          <a-button size='small' @click='handleAddChildProduct({"parent_id":scope.id})'>添加</a-button>
           <a-dropdown>
             <a class='ant-dropdown-link'>
               更多
