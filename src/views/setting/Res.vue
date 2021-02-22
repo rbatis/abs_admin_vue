@@ -78,13 +78,23 @@
     <a-modal
       title='添加'
       v-model='visible'
-      :width='600'
+      :width='500'
       :maskClosable='false'
       @ok='handleAddData'
 
     >
       <a-form
-        layout='inline'
+        :labelAlign='right'
+        v-bind="{
+        labelCol: {
+          // xs: { span: 24 },
+          sm: { span: 4 },
+        },
+        wrapperCol: {
+          //xs: { span: 24 },
+          sm: { span: 20 },
+        },
+      }"
       >
 <!--        <a-form-item label='id'>-->
 <!--          <a-input-->
@@ -94,34 +104,37 @@
 <!--          </a-input>-->
 <!--        </a-form-item>-->
 
-        <a-form-item label='权限名称'>
+        <a-form-item  label='权限名称'>
           <a-input
-            style='width: 300px'
             v-model='dialogData.name'
             placeholder='权限名称'>
           </a-input>
         </a-form-item>
-        <a-form-item label='父级id'>
+        <a-form-item label='父级ID'>
           <a-input
-            style='width: 300px'
             v-model='dialogData.parent_id'
             placeholder='父级id'>
           </a-input>
         </a-form-item>
-        <a-form-item label='路径'>
-          <a-input
-            style='width: 300px'
-            v-model='dialogData.path'
-            placeholder='路径'>
-          </a-input>
-        </a-form-item>
-
         <a-form-item label='权限标识'>
           <a-input
-            style='width: 300px'
             v-model='dialogData.permission'
             placeholder='权限标识'>
           </a-input>
+        </a-form-item>
+        <a-form-item  label='是否菜单' >
+          <a-row>
+            <a-col>
+              <a-switch v-model='dialogData.is_menu'></a-switch>
+            </a-col>
+            <a-col>
+              <a-input
+                :disabled='!dialogData.is_menu'
+                v-model='dialogData.path'
+                placeholder='路径'>
+              </a-input>
+            </a-col>
+          </a-row>
         </a-form-item>
 
       </a-form>
@@ -190,7 +203,8 @@ export default {
       },
       dialogData: {
         id: null,
-        value: null
+        value: null,
+        is_menu: false,
       },
       visible: false,
       dialogMode: 'add',
@@ -260,13 +274,18 @@ export default {
     handleAddChildProduct: function(scope) {
       this.visible = true
       this.dialogMode = 'add'
-      this.dialogData = Object.assign({}, scope)
+      this.dialogData = Object.assign({ is_menu:scope.path === null}, scope)
     },
     //handleEditProduct
     handleEditProduct: function(scope) {
       this.visible = true
       this.dialogMode = 'edit'
-      this.dialogData = Object.assign({}, scope)
+      this.dialogData = Object.assign({is_menu:scope.path === null}, scope)
+      if (this.dialogData.path === null){
+        this.dialogData.is_menu = false;
+      }else{
+        this.dialogData.is_menu = true;
+      }
     },
     handleDeleteProduct: function(scope) {
       let self = this
@@ -291,7 +310,8 @@ export default {
       this.dialogData = {
         id: null,
         remark: null,
-        value: null
+        value: null,
+        is_menu: false,
       }
     },
 
