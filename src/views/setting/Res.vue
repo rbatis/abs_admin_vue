@@ -16,13 +16,13 @@
       <!--/>-->
       <!--</a-input>-->
       <!--</a-form-item>-->
-      <a-form-item>
-        <a-input
-          v-model='queryData.remark'
-          placeholder='请输入计划备注'
-        >
-        </a-input>
-      </a-form-item>
+<!--      <a-form-item>-->
+<!--        <a-input-->
+<!--          v-model='queryData.remark'-->
+<!--          placeholder='请输入计划备注'-->
+<!--        >-->
+<!--        </a-input>-->
+<!--      </a-form-item>-->
       <a-form-item
         :wrapper-col='{ span: 12, offset: 5 }'
       >
@@ -54,7 +54,7 @@
       <!--</template>-->
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;' >
-          <a-button size='small' @click='handleAddChildProduct({"parent_id":scope.id})'>添加</a-button>
+          <a style='padding-right: 10px' @click='handleAddChildProduct({"parent_id":scope.id})'>添加</a>
           <a-dropdown>
             <a class='ant-dropdown-link'>
               更多
