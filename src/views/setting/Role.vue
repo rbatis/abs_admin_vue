@@ -96,14 +96,16 @@
         },
       }'
       >
-        <a-form-item label="标识">
+        <a-form-item label="名称">
           <a-input
-            v-model='dialogData.permission'
-            placeholder="菜单、权限标识"
+            v-model='dialogData.name'
+            placeholder="输入名称"
           >
           </a-input>
         </a-form-item>
+        <a-form-item label="权限集">
 
+        </a-form-item>
       </a-form>
 
 
