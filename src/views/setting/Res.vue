@@ -52,9 +52,9 @@
       <!--<template slot="rate" slot-scope="rate">-->
       <!--{{rate+'%'}}-->
       <!--</template>-->
-      <template slot='action' slot-scope='record'>
+      <template slot='action' slot-scope='scope'>
         <div style='width: 80px;' >
-          <a-button @click='handleAddChildProduct({"parent_id":record.parent_id})'>添加</a-button>
+          <a-button @click='handleAddChildProduct({"parent_id":scope.id})'>添加</a-button>
           <a-dropdown>
             <a class='ant-dropdown-link'>
               更多
@@ -62,10 +62,10 @@
             </a>
             <a-menu slot='overlay'>
               <a-menu-item>
-                <a @click='handleEditProduct(record)'>编辑</a>
+                <a @click='handleEditProduct(scope)'>编辑</a>
               </a-menu-item>
               <a-menu-item>
-                <a @click='handleDeleteProduct(record)'>删除</a>
+                <a @click='handleDeleteProduct(scope)'>删除</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
