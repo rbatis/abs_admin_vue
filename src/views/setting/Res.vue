@@ -133,7 +133,7 @@
               <a-input
                 :disabled='!dialogData.is_menu'
                 v-model='dialogData.path'
-                placeholder='路径'>
+                placeholder='填写路径为菜单！'>
               </a-input>
             </a-col>
           </a-row>
