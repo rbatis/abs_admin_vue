@@ -104,10 +104,11 @@
 <!--          </a-input>-->
 <!--        </a-form-item>-->
 
-        <a-form-item  label='权限名称'>
+        <a-form-item  label='名称'>
           <a-input
             v-model='dialogData.name'
-            placeholder='权限名称'>
+            :placeholder="dialogData.is_menu?'菜单名称':'权限名称'"
+          >
           </a-input>
         </a-form-item>
         <a-form-item label='父级ID'>
@@ -116,16 +117,17 @@
             placeholder='父级id'>
           </a-input>
         </a-form-item>
-        <a-form-item label='权限标识'>
+        <a-form-item label='标识'>
           <a-input
             v-model='dialogData.permission'
-            placeholder='权限标识'>
+            :placeholder="dialogData.is_menu?'菜单标识':'权限标识'"
+          >
           </a-input>
         </a-form-item>
         <a-form-item  label='是否菜单' >
           <a-row>
             <a-col>
-              <a-switch v-model='dialogData.is_menu'></a-switch>
+              <a-switch  checked-children="菜单" un-checked-children="权限" v-model='dialogData.is_menu'></a-switch>
             </a-col>
             <a-col>
               <a-input
