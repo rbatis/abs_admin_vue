@@ -251,7 +251,7 @@ export default {
       if (this.dialogMode === 'add') {
          res_add(this.dialogData)
           .then((res) => {
-            //showMsg(this, res)
+            showMsg(this, res)
             this.visible = false;
             this.fetch();
           })
