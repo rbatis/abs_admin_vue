@@ -44,21 +44,26 @@
              :pagination='pagination'
              :loading='loading'
              :scroll='{ x: 1280 }'
+             :childrenColumnName = '["childs"]'
              @change='handleTableChange'
     >
+
+
       <!--<template slot="rate" slot-scope="rate">-->
       <!--{{rate+'%'}}-->
       <!--</template>-->
       <template slot='action' slot-scope='scope'>
-        <!--{{scope.id}}-->
-        <div style='width: 80px'>
-          <a @click='handleEditProduct(scope)'>编辑</a>
+        <div style='width: 80px;' >
+          <a-button @click='handleEditProduct(scope)'>添加</a-button>
           <a-dropdown>
             <a class='ant-dropdown-link'>
               更多
               <a-icon type='down' />
             </a>
             <a-menu slot='overlay'>
+              <a-menu-item>
+                <a @click='handleEditProduct(scope)'>编辑</a>
+              </a-menu-item>
               <a-menu-item>
                 <a @click='handleDeleteProduct(scope)'>删除</a>
               </a-menu-item>
@@ -162,8 +167,6 @@ const columns = [
     title: '操作',
     // dataIndex: 'create_time',
     width: '100px',
-    //固定
-    fixed: 'right',
     scopedSlots: { customRender: 'action' }
   }
 ]
@@ -197,7 +200,8 @@ export default {
         value: null
       },
       visible: false,
-      dialogMode: 'add'
+      dialogMode: 'add',
+
     }
   },
   methods: {
@@ -291,7 +295,8 @@ export default {
         remark: null,
         value: null
       }
-    }
+    },
+
   }
 }
 </script>
