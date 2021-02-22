@@ -117,10 +117,10 @@
             placeholder='父级id'>
           </a-input>
         </a-form-item>
-        <a-form-item :label="dialogData.is_menu?'菜单标识':'权限标识'">
+        <a-form-item label="标识">
           <a-input
             v-model='dialogData.permission'
-            :placeholder="dialogData.is_menu?'菜单标识':'权限标识'"
+            placeholder="菜单、权限标识"
           >
           </a-input>
         </a-form-item>
