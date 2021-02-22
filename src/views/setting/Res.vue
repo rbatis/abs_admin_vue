@@ -20,7 +20,7 @@
         <a-input
           v-model='queryData.name'
           placeholder='请输入权限名称'
-          :allowClear="true"
+          :allowClear='true'
         >
         </a-input>
       </a-form-item>
@@ -45,7 +45,7 @@
              :pagination='pagination'
              :loading='loading'
              :indentSize='15'
-             childrenColumnName = "childs"
+             childrenColumnName='childs'
              @change='handleTableChange'
     >
 
@@ -54,7 +54,7 @@
       <!--{{rate+'%'}}-->
       <!--</template>-->
       <template slot='action' slot-scope='scope'>
-        <div style='width: 110px;' >
+        <div style='width: 110px;'>
           <a style='padding-right: 10px;' @click='handleAddChildProduct({"parent_id":scope.id})'>添加</a>
           <a-dropdown>
             <a class='ant-dropdown-link'>
@@ -85,7 +85,7 @@
     >
       <a-form
         :labelAlign='right'
-        v-bind="{
+        v-bind='{
         labelCol: {
           // xs: { span: 24 },
           sm: { span: 4 },
@@ -94,17 +94,17 @@
           //xs: { span: 24 },
           sm: { span: 20 },
         },
-      }"
+      }'
       >
-<!--        <a-form-item label='id'>-->
-<!--          <a-input-->
-<!--            style='width: 300px'-->
-<!--            v-model='dialogData.id'-->
-<!--            placeholder='请输入ID(唯一)'>-->
-<!--          </a-input>-->
-<!--        </a-form-item>-->
+        <!--        <a-form-item label='id'>-->
+        <!--          <a-input-->
+        <!--            style='width: 300px'-->
+        <!--            v-model='dialogData.id'-->
+        <!--            placeholder='请输入ID(唯一)'>-->
+        <!--          </a-input>-->
+        <!--        </a-form-item>-->
 
-        <a-form-item  label='名称'>
+        <a-form-item :label="dialogData.is_menu?'菜单名称':'权限名称'">
           <a-input
             v-model='dialogData.name'
             :placeholder="dialogData.is_menu?'菜单名称':'权限名称'"
@@ -117,17 +117,17 @@
             placeholder='父级id'>
           </a-input>
         </a-form-item>
-        <a-form-item label='标识'>
+        <a-form-item :label="dialogData.is_menu?'菜单标识':'权限标识'">
           <a-input
             v-model='dialogData.permission'
             :placeholder="dialogData.is_menu?'菜单标识':'权限标识'"
           >
           </a-input>
         </a-form-item>
-        <a-form-item  label='是否菜单' >
+        <a-form-item label='是否菜单'>
           <a-row>
             <a-col>
-              <a-switch  checked-children="菜单" un-checked-children="权限" v-model='dialogData.is_menu'></a-switch>
+              <a-switch checked-children='菜单' un-checked-children='权限' v-model='dialogData.is_menu'></a-switch>
             </a-col>
             <a-col>
               <a-input
@@ -151,27 +151,27 @@
 const columns = [
   {
     title: 'id',
-    dataIndex: 'id',
+    dataIndex: 'id'
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '名称',
-    dataIndex: 'name',
+    dataIndex: 'name'
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '权限标识',
-    dataIndex: 'permission',
+    dataIndex: 'permission'
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '路由',
-    dataIndex: 'path',
+    dataIndex: 'path'
     // scopedSlots: {customRender: 'name'},
   },
   {
     title: '创建时间',
-    dataIndex: 'create_date',
+    dataIndex: 'create_date'
     // scopedSlots: {customRender: 'name'},
   },
   {
@@ -182,9 +182,8 @@ const columns = [
 ]
 
 
-import { res_page, res_add, res_update, res_delete } from '@/api/manage'
+import { res_add, res_delete, res_page, res_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
-import moment from 'moment'
 
 export default {
   mounted() {
@@ -206,10 +205,10 @@ export default {
       dialogData: {
         id: null,
         value: null,
-        is_menu: false,
+        is_menu: false
       },
       visible: false,
-      dialogMode: 'add',
+      dialogMode: 'add'
 
     }
   },
@@ -252,41 +251,44 @@ export default {
 
     addData: function() {
       this.handleDialogCancel()
-      this.visible = true;
-      this.dialogMode = 'add';
+      this.visible = true
+      this.dialogMode = 'add'
     },
     //处理添加产品
     handleAddData: function() {
+      if (this.dialogData.is_menu === false) {
+        this.dialogData.path = null
+      }
       if (this.dialogMode === 'add') {
-         res_add(this.dialogData)
+        res_add(this.dialogData)
           .then((res) => {
             showMsg(this, res)
-            this.visible = false;
-            this.fetch();
+            this.visible = false
+            this.fetch()
           })
       } else if (this.dialogMode === 'edit') {
         res_update(this.dialogData)
           .then((res) => {
             //showMsg(this, res)
-            this.visible = false;
-            this.fetch();
+            this.visible = false
+            this.fetch()
           })
       }
     },
     handleAddChildProduct: function(scope) {
       this.visible = true
       this.dialogMode = 'add'
-      this.dialogData = Object.assign({ is_menu:scope.path === null}, scope)
+      this.dialogData = Object.assign({ is_menu: scope.path === null }, scope)
     },
     //handleEditProduct
     handleEditProduct: function(scope) {
       this.visible = true
       this.dialogMode = 'edit'
-      this.dialogData = Object.assign({is_menu:scope.path === null}, scope)
-      if (this.dialogData.path === null){
-        this.dialogData.is_menu = false;
-      }else{
-        this.dialogData.is_menu = true;
+      this.dialogData = Object.assign({ is_menu: scope.path === null }, scope)
+      if (this.dialogData.path === null) {
+        this.dialogData.is_menu = false
+      } else {
+        this.dialogData.is_menu = true
       }
     },
     handleDeleteProduct: function(scope) {
@@ -298,8 +300,8 @@ export default {
           res_delete(scope)
             .then((res) => {
               showMsg(self, res)
-              self.visible = false;
-              self.fetch();
+              self.visible = false
+              self.fetch()
             })
         },
         onCancel() {
@@ -313,9 +315,9 @@ export default {
         id: null,
         remark: null,
         value: null,
-        is_menu: false,
+        is_menu: false
       }
-    },
+    }
 
   }
 }
