@@ -17,18 +17,6 @@
       <!--</a-input>-->
       <!--</a-form-item>-->
       <a-form-item>
-        <a-tree
-          checkable
-          :tree-data="[{
-          title: '0-1',
-          key: '0-1',
-          children: [
-            { title: '0-1-0-0', key: '0-1-0-0' },
-            { title: '0-1-0-1', key: '0-1-0-1' },
-            { title: '0-1-0-2', key: '0-1-0-2' },
-          ],
-        }]"
-        />
         <a-input
           v-model='queryData.name'
           placeholder='请输入权限名称'
@@ -124,7 +112,14 @@
           </a-input>
         </a-form-item>
         <a-form-item label='权限集'>
-
+<!--          :selected-keys="[]"-->
+<!--          :expanded-keys="[]"-->
+          <a-tree
+            :replace-fields="replaceFields"
+            checkable
+            :auto-expand-parent="true"
+            :tree-data="dialogData.resources"
+          />
         </a-form-item>
       </a-form>
 
@@ -158,7 +153,6 @@ const columns = [
   }
 ]
 
-import { Tree } from 'ant-design-vue'
 import { role_add, role_delete, role_page, role_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 export default {
@@ -183,8 +177,12 @@ export default {
         value: null,
       },
       visible: false,
-      dialogMode: 'add'
+      dialogMode: 'add',
 
+      replaceFields: {
+        children: 'childs',
+        title: 'name',
+      },
     }
   },
   methods: {
