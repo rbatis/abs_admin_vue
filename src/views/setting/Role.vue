@@ -85,7 +85,7 @@
       @ok='handleAddData'
     >
       <a-form
-        :labelAlign='right'
+        labelAlign="right"
         v-bind='{
         labelCol: {
           // xs: { span: 24 },
@@ -97,16 +97,21 @@
         },
       }'
       >
-        <a-form-item label="名称">
+        <!--        <a-form-item label='id'>-->
+        <!--          <a-input-->
+        <!--            style='width: 300px'-->
+        <!--            v-model='dialogData.id'-->
+        <!--            placeholder='请输入ID(唯一)'>-->
+        <!--          </a-input>-->
+        <!--        </a-form-item>-->
+
+        <a-form-item label='名称'>
           <a-input
             v-model='dialogData.name'
-            placeholder="输入名称"
-          >
+            placeholder='名称'>
           </a-input>
         </a-form-item>
-        <a-form-item label="权限集">
-           <!--TODO 权限集 树形多选实现，父子级角色实现-->
-        </a-form-item>
+
       </a-form>
 
 
@@ -140,7 +145,7 @@ const columns = [
 ]
 
 
-import { role_add, role_delete, role_page, role_update} from '@/api/manage'
+import { role_add, role_delete, role_page, role_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 
 export default {
@@ -242,7 +247,7 @@ export default {
     handleEdit: function(scope) {
       this.visible = true
       this.dialogMode = 'edit'
-      this.dialogData = Object.assign({ }, scope)
+      this.dialogData = Object.assign({  }, scope)
     },
     handleDelete: function(scope) {
       let self = this
@@ -265,7 +270,9 @@ export default {
     },
     handleDialogCancel: function() {
       this.dialogData = {
-        id: null
+        id: null,
+        remark: null,
+        value: null
       }
     }
 

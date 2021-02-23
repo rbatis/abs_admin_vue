@@ -85,7 +85,7 @@
       @ok='handleAddData'
     >
       <a-form
-        :labelAlign='right'
+        labelAlign="right"
         v-bind='{
         labelCol: {
           // xs: { span: 24 },
