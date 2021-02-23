@@ -115,10 +115,11 @@
 <!--          :selected-keys="[]"-->
 <!--          :expanded-keys="[]"-->
           <a-tree
+            v-model='dialogData.resource_ids'
             :replace-fields="replaceFields"
             checkable
             :auto-expand-parent="true"
-            :tree-data="dialogData.resources"
+            :tree-data="all_res"
           />
         </a-form-item>
       </a-form>
@@ -153,11 +154,12 @@ const columns = [
   }
 ]
 
-import { role_add, role_delete, role_page, role_update } from '@/api/manage'
+import { role_add, role_delete, role_page, role_update,res_all } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 export default {
   mounted() {
     this.fetch()
+    this.getAllRes()
   },
   data() {
     return {
@@ -183,6 +185,8 @@ export default {
         children: 'childs',
         title: 'name',
       },
+
+      all_res:[]
     }
   },
   methods: {
@@ -282,6 +286,12 @@ export default {
         value: null
       }
     },
+    getAllRes: function() {
+      res_all({})
+        .then((res) => {
+            this.all_res=res.data;
+        })
+    }
 
   }
 }
