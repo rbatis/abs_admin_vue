@@ -19,7 +19,7 @@
       <a-form-item>
         <a-input
           v-model='queryData.name'
-          placeholder='请输入权限名称'
+          placeholder='请输入名称'
           :allowClear='true'
         >
         </a-input>
