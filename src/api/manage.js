@@ -11,6 +11,7 @@ const api = {
   sys_role_update: '/sys_role_update',
   sys_role_delete: '/sys_role_delete',
   sys_res_all: '/sys_res_all',
+  sys_res_layer_top: '/sys_res_layer_top',
 
   user: '/user',
   role: '/role',
@@ -116,6 +117,14 @@ export function res_delete (arg) {
 export function res_all (arg) {
   return request({
     url: api.sys_res_all,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function sys_res_layer_top (arg) {
+  return request({
+    url: api.sys_res_layer_top,
     method: 'post',
     data: arg
   })
