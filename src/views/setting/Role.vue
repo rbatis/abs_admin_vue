@@ -17,6 +17,18 @@
       <!--</a-input>-->
       <!--</a-form-item>-->
       <a-form-item>
+        <a-tree
+          checkable
+          :tree-data="[{
+          title: '0-1',
+          key: '0-1',
+          children: [
+            { title: '0-1-0-0', key: '0-1-0-0' },
+            { title: '0-1-0-1', key: '0-1-0-1' },
+            { title: '0-1-0-2', key: '0-1-0-2' },
+          ],
+        }]"
+        />
         <a-input
           v-model='queryData.name'
           placeholder='请输入权限名称'
@@ -111,7 +123,9 @@
             placeholder='名称'>
           </a-input>
         </a-form-item>
+        <a-form-item label='权限集'>
 
+        </a-form-item>
       </a-form>
 
 
@@ -144,10 +158,9 @@ const columns = [
   }
 ]
 
-
+import { Tree } from 'ant-design-vue'
 import { role_add, role_delete, role_page, role_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
-
 export default {
   mounted() {
     this.fetch()
@@ -163,12 +176,11 @@ export default {
         id: null,
         name: null,
         page_no: 1,
-        page_size: 5
+        page_size: 5,
       },
       dialogData: {
         id: null,
         value: null,
-        is_menu: false
       },
       visible: false,
       dialogMode: 'add'
@@ -219,9 +231,6 @@ export default {
     },
     //处理添加产品
     handleAddData: function() {
-      if (this.dialogData.is_menu === false) {
-        this.dialogData.path = null
-      }
       if (this.dialogMode === 'add') {
         role_add(this.dialogData)
           .then((res) => {
@@ -241,7 +250,7 @@ export default {
     handleAddChild: function(scope) {
       this.visible = true
       this.dialogMode = 'add'
-      this.dialogData = Object.assign({ }, scope)
+      this.dialogData = Object.assign({}, scope)
     },
     //handleEdit
     handleEdit: function(scope) {
@@ -274,7 +283,7 @@ export default {
         remark: null,
         value: null
       }
-    }
+    },
 
   }
 }
