@@ -116,6 +116,7 @@
 <!--          :expanded-keys="[]"-->
           <a-tree
             v-model='dialogData.resource_ids'
+            :selected-keys="dialogData.resource_ids"
             :replace-fields="replaceFields"
             checkable
             :auto-expand-parent="true"
@@ -184,6 +185,7 @@ export default {
       replaceFields: {
         children: 'childs',
         title: 'name',
+        key: 'id'
       },
 
       all_res:[]

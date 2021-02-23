@@ -9,7 +9,7 @@ const api = {
   sys_role_page: '/sys_role_page',
   sys_role_add: '/sys_role_add',
   sys_role_update: '/sys_role_update',
-  sys_role_delete: '/sys_role_remove',
+  sys_role_delete: '/sys_role_delete',
   sys_res_all: '/sys_res_all',
 
   user: '/user',
