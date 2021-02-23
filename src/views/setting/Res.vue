@@ -55,7 +55,7 @@
       <!--</template>-->
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
-          <a style='padding-right: 10px;' @click='handleAddChild({"parent_id":scope.id})'>添加下级</a>
+          <a style='padding-right: 5px;' @click='handleAddChild({"parent_id":scope.id})'>添加下级</a>
           <a-dropdown>
             <a class='ant-dropdown-link'>
               更多
