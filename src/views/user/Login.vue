@@ -19,6 +19,7 @@
               size="large"
               type="text"
               :placeholder="$t('user.login.account.placeholder')"
+              :maxLength="11"
               v-decorator="[
                 'account',
                 {rules: [{ required: true, message: $t('user.userName.required') }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
