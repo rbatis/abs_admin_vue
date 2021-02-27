@@ -55,8 +55,8 @@ const user = {
           const result = response;
           console.info('getInfo resp:',response);
           var name=null;
-          if (response.data.roles && response.data.roles.length > 0) {
-            var role = response.data.roles[0];
+          if (response.data.role) {
+            var role = response.data.role;
             role.permissions = response.data.permissions;
             // role.permissions.map(per => {
             //   if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
