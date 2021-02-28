@@ -134,6 +134,8 @@
             checkable
             :auto-expand-parent='true'
             :tree-data='all_role'
+            :checkStrictly='true'
+            @check='onRolesCheck'
           />
         </a-form-item>
       </a-form>
@@ -206,8 +208,8 @@ export default {
       },
       dialogData: {
         id: null,
-        value: null,
-        role_ids: []
+        role_ids: [],
+        role_id: null
       },
       visible: false,
       dialogMode: 'add',
@@ -258,11 +260,6 @@ export default {
     },
     //处理添加产品
     handleAddData: function() {
-      if (this.dialogData.role_ids.length >= 1) {
-        this.dialogData.role_id = this.dialogData.role_ids[0];
-      } else {
-        this.dialogData.role_id = null;
-      }
       if (this.dialogMode === 'add') {
         sys_user_add(this.dialogData)
           .then((res) => {
@@ -283,9 +280,9 @@ export default {
       this.visible = true
       this.dialogMode = 'add'
       if (scope.role !== undefined && scope.role !== null) {
-        this.dialogData = Object.assign({ role_ids: [scope.role.id] }, scope)
+        this.dialogData = Object.assign({ role_ids: [scope.role.id], role_id: scope.role.id }, scope)
       } else {
-        this.dialogData = Object.assign({ role_ids: [] }, scope)
+        this.dialogData = Object.assign({ role_ids: [], role_id: null }, scope)
       }
     },
     //handleEdit
@@ -293,9 +290,9 @@ export default {
       this.visible = true
       this.dialogMode = 'edit'
       if (scope.role !== undefined && scope.role !== null) {
-        this.dialogData = Object.assign({ role_ids: [scope.role.id] }, scope)
+        this.dialogData = Object.assign({ role_ids: [scope.role.id], role_id: scope.role.id }, scope)
       } else {
-        this.dialogData = Object.assign({ role_ids: [] }, scope)
+        this.dialogData = Object.assign({ role_ids: [], role_id: null }, scope)
       }
     },
     handleDelete: function(scope) {
@@ -320,8 +317,8 @@ export default {
     handleDialogCancel: function() {
       this.dialogData = {
         id: null,
-        remark: null,
-        value: null
+        role_ids: [],
+        role_id: null
       }
     },
     getAllRole: function() {
@@ -329,6 +326,16 @@ export default {
         .then((res) => {
           this.all_role = res.data
         })
+    },
+    onRolesCheck: function(data) {
+      let len = data.checked.length
+      if (len > 1) {
+        this.dialogData.role_ids = { 'checked': [data.checked[len - 1]], 'halfChecked': [] }
+        this.dialogData.role_id = data.checked[len - 1]
+      } else {
+        this.dialogData.role_ids = []
+        this.dialogData.role_id = null
+      }
     }
 
   }
