@@ -79,6 +79,7 @@
       title='添加'
       cancelText='取消'
       okText='确定'
+      v-if='visible'
       v-model='visible'
       :width='500'
       :maskClosable='false'
@@ -117,8 +118,7 @@
           <a-tree
             v-model='dialogData.resource_ids'
             :selected-keys="dialogData.resource_ids"
-            :replace-fields="replaceFields"
-            checkable
+            :replace-fields="{children: 'childs', title: 'name', key: 'id'}"
             :auto-expand-parent="true"
             :tree-data="all_res"
           />
@@ -181,13 +181,6 @@ export default {
       },
       visible: false,
       dialogMode: 'add',
-
-      replaceFields: {
-        children: 'childs',
-        title: 'name',
-        key: 'id'
-      },
-
       all_res:[]
     }
   },

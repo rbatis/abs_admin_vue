@@ -18,6 +18,7 @@ const api = {
   sys_user_add: '/sys_user_add',
   sys_user_update: '/sys_user_update',
   sys_user_delete: '/sys_user_delete',
+  sys_role_layer_top: '/sys_role_layer_top',
 
   user: '/user',
   role: '/role',
@@ -197,6 +198,14 @@ export function sys_user_add(arg){
 export function sys_user_update(arg){
   return request({
     url: api.sys_user_update,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function sys_role_layer_top(arg){
+  return request({
+    url: api.sys_role_layer_top,
     method: 'post',
     data: arg
   })

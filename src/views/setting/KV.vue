@@ -71,6 +71,7 @@
 
     <a-modal
       title='添加'
+      v-if='visible'
       v-model='visible'
       :width='600'
       :maskClosable='false'

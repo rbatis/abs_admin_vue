@@ -79,6 +79,7 @@
       title='添加'
       cancelText='取消'
       okText='确定'
+      v-if='visible'
       v-model='visible'
       :width='500'
       :maskClosable='false'

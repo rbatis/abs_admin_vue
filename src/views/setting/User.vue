@@ -48,13 +48,25 @@
              childrenColumnName='childs'
              @change='handleTableChange'
     >
+      <div
+        slot='expandedRowRender'
+        slot-scope='record'
+        style='margin: 0'>
+        <a-tag color='blue'>角色名称: {{ record.role.name }}</a-tag>
+        <a-tree
+          :selected-keys='[]'
+          :replace-fields="{  children: 'childs',  title: 'name',   key: 'id' }"
+          :autoExpandParent='true'
+          :tree-data='[record.role]'
+        />
+      </div>
 
 
       <!--<template slot="rate" slot-scope="rate">-->
       <!--{{rate+'%'}}-->
       <!--</template>-->
       <template slot='state' slot-scope='state'>
-        <a-tag color="blue"  >{{ state == 1?'启用':'禁用'}}</a-tag>
+        <a-tag color='blue'>{{ state == 1 ? '启用' : '禁用' }}</a-tag>
       </template>
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
@@ -82,13 +94,14 @@
       title='添加'
       cancelText='取消'
       okText='确定'
+      v-if='visible'
       v-model='visible'
       :width='500'
       :maskClosable='false'
       @ok='handleAddData'
     >
       <a-form
-        labelAlign="right"
+        labelAlign='right'
         v-bind='{
         labelCol: {
           // xs: { span: 24 },
@@ -114,16 +127,13 @@
             placeholder='名称'>
           </a-input>
         </a-form-item>
-        <a-form-item label='权限集'>
-          <!--          :selected-keys="[]"-->
-          <!--          :expanded-keys="[]"-->
+        <a-form-item label='角色集'>
           <a-tree
-            v-model='dialogData.resource_ids'
-            :selected-keys="dialogData.resource_ids"
-            :replace-fields="replaceFields"
+            v-model='dialogData.role_ids'
+            :replace-fields="{ children: 'childs', title: 'name', key: 'id'  }"
             checkable
-            :auto-expand-parent="true"
-            :tree-data="all_res"
+            :auto-expand-parent='true'
+            :tree-data='all_role'
           />
         </a-form-item>
       </a-form>
@@ -159,7 +169,7 @@ const columns = [
   {
     title: '状态',
     dataIndex: 'state',
-    scopedSlots: {customRender: 'state'},
+    scopedSlots: { customRender: 'state' }
   },
   {
     title: '创建时间',
@@ -173,11 +183,13 @@ const columns = [
   }
 ]
 
-import { sys_user_add, sys_user_delete, sys_user_page, sys_user_update } from '@/api/manage'
+import { sys_role_layer_top, sys_user_add, sys_user_delete, sys_user_page, sys_user_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
+
 export default {
   mounted() {
     this.fetch()
+    this.getAllRole()
   },
   data() {
     return {
@@ -190,22 +202,16 @@ export default {
         id: null,
         name: null,
         page_no: 1,
-        page_size: 5,
+        page_size: 5
       },
       dialogData: {
         id: null,
         value: null,
+        role_ids: []
       },
       visible: false,
       dialogMode: 'add',
-
-      replaceFields: {
-        children: 'childs',
-        title: 'name',
-        key: 'id'
-      },
-
-      all_res:[]
+      all_role: []
     }
   },
   methods: {
@@ -252,6 +258,19 @@ export default {
     },
     //处理添加产品
     handleAddData: function() {
+      if (this.dialogData.role_ids.length > 1) {
+        this.$confirm({
+          title: '错误',
+          content: '不允许选择多个角色(' + this.dialogData.role_ids.toString() + ')，仅选择单个角色（可带层级）',
+          okText: '确认',
+          cancelText: '取消'
+        })
+        return
+      } else if (this.dialogData.role_ids.length === 1) {
+        this.dialogData.role_id = this.dialogData.role_ids[0]
+      } else {
+        this.dialogData.role_id = null
+      }
       if (this.dialogMode === 'add') {
         sys_user_add(this.dialogData)
           .then((res) => {
@@ -271,13 +290,21 @@ export default {
     handleAddChild: function(scope) {
       this.visible = true
       this.dialogMode = 'add'
-      this.dialogData = Object.assign({}, scope)
+      if (scope.role !== undefined && scope.role !== null) {
+        this.dialogData = Object.assign({ role_ids: [scope.role.id] }, scope)
+      } else {
+        this.dialogData = Object.assign({ role_ids: [] }, scope)
+      }
     },
     //handleEdit
     handleEdit: function(scope) {
       this.visible = true
       this.dialogMode = 'edit'
-      this.dialogData = Object.assign({  }, scope)
+      if (scope.role !== undefined && scope.role !== null) {
+        this.dialogData = Object.assign({ role_ids: [scope.role.id] }, scope)
+      } else {
+        this.dialogData = Object.assign({ role_ids: [] }, scope)
+      }
     },
     handleDelete: function(scope) {
       let self = this
@@ -305,6 +332,12 @@ export default {
         value: null
       }
     },
+    getAllRole: function() {
+      sys_role_layer_top({})
+        .then((res) => {
+          this.all_role = res.data
+        })
+    }
 
   }
 }
