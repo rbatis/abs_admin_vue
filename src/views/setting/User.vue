@@ -258,18 +258,10 @@ export default {
     },
     //处理添加产品
     handleAddData: function() {
-      if (this.dialogData.role_ids.length > 1) {
-        this.$confirm({
-          title: '错误',
-          content: '不允许选择多个角色(' + this.dialogData.role_ids.toString() + ')，仅选择单个角色（可带层级）',
-          okText: '确认',
-          cancelText: '取消'
-        })
-        return
-      } else if (this.dialogData.role_ids.length === 1) {
-        this.dialogData.role_id = this.dialogData.role_ids[0]
+      if (this.dialogData.role_ids.length >= 1) {
+        this.dialogData.role_id = this.dialogData.role_ids[0];
       } else {
-        this.dialogData.role_id = null
+        this.dialogData.role_id = null;
       }
       if (this.dialogMode === 'add') {
         sys_user_add(this.dialogData)

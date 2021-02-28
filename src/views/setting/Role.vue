@@ -121,6 +121,7 @@
             :replace-fields="{children: 'childs', title: 'name', key: 'id'}"
             :auto-expand-parent="true"
             :tree-data="all_res"
+            :checkable='true'
           />
         </a-form-item>
       </a-form>
