@@ -70,7 +70,7 @@
       </template>
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
-          <a style='color:#f5222d' @click='handleDelete(scope)'>禁用</a>
+          <a style='color:#f5222d' @click='handleEnableDisable(scope)'>{{scope.state===0?'启用':'禁用'}}</a>
           <a-dropdown style='margin-left: 5px'>
             <a class='ant-dropdown-link'>
               更多
@@ -313,6 +313,26 @@ export default {
         },
         class: 'test'
       })
+    },
+    handleEnableDisable: function(scope) {
+      let self = this;
+      this.$confirm({
+        title:  scope.state ===0?'你确定要启用?':'你确定要禁用?',
+        content: scope.state ===0?'你确定要启用?':'你确定要禁用?',
+        onOk() {
+          scope.state=scope.state === 0?1:0;
+          sys_user_update(scope)
+            .then((res) => {
+              showMsg(self, res)
+              self.visible = false
+              self.fetch()
+            })
+        },
+        onCancel() {
+          // console.log('Cancel');
+        },
+        class: 'test'
+      });
     },
     handleDialogCancel: function() {
       this.dialogData = {
