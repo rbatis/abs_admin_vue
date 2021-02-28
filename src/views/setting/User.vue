@@ -18,6 +18,15 @@
       <!--</a-form-item>-->
       <a-form-item>
         <a-input
+          v-model='queryData.account'
+          placeholder='请输入账号'
+          :allowClear='true'
+          :maxLength='11'
+        >
+        </a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-input
           v-model='queryData.name'
           placeholder='请输入名称'
           :allowClear='true'
@@ -70,7 +79,7 @@
       </template>
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
-          <a style='color:#f5222d' @click='handleEnableDisable(scope)'>{{scope.state===0?'启用':'禁用'}}</a>
+          <a style='color:#f5222d' @click='handleEnableDisable(scope)'>{{ scope.state === 0 ? '启用' : '禁用' }}</a>
           <a-dropdown style='margin-left: 5px'>
             <a class='ant-dropdown-link'>
               更多
@@ -202,6 +211,7 @@ export default {
 
       queryData: {
         id: null,
+        account: null,
         name: null,
         page_no: 1,
         page_size: 5
@@ -240,6 +250,13 @@ export default {
       }
       if (arg.time_end != null) {
         arg.time_end = arg.time_end.format('YYYY-MM-DDThh:mm:ss')
+      }
+
+      if (arg.account === '') {
+        arg.account = null
+      }
+      if (arg.name === '') {
+        arg.name = null
       }
       //取分页数据
       sys_user_page(arg).then((res) => {
@@ -315,12 +332,12 @@ export default {
       })
     },
     handleEnableDisable: function(scope) {
-      let self = this;
+      let self = this
       this.$confirm({
-        title:  scope.state ===0?'你确定要启用?':'你确定要禁用?',
-        content: scope.state ===0?'你确定要启用?':'你确定要禁用?',
+        title: scope.state === 0 ? '你确定要启用?' : '你确定要禁用?',
+        content: scope.state === 0 ? '你确定要启用?' : '你确定要禁用?',
         onOk() {
-          scope.state=scope.state === 0?1:0;
+          scope.state = scope.state === 0 ? 1 : 0
           sys_user_update(scope)
             .then((res) => {
               showMsg(self, res)
@@ -332,7 +349,7 @@ export default {
           // console.log('Cancel');
         },
         class: 'test'
-      });
+      })
     },
     handleDialogCancel: function() {
       this.dialogData = {
