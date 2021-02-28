@@ -58,8 +58,8 @@
       </template>
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
-          <a style='padding-right: 5px;' @click='handleAddChild({"parent_id":scope.id})'>添加下级</a>
-          <a-dropdown>
+          <a style='color:#f5222d' @click='handleDelete(scope)'>禁用</a>
+          <a-dropdown style='margin-left: 5px'>
             <a class='ant-dropdown-link'>
               更多
               <a-icon type='down' />
