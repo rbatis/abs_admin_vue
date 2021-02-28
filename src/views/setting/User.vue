@@ -155,12 +155,11 @@ const columns = [
   }
 ]
 
-import { role_add, role_delete, role_page, role_update,sys_res_layer_top } from '@/api/manage'
+import { sys_user_add, sys_user_delete, sys_user_page, sys_user_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 export default {
   mounted() {
     this.fetch()
-    this.getAllRes()
   },
   data() {
     return {
@@ -217,7 +216,7 @@ export default {
         arg.time_end = arg.time_end.format('YYYY-MM-DDThh:mm:ss')
       }
       //取分页数据
-      role_page(arg).then((res) => {
+      sys_user_page(arg).then((res) => {
         //alert(JSON.stringify(res))
         const pagination = { ...this.pagination }
         this.loading = false
@@ -236,14 +235,14 @@ export default {
     //处理添加产品
     handleAddData: function() {
       if (this.dialogMode === 'add') {
-        role_add(this.dialogData)
+        sys_user_add(this.dialogData)
           .then((res) => {
             showMsg(this, res)
             this.visible = false
             this.fetch()
           })
       } else if (this.dialogMode === 'edit') {
-        role_update(this.dialogData)
+        sys_user_update(this.dialogData)
           .then((res) => {
             //showMsg(this, res)
             this.visible = false
@@ -268,7 +267,7 @@ export default {
         title: '你确定要删除?',
         content: '你确定要删除！',
         onOk() {
-          role_delete(scope)
+          sys_user_delete(scope)
             .then((res) => {
               showMsg(self, res)
               self.visible = false
@@ -288,12 +287,6 @@ export default {
         value: null
       }
     },
-    getAllRes: function() {
-      sys_res_layer_top({})
-        .then((res) => {
-          this.all_res = res.data;
-        })
-    }
 
   }
 }
