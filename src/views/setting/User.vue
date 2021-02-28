@@ -53,6 +53,9 @@
       <!--<template slot="rate" slot-scope="rate">-->
       <!--{{rate+'%'}}-->
       <!--</template>-->
+      <template slot='state' slot-scope='state'>
+        <a-tag color="blue"  >{{ state == 1?'启用':'禁用'}}</a-tag>
+      </template>
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
           <a style='padding-right: 5px;' @click='handleAddChild({"parent_id":scope.id})'>添加下级</a>
@@ -142,6 +145,21 @@ const columns = [
     title: '名称',
     dataIndex: 'name'
     // scopedSlots: {customRender: 'name'},
+  },
+  {
+    title: '账号',
+    dataIndex: 'account'
+    // scopedSlots: {customRender: 'name'},
+  },
+  {
+    title: '角色名称',
+    dataIndex: 'role.name'
+    // scopedSlots: {customRender: 'name'},
+  },
+  {
+    title: '状态',
+    dataIndex: 'state',
+    scopedSlots: {customRender: 'state'},
   },
   {
     title: '创建时间',
