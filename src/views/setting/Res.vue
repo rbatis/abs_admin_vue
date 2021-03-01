@@ -113,7 +113,7 @@
           >
           </a-input>
         </a-form-item>
-        <a-form-item label='父级ID'>
+        <a-form-item label='父级(选填)'>
           <a-input
             v-model='dialogData.parent_id'
             placeholder='父级id'>
