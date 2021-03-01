@@ -54,7 +54,7 @@ request.interceptors.request.use(config => {
 
 // response interceptor
 request.interceptors.response.use((response) => {
-  if (response.data.code !== 'SUCCESS'){
+  if (response.headers['content-type'] && response.headers['content-type'] === 'json' && response.data.code !== 'SUCCESS'){
     return Promise.reject({response:response})
   }
   return response.data
