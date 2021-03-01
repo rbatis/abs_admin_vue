@@ -289,12 +289,18 @@ export default {
       this.visible = true
       this.dialogMode = 'add'
       this.dialogData = Object.assign({ is_menu: scope.path === null }, scope)
+      if (this.dialogData.parent_id === ''){
+        this.dialogData.parent_id = null;
+      }
     },
     //handleEdit
     handleEdit: function(scope) {
       this.visible = true
       this.dialogMode = 'edit'
       this.dialogData = Object.assign({ is_menu: scope.path === null }, scope)
+      if (this.dialogData.parent_id === ''){
+        this.dialogData.parent_id = null;
+      }
       if (this.dialogData.path === null) {
         this.dialogData.is_menu = false
       } else {
