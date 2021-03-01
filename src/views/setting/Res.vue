@@ -118,7 +118,7 @@
             v-model='dialogData.parent_id'
             placeholder='父级id'>
           </a-input>
-          <p>权限集</p>
+          <a-tag>权限集</a-tag>
           <a-tree
             v-model='dialogData.resource_ids'
             :replace-fields="{children: 'childs', title: 'name', key: 'id'}"
@@ -304,6 +304,9 @@ export default {
       this.dialogData = Object.assign({ is_menu: scope.path === null, resource_ids: [] }, scope)
       if (this.dialogData.parent_id === '') {
         this.dialogData.parent_id = null
+      }
+      if (scope.parent_id !== null) {
+        this.dialogData.resource_ids = [scope.parent_id]
       }
     },
     //handleEdit
