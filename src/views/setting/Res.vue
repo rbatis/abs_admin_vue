@@ -86,7 +86,7 @@
       @ok='handleAddData'
     >
       <a-form
-        labelAlign="right"
+        labelAlign='right'
         v-bind='{
         labelCol: {
           // xs: { span: 24 },
@@ -122,17 +122,17 @@
           <a-tree
             v-model='dialogData.resource_ids'
             :replace-fields="{children: 'childs', title: 'name', key: 'id'}"
-            :auto-expand-parent="true"
-            :tree-data="all_res"
+            :auto-expand-parent='true'
+            :tree-data='all_res'
             checkable
             :checkStrictly='true'
             @check='onResCheck'
           />
         </a-form-item>
-        <a-form-item label="标识">
+        <a-form-item label='标识'>
           <a-input
             v-model='dialogData.permission'
-            placeholder="菜单、权限标识"
+            placeholder='菜单、权限标识'
           >
           </a-input>
         </a-form-item>
@@ -207,7 +207,7 @@ import { showMsg } from '@/utils/data'
 
 export default {
   mounted() {
-    this.fetch();
+    this.fetch()
   },
   data() {
     return {
@@ -226,11 +226,11 @@ export default {
         id: null,
         value: null,
         is_menu: false,
-        resource_ids:[],
+        resource_ids: []
       },
       visible: false,
       dialogMode: 'add',
-      all_res:[],
+      all_res: []
     }
   },
   methods: {
@@ -271,10 +271,10 @@ export default {
     },
 
     addData: function() {
-      this.handleDialogCancel();
-      this.getAllRes();
-      this.visible = true;
-      this.dialogMode = 'add';
+      this.handleDialogCancel()
+      this.getAllRes()
+      this.visible = true
+      this.dialogMode = 'add'
     },
     //处理添加产品
     handleAddData: function() {
@@ -286,37 +286,37 @@ export default {
           .then((res) => {
             showMsg(this, res)
             this.visible = false
-            this.fetch();
+            this.fetch()
           })
       } else if (this.dialogMode === 'edit') {
         res_update(this.dialogData)
           .then((res) => {
             //showMsg(this, res)
             this.visible = false
-            this.fetch();
+            this.fetch()
           })
       }
     },
     handleAddChild: function(scope) {
-      this.getAllRes();
-      this.visible = true;
+      this.getAllRes()
+      this.visible = true
       this.dialogMode = 'add'
-      this.dialogData = Object.assign({ is_menu: scope.path === null,resource_ids:[] }, scope)
-      if (this.dialogData.parent_id === ''){
-        this.dialogData.parent_id = null;
+      this.dialogData = Object.assign({ is_menu: scope.path === null, resource_ids: [] }, scope)
+      if (this.dialogData.parent_id === '') {
+        this.dialogData.parent_id = null
       }
     },
     //handleEdit
     handleEdit: function(scope) {
-      this.getAllRes(scope.id);
-      this.visible = true;
+      this.getAllRes(scope.id)
+      this.visible = true
       this.dialogMode = 'edit'
-      this.dialogData = Object.assign({ is_menu: scope.path === null,resource_ids:[] }, scope)
-      if (scope.parent_id!==null){
-        this.dialogData.resource_ids = [scope.parent_id];
+      this.dialogData = Object.assign({ is_menu: scope.path === null, resource_ids: [] }, scope)
+      if (scope.parent_id !== null) {
+        this.dialogData.resource_ids = [scope.parent_id]
       }
-      if (this.dialogData.parent_id === ''){
-        this.dialogData.parent_id = null;
+      if (this.dialogData.parent_id === '') {
+        this.dialogData.parent_id = null
       }
       if (this.dialogData.path === null) {
         this.dialogData.is_menu = false
@@ -349,10 +349,10 @@ export default {
         remark: null,
         value: null,
         is_menu: false,
-        resource_ids:[]
+        resource_ids: []
       }
     },
-    onResCheck:function(data) {
+    onResCheck: function(data) {
       let len = data.checked.length
       if (len >= 1) {
         this.dialogData.resource_ids = { 'checked': [data.checked[len - 1]], 'halfChecked': [] }
@@ -365,11 +365,13 @@ export default {
     getAllRes: function(skipId) {
       sys_res_layer_top({})
         .then((res) => {
-          let arr=[];
-          for (let index=0;index<res.data.length;index++){
-            let item=res.data[index];
-            if (skipId!=null && item.id !== skipId){
-                 arr.push(item);
+          let arr = []
+          for (let index = 0; index < res.data.length; index++) {
+            let item = res.data[index]
+            if (skipId !== undefined && skipId !== null && item.id === skipId) {
+              //nothing
+            } else {
+              arr.push(item)
             }
           }
           this.all_res = arr;
