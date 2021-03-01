@@ -54,6 +54,9 @@ request.interceptors.request.use(config => {
 
 // response interceptor
 request.interceptors.response.use((response) => {
+  if (response.data.code !== 'SUCCESS'){
+    return Promise.reject({response:response})
+  }
   return response.data
 }, errorHandler)
 
