@@ -370,7 +370,7 @@ export default {
     },
     onRolesCheck: function(data) {
       let len = data.checked.length
-      if (len > 1) {
+      if (len >= 1) {
         this.dialogData.role_ids = { 'checked': [data.checked[len - 1]], 'halfChecked': [] }
         this.dialogData.role_id = data.checked[len - 1]
       } else {
