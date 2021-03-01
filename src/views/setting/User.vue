@@ -61,13 +61,17 @@
         slot='expandedRowRender'
         slot-scope='record'
         style='margin: 0'>
-        <a-tag color='blue'>角色名称: {{ record.role.name }}</a-tag>
-        <a-tree
-          :selected-keys='[]'
-          :replace-fields="{  children: 'childs',  title: 'name',   key: 'id' }"
-          :autoExpandParent='true'
-          :tree-data='[record.role]'
-        />
+        <div
+          v-if='record!==null && record.role!==null'
+        >
+          <a-tag color='blue'>角色名称: {{ record.role.name }}</a-tag>
+          <a-tree
+            :selected-keys='[]'
+            :replace-fields="{  children: 'childs',  title: 'name',   key: 'id' }"
+            :autoExpandParent='true'
+            :tree-data='[record.role]'
+          />
+        </div>
       </div>
 
 
