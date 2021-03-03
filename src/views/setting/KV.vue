@@ -70,7 +70,7 @@
     </a-table>
 
     <a-modal
-      title='添加'
+      :title="dialogMode==='add'?'添加':'编辑'"
       v-if='visible'
       v-model='visible'
       :width='600'
