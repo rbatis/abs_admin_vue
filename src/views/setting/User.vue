@@ -148,13 +148,16 @@
             placeholder='账号/手机号'>
           </a-input>
         </a-form-item>
-        <a-form-item label='密码' v-if='dialogMode === "add"'>
+        <a-form-item label='初始密码'>
+          <a-switch default-checked v-model='dialogData.set_pwd' />
+        </a-form-item>
+        <a-form-item label='密码' v-if='dialogMode === "add" && dialogData.set_pwd===true'>
           <a-input-password
             v-model='dialogData.password'
             placeholder='密码'>
           </a-input-password>
         </a-form-item>
-        <a-form-item label='确认密码' v-if='dialogMode === "add"'>
+        <a-form-item label='确认密码' v-if='dialogMode === "add" && dialogData.set_pwd===true '>
           <a-input-password
             v-model='dialogData.password_confirm'
             placeholder='确认密码'>
@@ -244,7 +247,8 @@ export default {
         id: null,
         role_ids: [],
         role_id: null,
-        password_confirm:null
+        password_confirm:null,
+        set_pwd: false
       },
       visible: false,
       dialogMode: 'add',
@@ -303,7 +307,7 @@ export default {
     //处理添加产品
     handleAddData: function() {
       if (this.dialogMode === 'add') {
-        if (this.dialogData.password_confirm !== this.dialogData.password){
+        if (this.dialogData.set_pwd && this.dialogData.password_confirm !== this.dialogData.password){
           this.$message.info("密码不一致!");
           return;
         }
