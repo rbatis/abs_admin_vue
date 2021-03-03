@@ -148,7 +148,7 @@
             placeholder='账号/手机号'>
           </a-input>
         </a-form-item>
-        <a-form-item label='初始密码'>
+        <a-form-item label='初始密码' v-if='dialogMode === "add"'>
           <a-switch default-checked v-model='dialogData.set_pwd' />
         </a-form-item>
         <a-form-item label='密码' v-if='dialogMode === "add" && dialogData.set_pwd===true'>
