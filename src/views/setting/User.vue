@@ -134,7 +134,6 @@
         <!--            placeholder='请输入ID(唯一)'>-->
         <!--          </a-input>-->
         <!--        </a-form-item>-->
-
         <a-form-item label='姓名'>
           <a-input
             v-model='dialogData.name'
