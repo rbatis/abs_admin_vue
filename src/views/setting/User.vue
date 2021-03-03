@@ -105,7 +105,7 @@
     </a-table>
 
     <a-modal
-      title='添加'
+      :title="dialogMode==='add'?'添加':'编辑'"
       cancelText='取消'
       okText='确定'
       v-if='visible'
