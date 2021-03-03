@@ -135,10 +135,23 @@
         <!--          </a-input>-->
         <!--        </a-form-item>-->
 
-        <a-form-item label='名称'>
+        <a-form-item label='姓名'>
           <a-input
             v-model='dialogData.name'
-            placeholder='名称'>
+            placeholder='姓名'>
+          </a-input>
+        </a-form-item>
+        <a-form-item label='手机号' v-if='dialogMode === "add"'>
+          <a-input
+            v-model='dialogData.account'
+            :maxLength='11'
+            placeholder='账号/手机号'>
+          </a-input>
+        </a-form-item>
+        <a-form-item label='密码' v-if='dialogMode === "add"'>
+          <a-input
+            v-model='dialogData.password'
+            placeholder='密码'>
           </a-input>
         </a-form-item>
         <a-form-item label='角色集'>
@@ -285,14 +298,14 @@ export default {
       if (this.dialogMode === 'add') {
         sys_user_add(this.dialogData)
           .then((res) => {
-            showMsg(this, res)
             this.visible = false
             this.fetch()
-          })
+          }).catch(err =>{
+
+        })
       } else if (this.dialogMode === 'edit') {
         sys_user_update(this.dialogData)
           .then((res) => {
-            //showMsg(this, res)
             this.visible = false
             this.fetch()
           })

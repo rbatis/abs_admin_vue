@@ -4,7 +4,8 @@ import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-
+import { showMsg } from '@/utils/data'
+import {VUE} from '@/main'
 // 创建 axios 实例
 const request = axios.create({
   // API 请求的默认前缀
@@ -55,6 +56,7 @@ request.interceptors.request.use(config => {
 // response interceptor
 request.interceptors.response.use((response) => {
   if (response.headers['content-type'] && response.headers['content-type'] === 'json' && response.data.code !== 'SUCCESS'){
+    showMsg(window.vm,response.data);
     return Promise.reject({response:response})
   }
   return response.data
