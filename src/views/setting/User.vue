@@ -149,10 +149,16 @@
           </a-input>
         </a-form-item>
         <a-form-item label='密码' v-if='dialogMode === "add"'>
-          <a-input
+          <a-input-password
             v-model='dialogData.password'
             placeholder='密码'>
-          </a-input>
+          </a-input-password>
+        </a-form-item>
+        <a-form-item label='确认密码' v-if='dialogMode === "add"'>
+          <a-input-password
+            v-model='dialogData.password_confirm'
+            placeholder='确认密码'>
+          </a-input-password>
         </a-form-item>
         <a-form-item label='角色集'>
           <a-tree
@@ -212,7 +218,7 @@ const columns = [
   }
 ]
 
-import { sys_role_layer_top, sys_user_add, sys_user_delete, sys_user_page, sys_user_update } from '@/api/manage'
+import { sys_role_layer_top, sys_user_add, sys_user_remove, sys_user_page, sys_user_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 
 export default {
@@ -237,7 +243,8 @@ export default {
       dialogData: {
         id: null,
         role_ids: [],
-        role_id: null
+        role_id: null,
+        password_confirm:null
       },
       visible: false,
       dialogMode: 'add',
@@ -296,6 +303,10 @@ export default {
     //处理添加产品
     handleAddData: function() {
       if (this.dialogMode === 'add') {
+        if (this.dialogData.password_confirm !== this.dialogData.password){
+          this.$message.info("密码不一致!");
+          return;
+        }
         sys_user_add(this.dialogData)
           .then((res) => {
             this.visible = false
@@ -336,7 +347,7 @@ export default {
         title: '你确定要删除?',
         content: '你确定要删除！',
         onOk() {
-          sys_user_delete(scope)
+          sys_user_remove(scope)
             .then((res) => {
               showMsg(self, res)
               self.visible = false

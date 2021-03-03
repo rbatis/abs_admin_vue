@@ -17,7 +17,7 @@ const api = {
   sys_user_page: '/sys_user_page',
   sys_user_add: '/sys_user_add',
   sys_user_update: '/sys_user_update',
-  sys_user_delete: '/sys_user_delete',
+  sys_user_remove: '/sys_user_remove',
   sys_role_layer_top: '/sys_role_layer_top',
 
   user: '/user',
@@ -179,9 +179,9 @@ export function sys_user_page(arg){
   })
 }
 
-export function sys_user_delete(arg){
+export function sys_user_remove(arg){
   return request({
-    url: api.sys_user_delete,
+    url: api.sys_user_remove,
     method: 'post',
     data: arg
   })
