@@ -79,7 +79,8 @@
       <!--{{rate+'%'}}-->
       <!--</template>-->
       <template slot='state' slot-scope='state'>
-        <a-tag color='blue'>{{ state == 1 ? '启用' : '禁用' }}</a-tag>
+        <a-tag color='blue' v-if='state === 1'>启用</a-tag>
+        <a-tag v-if='state === 0'>禁用</a-tag>
       </template>
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
