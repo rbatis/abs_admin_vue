@@ -141,23 +141,24 @@
             placeholder='姓名'>
           </a-input>
         </a-form-item>
-        <a-form-item label='手机号' v-if='dialogMode === "add"'>
+        <a-form-item label='手机号'>
           <a-input
             v-model='dialogData.account'
             :maxLength='11'
+            :disabled="dialogMode !== 'add'"
             placeholder='账号/手机号'>
           </a-input>
         </a-form-item>
-        <a-form-item label='初始密码' v-if='dialogMode === "add"'>
+        <a-form-item label='初始密码' v-if='dialogMode === "add" || dialogMode === "edit"'>
           <a-switch default-checked v-model='dialogData.set_pwd' />
         </a-form-item>
-        <a-form-item label='密码' v-if='dialogMode === "add" && dialogData.set_pwd===true'>
+        <a-form-item label='密码' v-if='dialogData.set_pwd===true'>
           <a-input-password
             v-model='dialogData.password'
             placeholder='密码'>
           </a-input-password>
         </a-form-item>
-        <a-form-item label='确认密码' v-if='dialogMode === "add" && dialogData.set_pwd===true '>
+        <a-form-item label='确认密码' v-if='dialogData.set_pwd===true '>
           <a-input-password
             v-model='dialogData.password_confirm'
             placeholder='确认密码'>
@@ -247,7 +248,7 @@ export default {
         id: null,
         role_ids: [],
         role_id: null,
-        password_confirm:null,
+        password_confirm: null,
         set_pwd: false
       },
       visible: false,
@@ -307,15 +308,15 @@ export default {
     //处理添加产品
     handleAddData: function() {
       if (this.dialogMode === 'add') {
-        if (this.dialogData.set_pwd && this.dialogData.password_confirm !== this.dialogData.password){
-          this.$message.info("密码不一致!");
-          return;
+        if (this.dialogData.set_pwd && this.dialogData.password_confirm !== this.dialogData.password) {
+          this.$message.info('密码不一致!')
+          return
         }
         sys_user_add(this.dialogData)
           .then((res) => {
             this.visible = false
             this.fetch()
-          }).catch(err =>{
+          }).catch(err => {
 
         })
       } else if (this.dialogMode === 'edit') {
