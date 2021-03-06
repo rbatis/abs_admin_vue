@@ -113,9 +113,9 @@
           </a-input>
         </a-form-item>
         <a-form-item label='权限集'>
-<!--          :selected-keys="[]"-->
-<!--          :expanded-keys="[]"-->
+          <a-spin v-if='loading_all_res' />
           <a-tree
+            :disabled='loading_all_res'
             v-model='dialogData.resource_ids'
             :selected-keys="dialogData.resource_ids"
             :replace-fields="{children: 'childs', title: 'name', key: 'id'}"
@@ -182,7 +182,8 @@ export default {
       },
       visible: false,
       dialogMode: 'add',
-      all_res:[]
+      all_res:[],
+      loading_all_res,
     }
   },
   methods: {
@@ -283,10 +284,14 @@ export default {
       }
     },
     getAllRes: function() {
+      this.loading_all_res = true;
       sys_res_layer_top({})
         .then((res) => {
             this.all_res = res.data;
-        })
+          this.loading_all_res = false;
+        }).catch((e)=>{
+          this.loading_all_res = false;
+      })
     }
 
   }

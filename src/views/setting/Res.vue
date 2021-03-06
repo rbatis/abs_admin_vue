@@ -119,7 +119,10 @@
             placeholder='父级id'>
           </a-input>
           <a-tag>权限集</a-tag>
+
+          <a-spin v-if='loading_all_res' />
           <a-tree
+            :disabled='loading_all_res'
             v-model='dialogData.resource_ids'
             :replace-fields="{children: 'childs', title: 'name', key: 'id'}"
             :auto-expand-parent='true'
@@ -230,7 +233,8 @@ export default {
       },
       visible: false,
       dialogMode: 'add',
-      all_res: []
+      all_res: [],
+      loading_all_res: false,
     }
   },
   methods: {
@@ -298,7 +302,7 @@ export default {
       }
     },
     handleAddChild: function(scope) {
-      this.getAllRes()
+      this.getAllRes();
       this.visible = true
       this.dialogMode = 'add'
       this.dialogData = Object.assign({ is_menu: scope.path === null, resource_ids: [] }, scope)
@@ -366,8 +370,10 @@ export default {
       }
     },
     getAllRes: function(skipId) {
+      this.loading_all_res = true;
       sys_res_layer_top({})
         .then((res) => {
+          this.loading_all_res = false;
           let arr = []
           for (let index = 0; index < res.data.length; index++) {
             let item = res.data[index]
@@ -378,7 +384,9 @@ export default {
             }
           }
           this.all_res = arr;
-        })
+        }).catch((e)=>{
+        this.loading_all_res = false;
+      })
     }
 
   }
