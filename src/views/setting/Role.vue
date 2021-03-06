@@ -183,7 +183,7 @@ export default {
       visible: false,
       dialogMode: 'add',
       all_res:[],
-      loading_all_res,
+      loading_all_res:false,
     }
   },
   methods: {
