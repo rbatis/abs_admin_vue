@@ -307,11 +307,11 @@ export default {
     },
     //处理添加产品
     handleAddData: function() {
+      if (this.dialogData.set_pwd && this.dialogData.password_confirm !== this.dialogData.password) {
+        this.$message.info('密码不一致!')
+        return
+      }
       if (this.dialogMode === 'add') {
-        if (this.dialogData.set_pwd && this.dialogData.password_confirm !== this.dialogData.password) {
-          this.$message.info('密码不一致!')
-          return
-        }
         sys_user_add(this.dialogData)
           .then((res) => {
             this.visible = false
@@ -320,6 +320,7 @@ export default {
 
         })
       } else if (this.dialogMode === 'edit') {
+
         sys_user_update(this.dialogData)
           .then((res) => {
             this.visible = false
