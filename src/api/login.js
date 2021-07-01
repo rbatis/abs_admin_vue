@@ -12,16 +12,16 @@ const userApi = {
   // UserInfo: '/user/info',
   // UserMenu: '/user/nav'
 
-  Login: '/sys_login',
-  Logout: '/auth/logout',
-  ForgePassword: '/auth/forge-password',
-  Register: '/auth/register',
-  twoStepCode: '/auth/2step-code',
-  SendSms: '/account/sms',
-  SendSmsErr: '/account/sms_err',
+  Login: '/admin/sys_login',
+  Logout: '/admin/logout',
+  ForgePassword: '/admin/forge-password',
+  Register: '/admin/register',
+  twoStepCode: '/admin/2step-code',
+  SendSms: '/admin/sms',
+  SendSmsErr: '/admin/sms_err',
   // get my info
-  UserInfo: '/sys_user_info',
-  UserMenu: '/user/nav'
+  UserInfo: '/admin/sys_user_info',
+  UserMenu: '/admin/user/nav'
 }
 
 /**
