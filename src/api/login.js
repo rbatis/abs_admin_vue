@@ -13,7 +13,7 @@ const userApi = {
   // UserMenu: '/user/nav'
 
   Login: '/admin/sys_login',
-  Logout: '/admin/logout',
+  Logout: 'Logout',
   ForgePassword: '/admin/forge-password',
   Register: '/admin/register',
   twoStepCode: '/admin/2step-code',
