@@ -87,15 +87,19 @@ const user = {
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
         console.info('Logout');
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          storage.remove(ACCESS_TOKEN)
-          resolve()
-        }).catch(() => {
-          resolve()
-        }).finally(() => {
-        })
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        storage.remove(ACCESS_TOKEN)
+        resolve()
+        // logout(state.token).then(() => {
+        //   commit('SET_TOKEN', '')
+        //   commit('SET_ROLES', [])
+        //   storage.remove(ACCESS_TOKEN)
+        //   resolve()
+        // }).catch(() => {
+        //   resolve()
+        // }).finally(() => {
+        // })
       })
     }
 
