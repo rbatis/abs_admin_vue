@@ -112,7 +112,7 @@ const vueConfig = {
     //   }
     // }
     proxy: {
-      '/api': {
+      '/admin': {
         target: 'http://localhost:8000/',
         ws: false,
         changeOrigin: true
