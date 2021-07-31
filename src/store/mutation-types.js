@@ -1,4 +1,6 @@
 export const ACCESS_TOKEN = 'Access-Token'
+export const PERMISSIONS = 'Permissions'
+export const USER = 'User'
 
 export const SIDEBAR_TYPE = 'sidebar_type'
 export const TOGGLE_MOBILE_TYPE = 'is_mobile'

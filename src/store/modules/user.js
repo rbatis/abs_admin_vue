@@ -1,6 +1,6 @@
 import storage from 'store'
 import { login, getInfo, logout } from '@/api/login'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import {ACCESS_TOKEN, PERMISSIONS, USER} from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
 const user = {
@@ -39,6 +39,8 @@ const user = {
         login(userInfo).then(response => {
           console.info('login resp:',response);
           storage.set(ACCESS_TOKEN, response.data.access_token, 24 * 60 * 60 * 1000)
+          storage.set(PERMISSIONS, response.data.permissions, 24 * 60 * 60 * 1000)
+          storage.set(USER, response.data.user, 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', response.data.access_token)
           console.info('resolve');
           resolve()
