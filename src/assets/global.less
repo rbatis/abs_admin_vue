@@ -1,0 +1,241 @@
+@import (reference) '~@assets/css/consts.less';
+@import '~ant-design-vue/es/style/themes/default.less';
+
+// reset
+html,
+body,
+#app,
+#root {
+  height: 100%;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout.layout-basic {
+  height: 100vh;
+  min-height: 100vh;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/*--------  common utils start --------*/
+// font
+.gen-fontsize();
+.ta-r {
+  text-align: right;
+}
+.ta-c {
+  text-align: center;
+  > * {
+    text-align: center;
+  }
+}
+.fw-b {
+  font-weight: bold;
+}
+.cur-p {
+  cursor: pointer;
+}
+.va-a {
+  vertical-align: middle;
+  height: 100%;
+  width: 0px;
+  overflow: hidden;
+  display: inline-block;
+  font-size: 0;
+  margin-left: -1px;
+}
+.va-m {
+  vertical-align: middle;
+}
+.d-ib {
+  display: inline-block;
+}
+.d-b {
+  display: block;
+}
+.d-none {
+  display: none;
+}
+.d-fl {
+  display: flex;
+}
+.d-fl-c {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.d-square {
+  position: relative;
+  width: 100%;
+}
+.d-square:after {
+  content: '';
+  display: block;
+  padding-bottom: 100%;
+}
+.d-square-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// position
+.pz-r {
+  position: relative;
+}
+.pz-a {
+  position: absolute;
+}
+.pz-f {
+  position: fixed;
+}
+.pz-tr {
+  position: absolute !important;
+  right: 0;
+  top: 0;
+}
+// width
+.w-30 {
+  width: 30px;
+}
+.w-40 {
+  width: 40px;
+}
+.w-50 {
+  width: 50px;
+}
+.w-60 {
+  width: 60px;
+}
+.w-80 {
+  width: 80px;
+}
+.w-100 {
+  width: 100px;
+}
+.w-120 {
+  width: 120px;
+}
+.w-p100 {
+  width: 100%;
+}
+.w-auto {
+  width: auto !important;
+}
+// height
+.h-1em {
+  height: 1em;
+}
+.h-2em {
+  height: 2em;
+}
+.h-p100 {
+  height: 100%;
+}
+// line height
+.lh-32 {
+  line-height: 32px;
+}
+.lh-1em {
+  line-height: 1em;
+}
+.lh-1d2em {
+  line-height: 1.2em;
+}
+.lh-2em {
+  line-height: 2em;
+}
+.gen-margin();
+/*--------  common utils end --------*/
+
+// 数据列表 样式
+.table-alert {
+  margin-bottom: 16px;
+}
+// 数据列表 操作
+.table-operator {
+  margin-bottom: 18px;
+
+  button {
+    margin-right: 8px;
+  }
+}
+// 数据列表 搜索条件
+.table-page-search-wrapper {
+  .ant-form-inline {
+    .ant-form-item {
+      display: flex;
+      margin-bottom: 24px;
+      margin-right: 0;
+
+      .ant-form-item-control-wrapper {
+        flex: 1 1;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      > .ant-form-item-label {
+        line-height: 32px;
+        padding-right: 8px;
+        width: auto;
+      }
+      .ant-form-item-control {
+        height: 32px;
+        line-height: 32px;
+      }
+    }
+  }
+
+  .table-page-search-submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// 内容区块样式类
+.dataBody {
+  background: #ffffff;
+  padding: 10px;
+}
