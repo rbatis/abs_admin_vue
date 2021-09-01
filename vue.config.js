@@ -18,6 +18,8 @@ function getGitHash () {
 }
 
 const isProd = process.env.NODE_ENV === 'production'
+const isDev = process.env.NODE_ENV === 'development'
+const isPreview = process.env.VUE_APP_PREVIEW === 'true'
 
 const assetsCDN = {
   // webpack build externals
@@ -39,9 +41,25 @@ const assetsCDN = {
 
 // vue.config.js
 const vueConfig = {
-  configureWebpack: {
-    // webpack plugins
-    plugins: [
+  configureWebpack: config => {
+    const alias = {
+      '@$': resolve('src'),
+      '@public': resolve('public'),
+      '@assets': resolve('src/assets'),
+      '@components': resolve('src/components'),
+      '@config': resolve('src/config'),
+      '@common': resolve('src/common'),
+      '@mock': resolve('src/mock'),
+      '@views': resolve('src/views'),
+      '@store': resolve('src/store'),
+      '@utils': resolve('src/common/utils'),
+      '@apis': resolve('src/common/api')
+    }
+    Object.assign(config.resolve.alias, alias)
+
+    // 合并插件
+    const plugins = [...config.plugins]
+    plugins.push(
       // Ignore all locale files of moment.js
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new webpack.DefinePlugin({
@@ -49,15 +67,21 @@ const vueConfig = {
         GIT_HASH: JSON.stringify(getGitHash()),
         BUILD_DATE: buildDate
       })
-    ],
+    )
+    // preview.pro.loacg.com only do not use in your production;
+    if (isPreview) {
+      console.log('VUE_APP_PREVIEW', true)
+      // add `ThemeColorReplacer` plugin to webpack plugins
+      plugins.push(createThemeColorReplacerPlugin())
+    }
+    config.plugins = plugins
     // if prod, add externals
-    externals: isProd ? assetsCDN.externals : {}
+    config.externals = isProd ? assetsCDN.externals : {}
+
+    if (isDev) config.devtool = 'source-map'
   },
 
   chainWebpack: (config) => {
-    config.resolve.alias
-      .set('@$', resolve('src'))
-
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
     svgRule
@@ -125,13 +149,6 @@ const vueConfig = {
   lintOnSave: false,
   // babel-loader no-ignore node_modules/*
   transpileDependencies: []
-}
-
-// preview.pro.loacg.com only do not use in your production;
-if (process.env.VUE_APP_PREVIEW === 'true') {
-  console.log('VUE_APP_PREVIEW', true)
-  // add `ThemeColorReplacer` plugin to webpack plugins
-  vueConfig.configureWebpack.plugins.push(createThemeColorReplacerPlugin())
 }
 
 module.exports = vueConfig

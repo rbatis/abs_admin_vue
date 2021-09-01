@@ -349,6 +349,12 @@ export const asyncRouterMap = [
             name: 'setting_res',
             component: () => import('@/views/setting/Res'),
             meta: { title: '权限管理', keepAlive: true, permission: ['setting'] }
+          },
+          {
+            path: '/setting/dict',
+            name: 'setting_dict',
+            component: () => import('@/views/setting/Dict'),
+            meta: { title: '字典管理', keepAlive: true, permission: ['setting'] }
           }
         ]
       }

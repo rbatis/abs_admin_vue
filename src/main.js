@@ -19,7 +19,7 @@ import bootstrap from './core/bootstrap'
 import './core/lazy_use' // use lazy load components
 import './permission' // permission control
 import './utils/filter' // global filter
-import './global.less' // global style
+import './assets/global.less' // global style
 
 Vue.config.productionTip = false
 
@@ -32,7 +32,7 @@ Vue.component('page-header-wrapper', PageHeaderWrapper)
 
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
-window.vm=new Vue({
+window.vm = new Vue({
   router,
   store,
   i18n,

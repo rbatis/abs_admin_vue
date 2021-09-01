@@ -1,6 +1,12 @@
 import request from '@/utils/request'
 
 const api = {
+  sys_dict_page: '/admin/sys_dict_page',
+  sys_dict_layer_top: '/admin/sys_dict_layer_top',
+  sys_dict_add: '/admin/sys_dict_add',
+  sys_dict_update: '/admin/sys_dict_update',
+  sys_dict_delete: '/admin/sys_dict_remove',
+
   sys_res_page: '/admin/sys_res_page',
   sys_res_add: '/admin/sys_res_add',
   sys_res_update: '/admin/sys_res_update',
@@ -12,7 +18,6 @@ const api = {
   sys_role_delete: '/admin/sys_role_delete',
   sys_res_all: '/admin/sys_res_all',
   sys_res_layer_top: '/admin/sys_res_layer_top',
-
 
   sys_user_page: '/admin/sys_user_page',
   sys_user_add: '/admin/sys_user_add',
@@ -88,7 +93,6 @@ export function saveSub (sub) {
   })
 }
 
-
 export function res_page (arg) {
   return request({
     url: api.sys_res_page,
@@ -137,8 +141,7 @@ export function sys_res_layer_top (arg) {
   })
 }
 
-
-export function role_page(arg) {
+export function role_page (arg) {
   return request({
     url: api.sys_role_page,
     method: 'post',
@@ -146,7 +149,7 @@ export function role_page(arg) {
   })
 }
 
-export function role_add(arg) {
+export function role_add (arg) {
   return request({
     url: api.sys_role_add,
     method: 'post',
@@ -154,7 +157,7 @@ export function role_add(arg) {
   })
 }
 
-export function role_update(arg) {
+export function role_update (arg) {
   return request({
     url: api.sys_role_update,
     method: 'post',
@@ -162,7 +165,7 @@ export function role_update(arg) {
   })
 }
 
-export function role_delete(arg) {
+export function role_delete (arg) {
   return request({
     url: api.sys_role_delete,
     method: 'post',
@@ -170,8 +173,7 @@ export function role_delete(arg) {
   })
 }
 
-
-export function sys_user_page(arg){
+export function sys_user_page (arg) {
   return request({
     url: api.sys_user_page,
     method: 'post',
@@ -179,7 +181,7 @@ export function sys_user_page(arg){
   })
 }
 
-export function sys_user_remove(arg){
+export function sys_user_remove (arg) {
   return request({
     url: api.sys_user_remove,
     method: 'post',
@@ -187,7 +189,7 @@ export function sys_user_remove(arg){
   })
 }
 
-export function sys_user_add(arg){
+export function sys_user_add (arg) {
   return request({
     url: api.sys_user_add,
     method: 'post',
@@ -195,7 +197,7 @@ export function sys_user_add(arg){
   })
 }
 
-export function sys_user_update(arg){
+export function sys_user_update (arg) {
   return request({
     url: api.sys_user_update,
     method: 'post',
@@ -203,9 +205,50 @@ export function sys_user_update(arg){
   })
 }
 
-export function sys_role_layer_top(arg){
+export function sys_role_layer_top (arg) {
   return request({
     url: api.sys_role_layer_top,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function dictPage (arg) {
+  console.log(`${new Date().toLocaleTimeString()}🔥 -> dictPage -> arg`, arg)
+  return request({
+    url: api.sys_dict_page,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function sysDictLayerTop (arg) {
+  return request({
+    url: api.sys_dict_layer_top,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function dictAdd (arg) {
+  return request({
+    url: api.sys_dict_add,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function dictUpdate (arg) {
+  return request({
+    url: api.sys_dict_update,
+    method: 'post',
+    data: arg
+  })
+}
+
+export function dictDelete (arg) {
+  return request({
+    url: api.sys_dict_delete,
     method: 'post',
     data: arg
   })
