@@ -43,7 +43,6 @@
       <template #state="value, record">{{ STATE[+value] }}</template>
       <template slot="action" slot-scope="scope">
         <div style="width: 110px;">
-          <a style="padding-right: 5px;" @click="handleAdd(scope)">添加下级</a>
           <a-dropdown>
             <a class="ant-dropdown-link">更多<a-icon type="down" /></a>
             <a-menu slot="overlay">
@@ -96,7 +95,7 @@
 </template>
 
 <script>
-import { dictAdd, dictDelete, dictPage, dictUpdate, sysDictLayerTop } from '@/api/manage'
+import { dictAdd, dictDelete, dictPage, dictUpdate } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 const columns = [
   // { title: 'id', dataIndex: 'id' },
@@ -108,7 +107,6 @@ const columns = [
 ]
 const RULE_REQUIRED = { required: true, message: '请输入编码', trigger: 'blur' }
 const STATE = ['停用', '启用']
-const DICT_ITEM = () => ({ id: null, name: null, code: null, parent_id: null, state: 1 })
 
 export default {
   data () {
@@ -125,20 +123,15 @@ export default {
         page_no: 1,
         page_size: 5
       },
-      dialogData: DICT_ITEM(),
+      dialogData: { id: null, name: null, code: null, parent_id: null, state: 1 },
       visible: false,
       all_res: [],
       loading_all: false,
       rules: {
         name: [RULE_REQUIRED],
         code: [RULE_REQUIRED]
-      }
-    }
-  },
-  computed: {
-    dialogMode () {
-      const { name, code } = this.dialogData || {}
-      return (name || code) ? 'edit' : 'add'
+      },
+      dialogMode: 'add'
     }
   },
   mounted () {
@@ -179,12 +172,11 @@ export default {
         this.pagination = pagination
       })
     },
+
+
     handleAdd: function (scope) {
-      this.dialogData = DICT_ITEM()
-      this.getAllDict()
-
+      this.queryData = { id: null, name: null, code: null, parent_id: null, state: 1 };
       if (scope && scope.id) this.dialogData.parent_id = scope.id
-
       this.visible = true
     },
     handleAddData: function () {
@@ -207,7 +199,7 @@ export default {
       })
     },
     handleEdit: function (scope) {
-      this.getAllDict(scope.id)
+      this.dialogMode = 'edit';
       this.visible = true
       this.dialogData = Object.assign({}, scope)
       if (this.dialogData.parent_id === '') {
@@ -229,27 +221,6 @@ export default {
         }
       })
     },
-    getAllDict: function (skipId) {
-      this.loading_all = true
-      sysDictLayerTop({})
-        .then((res) => {
-          this.loading_all = false
-          const arr = []
-          for (let index = 0; index < res.data.length; index++) {
-            const item = res.data[index]
-            // eslint-disable-next-line
-            if (skipId != undefined && item.id === skipId) {
-              // nothing
-            } else {
-              arr.push(item)
-            }
-          }
-          this.all_res = arr
-        }).catch((e) => {
-        this.loading_all = false
-      })
-    }
-
   }
 }
 </script>
