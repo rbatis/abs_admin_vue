@@ -205,9 +205,15 @@ export function sys_user_update (arg) {
   })
 }
 
+export function sys_role_layer_top(arg){
+  return request({
+    url: api.sys_role_layer_top,
+    method: 'post',
+    data: arg
+  })
+}
 
 export function dictPage (arg) {
-  console.log(`${new Date().toLocaleTimeString()}🔥 -> dictPage -> arg`, arg)
   return request({
     url: api.sys_dict_page,
     method: 'post',

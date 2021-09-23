@@ -222,12 +222,13 @@ const columns = [
   }
 ]
 
-import { sys_user_add, sys_user_remove, sys_user_page, sys_user_update } from '@/api/manage'
+import { sys_role_layer_top, sys_user_add, sys_user_remove, sys_user_page, sys_user_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 
 export default {
   mounted() {
     this.fetch()
+    this.getAllRole()
   },
   data() {
     return {
@@ -391,6 +392,12 @@ export default {
         role_ids: [],
         role_id: null
       }
+    },
+    getAllRole: function() {
+      sys_role_layer_top({})
+        .then((res) => {
+          this.all_role = res.data
+        })
     },
     onRolesCheck: function(data) {
       let len = data.checked.length
