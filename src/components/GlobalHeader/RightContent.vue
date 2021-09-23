@@ -8,6 +8,7 @@
 <script>
 import AvatarDropdown from './AvatarDropdown'
 import SelectLang from '@/components/SelectLang'
+import {mapGetters} from "vuex";
 
 export default {
   name: 'RightContent',
@@ -40,6 +41,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['nickname', 'avatar']),
     wrpCls () {
       return {
         'ant-pro-global-header-index-right': true,
@@ -50,7 +52,7 @@ export default {
   mounted () {
     setTimeout(() => {
       this.currentUser = {
-        name: 'Serati Ma'
+        name: this.nickname
       }
     }, 1500)
   }
