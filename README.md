@@ -41,7 +41,7 @@ Overview
 
 ### Project setup
 
-- install Nodejs 16 LTS
+- install Nodejs 16 LTS or run command ```nvm use v16.14.0``` 
 
 - Clone repo
 ```bash

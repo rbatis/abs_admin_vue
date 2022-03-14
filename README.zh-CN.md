@@ -47,7 +47,7 @@ Overview
 项目下载和运行
 ----
 
-- 安装 NodeJs 16长期支持版
+- 安装 NodeJs 16长期支持版 或者 使用nvm切换 ```nvm use v16.14.0```
 
 - 拉取项目代码
 ```bash
