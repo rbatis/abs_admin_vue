@@ -47,6 +47,8 @@ Overview
 项目下载和运行
 ----
 
+- 安装 NodeJs 16长期支持版
+
 - 拉取项目代码
 ```bash
 git clone https://github.com/vueComponent/ant-design-vue-pro.git

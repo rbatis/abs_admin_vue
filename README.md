@@ -41,6 +41,8 @@ Overview
 
 ### Project setup
 
+- install Nodejs 16 LTS
+
 - Clone repo
 ```bash
 git clone https://github.com/vueComponent/ant-design-vue-pro.git

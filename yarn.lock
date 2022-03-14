@@ -5249,8 +5249,8 @@ getpass@^0.1.1:
 
 git-revision-webpack-plugin@^3.0.6:
   version "3.0.6"
-  resolved "https://registry.npm.taobao.org/git-revision-webpack-plugin/download/git-revision-webpack-plugin-3.0.6.tgz#5dd6c6829fae05b405059dea6195b23875d69d4d"
-  integrity sha1-XdbGgp+uBbQFBZ3qYZWyOHXWnU0=
+  resolved "https://registry.yarnpkg.com/git-revision-webpack-plugin/-/git-revision-webpack-plugin-3.0.6.tgz#5dd6c6829fae05b405059dea6195b23875d69d4d"
+  integrity sha512-vW/9dBahGbpKPcccy3xKkHgdWoH/cAPPc3lQw+3edl7b4j29JfNGVrja0a1d8ZoRe4nTN8GCPrF9aBErDnzx5Q==
 
 glob-parent@^3.1.0:
   version "3.1.0"
@@ -11193,10 +11193,10 @@ webpack-sources@*, webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sourc
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack-theme-color-replacer@^1.3.12:
-  version "1.3.12"
-  resolved "https://registry.npm.taobao.org/webpack-theme-color-replacer/download/webpack-theme-color-replacer-1.3.12.tgz#0593a3149310c0e5b6b85afeccd61925b1b8e86b"
-  integrity sha1-BZOjFJMQwOW2uFr+zNYZJbG46Gs=
+webpack-theme-color-replacer@^1.3.26:
+  version "1.3.26"
+  resolved "https://registry.yarnpkg.com/webpack-theme-color-replacer/-/webpack-theme-color-replacer-1.3.26.tgz#992327560fb9b291bb0c8d179ab59a0cac091340"
+  integrity sha512-H5hdnQ5K5zk5ZiDcRl01lwF40UZNRtVH4Tsmg2odl06dW61eJ5sjBQhgAd7Yu/0Nk4PbErOlFwSivo4B108dwQ==
   dependencies:
     webpack-sources "*"
 
