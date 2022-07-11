@@ -26,7 +26,7 @@ Overview
 
 ### Env and dependencies
 
-- node
+- node(version 16)
 - yarn
 - webpack
 - eslint

@@ -30,7 +30,7 @@ Overview
 环境和依赖
 ----
 
-- node
+- node(版本 16)
 - yarn
 - webpack
 - eslint
