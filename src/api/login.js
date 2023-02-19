@@ -5,7 +5,6 @@ const userApi = {
   // Logout: '/auth/logout',
   // ForgePassword: '/auth/forge-password',
   // Register: '/auth/register',
-  // twoStepCode: '/auth/2step-code',
   // SendSms: '/account/sms',
   // SendSmsErr: '/account/sms_err',
   // // get my info
@@ -16,7 +15,6 @@ const userApi = {
   Logout: 'Logout',
   ForgePassword: '/admin/forge-password',
   Register: '/admin/register',
-  twoStepCode: '/admin/2step-code',
   SendSms: '/admin/sms',
   SendSmsErr: '/admin/sms_err',
   // get my info
@@ -76,14 +74,3 @@ export function logout() {
   })
 }
 
-/**
- * get user 2step code open?
- * @param parameter {*}
- */
-export function get2step(parameter) {
-  return request({
-    url: userApi.twoStepCode,
-    method: 'post',
-    data: parameter
-  })
-}
