@@ -40,7 +40,7 @@ const user = {
           console.info('login resp:',response);
           storage.set(ACCESS_TOKEN, response.data.access_token, 24 * 60 * 60 * 1000)
           storage.set(PERMISSIONS, response.data.permissions, 24 * 60 * 60 * 1000)
-          storage.set(USER, response.data.user, 24 * 60 * 60 * 1000)
+          storage.set(USER, response.data, 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', response.data.access_token)
           console.info('resolve');
           resolve()
