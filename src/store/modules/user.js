@@ -66,7 +66,7 @@ const user = {
             //     per.actionList = action
             //   }
             // })
-            name = response.data.user.name;
+            name = response.data.name;
             commit('SET_ROLES', role);
             commit('SET_INFO', result);
             console.info('SET_ROLES:',JSON.stringify(role));
