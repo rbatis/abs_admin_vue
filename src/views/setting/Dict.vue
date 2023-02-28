@@ -81,7 +81,7 @@
           <a-input v-model="dialogData.name" placeholder="请输入名称"></a-input>
         </a-form-model-item>
         <a-form-model-item label="编码" prop="code">
-          <a-input v-model="dialogData.code" placeholder="请输入编码"></a-input>
+          <a-textarea :rows="4" v-model="dialogData.code" placeholder="请输入编码"></a-textarea>
         </a-form-model-item>
         <a-form-model-item label="启用/停用" prop="state">
           <a-radio-group v-model="dialogData.state">
