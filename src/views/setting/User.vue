@@ -151,6 +151,7 @@
         </a-form-item>
         <a-form-item label='初始密码' v-if='dialogMode === "add" || dialogMode === "edit"'>
           <a-switch default-checked v-model='dialogData.set_pwd' />
+          <label> 默认密码: 123456</label>
         </a-form-item>
         <a-form-item label='密码' v-if='dialogData.set_pwd===true'>
           <a-input-password
