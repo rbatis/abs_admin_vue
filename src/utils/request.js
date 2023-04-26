@@ -56,9 +56,12 @@ request.interceptors.request.use(config => {
 // response interceptor
 request.interceptors.response.use((response) => {
   try{
-    if (response.headers['content-type'].indexOf("json") !== -1 && response.data.code !== 'SUCCESS'){
-      showMsg(window.vm,response.data);
-      return Promise.apply({response:response})
+    if (response.headers['content-type'].indexOf("json") !== -1){
+      if (response.data.code !== 'SUCSESS'){
+        showMsg(window.vm,response.data);
+      }
+    }else{
+      return Promise.reject({response:response})
     }
   }catch (e){
   }
