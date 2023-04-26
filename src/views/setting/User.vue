@@ -370,15 +370,18 @@ export default {
     handleEnableDisable: function(scope) {
       let self = this
       this.$confirm({
-        title: scope.state === 0 ? '你确定要启用?' : '你确定要禁用?',
-        content: scope.state === 0 ? '你确定要启用?' : '你确定要禁用?',
+        title: scope.state === 0 ? '你确定要启用账号:'+scope.name+'?' : '你确定要禁用账号:'+scope.name+'?',
+        content: scope.state === 0 ? '你确定要启用账号:'+scope.name+'?' : '你确定要禁用账号:'+scope.name+'?',
         onOk() {
-          scope.state = scope.state === 0 ? 1 : 0
+          let state_old = scope.state;
+          scope.state = scope.state === 0 ? 1 : 0;
           sys_user_update(scope)
             .then((res) => {
-              showMsg(self, res)
-              self.visible = false
-              self.fetch()
+              if (res.code === 'SUCCESS'){
+                self.fetch()
+              }else{
+                scope.state = state_old;
+              }
             })
         },
         onCancel() {

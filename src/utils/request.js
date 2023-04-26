@@ -58,7 +58,7 @@ request.interceptors.response.use((response) => {
   try{
     if (response.headers['content-type'].indexOf("json") !== -1 && response.data.code !== 'SUCCESS'){
       showMsg(window.vm,response.data);
-      return Promise.reject({response:response})
+      return Promise.apply({response:response})
     }
   }catch (e){
   }
