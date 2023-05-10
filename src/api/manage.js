@@ -7,17 +7,17 @@ const api = {
   sys_dict_update: '/admin/sys_dict_update',
   sys_dict_delete: '/admin/sys_dict_remove',
 
-  sys_res_page: '/admin/sys_res_page',
-  sys_res_add: '/admin/sys_res_add',
-  sys_res_update: '/admin/sys_res_update',
-  sys_res_delete: '/admin/sys_res_remove',
+  sys_permission_page: '/admin/sys_permission_page',
+  sys_permission_add: '/admin/sys_permission_add',
+  sys_permission_update: '/admin/sys_permission_update',
+  sys_permission_delete: '/admin/sys_permission_remove',
 
   sys_role_page: '/admin/sys_role_page',
   sys_role_add: '/admin/sys_role_add',
   sys_role_update: '/admin/sys_role_update',
   sys_role_delete: '/admin/sys_role_delete',
-  sys_res_all: '/admin/sys_res_all',
-  sys_res_layer_top: '/admin/sys_res_layer_top',
+  sys_permission_all: '/admin/sys_permission_all',
+  sys_permission_layer_top: '/admin/sys_permission_layer_top',
 
   sys_user_page: '/admin/sys_user_page',
   sys_user_add: '/admin/sys_user_add',
@@ -95,7 +95,7 @@ export function saveSub (sub) {
 
 export function res_page (arg) {
   return request({
-    url: api.sys_res_page,
+    url: api.sys_permission_page,
     method: 'post',
     data: arg
   })
@@ -103,7 +103,7 @@ export function res_page (arg) {
 
 export function res_add (arg) {
   return request({
-    url: api.sys_res_add,
+    url: api.sys_permission_add,
     method: 'post',
     data: arg
   })
@@ -111,7 +111,7 @@ export function res_add (arg) {
 
 export function res_update (arg) {
   return request({
-    url: api.sys_res_update,
+    url: api.sys_permission_update,
     method: 'post',
     data: arg
   })
@@ -119,7 +119,7 @@ export function res_update (arg) {
 
 export function res_delete (arg) {
   return request({
-    url: api.sys_res_delete,
+    url: api.sys_permission_delete,
     method: 'post',
     data: arg
   })
@@ -127,15 +127,15 @@ export function res_delete (arg) {
 
 export function res_all (arg) {
   return request({
-    url: api.sys_res_all,
+    url: api.sys_permission_all,
     method: 'post',
     data: arg
   })
 }
 
-export function sys_res_layer_top (arg) {
+export function sys_permission_layer_top (arg) {
   return request({
-    url: api.sys_res_layer_top,
+    url: api.sys_permission_layer_top,
     method: 'post',
     data: arg
   })

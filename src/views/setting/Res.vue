@@ -205,7 +205,7 @@ const columns = [
 ]
 
 
-import { res_add, res_delete, res_page, res_update, sys_res_layer_top } from '@/api/manage'
+import { res_add, res_delete, res_page, res_update, sys_permission_layer_top } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 
 export default {
@@ -371,7 +371,7 @@ export default {
     },
     getAllRes: function(skipId) {
       this.loading_all_res = true;
-      sys_res_layer_top({})
+      sys_permission_layer_top({})
         .then((res) => {
           this.loading_all_res = false;
           let arr = []

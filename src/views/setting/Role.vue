@@ -156,7 +156,7 @@ const columns = [
   }
 ]
 
-import { role_add, role_delete, role_page, role_update,sys_res_layer_top } from '@/api/manage'
+import { role_add, role_delete, role_page, role_update,sys_permission_layer_top } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 export default {
   mounted() {
@@ -285,7 +285,7 @@ export default {
     },
     getAllRes: function() {
       this.loading_all_res = true;
-      sys_res_layer_top({})
+      sys_permission_layer_top({})
         .then((res) => {
             this.all_res = res.data;
           this.loading_all_res = false;
