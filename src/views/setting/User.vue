@@ -377,7 +377,7 @@ export default {
           scope.state = scope.state === 0 ? 1 : 0;
           sys_user_update(scope)
             .then((res) => {
-              if (res.code === 'SUCCESS'){
+              if (res.code === '0'){
                 self.fetch()
               }else{
                 scope.state = state_old;
