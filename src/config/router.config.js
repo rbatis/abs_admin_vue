@@ -15,15 +15,11 @@ export const asyncRouterMap = [
     meta: { title: 'menu.home' },
     redirect: '/dashboard/workplace',
     children: [
-      // dashboard
-
       {
         path: '/',
         name: 'index',
-        component: BasicLayout,
-        meta: { title: '首页' },
-        redirect: '/setting',
-        children: []
+        component: () => import('@/views/home/home'),
+        meta: { title: '首页', icon: 'home', keepAlive: true, permission: ['/'] },
       },
       {
         path: '/setting',
