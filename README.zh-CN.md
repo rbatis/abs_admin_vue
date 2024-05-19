@@ -76,6 +76,33 @@ yarn run lint
 ```
 
 
+- FAQ: 如果遇到Error: error:0308010C:digital envelope routines::unsupported
+* windows
+```json
+{
+  "scripts": {
+    "serve": "SET NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint",
+    "build:preview": "vue-cli-service build --mode preview",
+    "lint:nofix": "vue-cli-service lint --no-fix"
+  }
+}
+```
+* linux/mac
+```json
+{
+  "scripts": {
+    "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint",
+    "build:preview": "vue-cli-service build --mode preview",
+    "lint:nofix": "vue-cli-service lint --no-fix"
+  }
+}
+```
 
 其他说明
 ----
