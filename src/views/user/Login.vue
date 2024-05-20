@@ -18,7 +18,7 @@
             <a-input
               size="large"
               type="text"
-              :placeholder="$t('user.login.account.placeholder')"
+              :placeholder="$t('user.login.username.placeholder')"
               :maxLength="11"
               v-decorator="[
                 'account',
