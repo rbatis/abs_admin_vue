@@ -179,6 +179,7 @@ export default {
       this.queryData.page_no = 1;
       this.queryData.name = null;
       this.queryData.code = null;
+      this.dialogData = { id: null, name: null, code: null, parent_id: null, state: 1 };
       if (scope && scope.id) this.dialogData.parent_id = scope.id
       this.visible = true
     },
