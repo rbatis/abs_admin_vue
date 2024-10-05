@@ -75,8 +75,8 @@ const vueConfig = {
       plugins.push(createThemeColorReplacerPlugin())
     }
     config.plugins = plugins
-    // if prod, add externals
-    config.externals = isProd ? assetsCDN.externals : {}
+    // if prod, add externals  //isProd ? assetsCDN.externals : {}
+    config.externals =  {}
 
     if (isDev) config.devtool = 'source-map'
   },
@@ -102,7 +102,7 @@ const vueConfig = {
     // assets require on cdn
     if (isProd) {
       config.plugin('html').tap(args => {
-        args[0].cdn = assetsCDN
+        //args[0].cdn = assetsCDN
         return args
       })
     }
