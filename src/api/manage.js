@@ -16,7 +16,6 @@ const api = {
   sys_role_add: '/admin/sys_role_add',
   sys_role_update: '/admin/sys_role_update',
   sys_role_delete: '/admin/sys_role_delete',
-  sys_permission_all: '/admin/sys_permission_all',
   sys_permission_layer_top: '/admin/sys_permission_layer_top',
 
   sys_user_page: '/admin/sys_user_page',
@@ -120,14 +119,6 @@ export function res_update (arg) {
 export function res_delete (arg) {
   return request({
     url: api.sys_permission_delete,
-    method: 'post',
-    data: arg
-  })
-}
-
-export function res_all (arg) {
-  return request({
-    url: api.sys_permission_all,
     method: 'post',
     data: arg
   })

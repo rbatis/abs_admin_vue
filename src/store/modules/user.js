@@ -57,8 +57,8 @@ const user = {
           const result = response;
           console.info('getInfo resp:',response);
           var name=null;
-          if (response.data.role) {
-            var role = response.data.role;
+          if (response.data.roles) {
+            var role = response.data.roles;
             role.permissions = response.data.permissions;
             // role.permissions.map(per => {
             //   if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
@@ -71,6 +71,7 @@ const user = {
             commit('SET_INFO', result);
             console.info('SET_ROLES:',JSON.stringify(role));
           } else {
+            console.info('reject');
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
           commit('SET_NAME', { name: name, welcome: welcome() })
