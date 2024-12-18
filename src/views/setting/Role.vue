@@ -55,16 +55,14 @@
       <!--</template>-->
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
-          <a style='padding-right: 5px;' @click='handleAddChild({"parent_id":scope.id})'>添加下级</a>
+<!--          <a style='padding-right: 5px;' @click='handleAddChild({"parent_id":scope.id})'>添加下级</a>-->
+          <a style='color: #1890ff' @click='handleEdit(scope)'>编辑</a>
           <a-dropdown>
             <a class='ant-dropdown-link'>
               更多
               <a-icon type='down' />
             </a>
             <a-menu slot='overlay'>
-              <a-menu-item>
-                <a style='color: #1890ff' @click='handleEdit(scope)'>编辑</a>
-              </a-menu-item>
               <a-menu-item>
                 <a style='color:#f5222d' @click='handleDelete(scope)'>删除</a>
               </a-menu-item>
@@ -246,11 +244,11 @@ export default {
           })
       }
     },
-    handleAddChild: function(scope) {
-      this.visible = true
-      this.dialogMode = 'add'
-      this.dialogData = Object.assign({}, scope)
-    },
+    // handleAddChild: function(scope) {
+    //   this.visible = true
+    //   this.dialogMode = 'add'
+    //   this.dialogData = Object.assign({}, scope)
+    // },
     //handleEdit
     handleEdit: function(scope) {
       this.visible = true
