@@ -47,8 +47,6 @@ Overview
 项目下载和运行
 ----
 
-- 安装 NodeJs 16长期支持版 或者 使用nvm切换 ```nvm use v16```
-
 - 拉取项目代码
 ```bash
 git clone https://github.com/vueComponent/ant-design-vue-pro.git
@@ -56,6 +54,13 @@ cd ant-design-vue-pro
 ```
 
 - 安装依赖
+
+* 安装 NodeJs 16长期支持版
+```nvm use v16```
+* 可能需要执行 
+`yarn config set "strict-ssl" false`
+
+* yarn安装依赖
 ```
 yarn install
 ```
