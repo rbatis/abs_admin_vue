@@ -77,6 +77,9 @@
         :rules="rules"
         v-bind="{ labelCol: { sm: { span: 4 }, }, wrapperCol: { sm: { span: 20 }, } }"
       >
+        <a-form-model-item label="id" prop="name">
+          <a-input v-model="dialogData.id" placeholder="请输入id"></a-input>
+        </a-form-model-item>
         <a-form-model-item label="名称" prop="name">
           <a-input v-model="dialogData.name" placeholder="请输入名称"></a-input>
         </a-form-model-item>
