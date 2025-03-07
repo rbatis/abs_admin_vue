@@ -55,7 +55,7 @@
       <!--</template>-->
       <template slot='action' slot-scope='scope'>
         <div style='width: 110px;'>
-<!--          <a style='padding-right: 5px;' @click='handleAddChild({"parent_id":scope.id})'>添加下级</a>-->
+          <!--          <a style='padding-right: 5px;' @click='handleAddChild({"parent_id":scope.id})'>添加下级</a>-->
           <a style='color: #1890ff' @click='handleEdit(scope)'>编辑</a>
           <a-dropdown>
             <a class='ant-dropdown-link'>
@@ -114,8 +114,8 @@
           <a-spin v-if='loading_all_res' />
           <a-tree
             :disabled='loading_all_res'
-            v-model='dialogData.resource_ids'
-            :selected-keys="dialogData.resource_ids"
+            v-model='dialogData.permission_ids'
+            :selected-keys="dialogData.permission_ids"
             :replace-fields="{children: 'childs', title: 'name', key: 'id'}"
             :auto-expand-parent="true"
             :tree-data="all_res"
@@ -285,10 +285,10 @@ export default {
       this.loading_all_res = true;
       sys_permission_layer_top({})
         .then((res) => {
-            this.all_res = res.data;
+          this.all_res = res.data;
           this.loading_all_res = false;
         }).catch((e)=>{
-          this.loading_all_res = false;
+        this.loading_all_res = false;
       })
     }
 

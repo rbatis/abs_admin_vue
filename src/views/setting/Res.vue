@@ -123,7 +123,7 @@
           <a-spin v-if='loading_all_res' />
           <a-tree
             :disabled='loading_all_res'
-            v-model='dialogData.resource_ids'
+            v-model='dialogData.permission_ids'
             :replace-fields="{children: 'childs', title: 'name', key: 'id'}"
             :auto-expand-parent='true'
             :tree-data='all_res'
@@ -229,7 +229,7 @@ export default {
         id: null,
         value: null,
         is_menu: false,
-        resource_ids: []
+        permission_ids: []
       },
       visible: false,
       dialogMode: 'add',
@@ -305,12 +305,12 @@ export default {
       this.getAllRes();
       this.visible = true
       this.dialogMode = 'add'
-      this.dialogData = Object.assign({ is_menu: scope.path === null, resource_ids: [] }, scope)
+      this.dialogData = Object.assign({ is_menu: scope.path === null, permission_ids: [] }, scope)
       if (this.dialogData.parent_id === '') {
         this.dialogData.parent_id = null
       }
       if (scope.parent_id !== null) {
-        this.dialogData.resource_ids = [scope.parent_id]
+        this.dialogData.permission_ids = [scope.parent_id]
       }
     },
     //handleEdit
@@ -318,9 +318,9 @@ export default {
       this.getAllRes(scope.id)
       this.visible = true
       this.dialogMode = 'edit'
-      this.dialogData = Object.assign({ is_menu: scope.path === null, resource_ids: [] }, scope)
+      this.dialogData = Object.assign({ is_menu: scope.path === null, permission_ids: [] }, scope)
       if (scope.parent_id !== null) {
-        this.dialogData.resource_ids = [scope.parent_id]
+        this.dialogData.permission_ids = [scope.parent_id]
       }
       if (this.dialogData.parent_id === '') {
         this.dialogData.parent_id = null
@@ -356,16 +356,16 @@ export default {
         remark: null,
         value: null,
         is_menu: false,
-        resource_ids: []
+        permission_ids: []
       }
     },
     onResCheck: function(data) {
       let len = data.checked.length
       if (len >= 1) {
-        this.dialogData.resource_ids = { 'checked': [data.checked[len - 1]], 'halfChecked': [] }
+        this.dialogData.permission_ids = { 'checked': [data.checked[len - 1]], 'halfChecked': [] }
         this.dialogData.parent_id = data.checked[len - 1]
       } else {
-        this.dialogData.resource_ids = []
+        this.dialogData.permission_ids = []
         this.dialogData.parent_id = null
       }
     },
