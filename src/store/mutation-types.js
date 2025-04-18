@@ -1,4 +1,4 @@
-export const ACCESS_TOKEN = 'Access-Token'
+export const ACCESS_TOKEN = 'Authorization'
 export const PERMISSIONS = 'Permissions'
 export const USER = 'User'
 
