@@ -5,14 +5,17 @@ import moment from 'moment'
 
 // default lang
 import enUS from './lang/en-US'
-
+import zhCN from './lang/zh-CN'
 Vue.use(VueI18n)
 
-export const defaultLang = 'en-US'
+export const defaultLang = 'zh-CN'
 
 const messages = {
   'en-US': {
     ...enUS
+  },
+  'zh-CN': {
+    ...zhCN
   }
 }
 
