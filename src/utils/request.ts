@@ -1,9 +1,15 @@
 import axios from 'axios'
 import { message } from 'ant-design-vue'
 
+interface ApiResponse {
+  code: string
+  msg?: string
+  data?: any
+}
+
 // 创建 axios 实例
 const request = axios.create({
-  baseURL: process.env.VUE_APP_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 5000
 })
 
@@ -25,14 +31,13 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   response => {
-    const res = response.data
+    const res = response.data as ApiResponse
     // 检查业务 code
     if (res.code !== undefined && res.code !== '0') {
       // 显示错误消息
       message.error(res.msg || '操作失败')
-      // 返回一个特殊的错误对象，但作为 resolved Promise
-      // 这样 Modal.onOk 会失败关闭，但不会抛出未捕获错误
-      return Promise.resolve({ __error: true, msg: res.msg || '操作失败' })
+      // reject，让调用方的 catch 或 try-catch 捕获
+      return Promise.reject(new Error(res.msg || '操作失败'))
     }
     return res
   },
@@ -46,8 +51,6 @@ request.interceptors.response.use(
         errorMsg = '未授权，请重新登录'
         localStorage.removeItem('access_token')
         window.location.href = '/user/login'
-        // 401 错误不返回，因为会跳转
-        return Promise.resolve({ __error: true, msg: errorMsg })
       } else if (status === 403) {
         errorMsg = '拒绝访问'
       } else if (status === 404) {
@@ -61,12 +64,14 @@ request.interceptors.response.use(
       } else if (data?.message) {
         errorMsg = data.message
       }
+    } else if (error.code === 'ECONNABORTED') {
+      errorMsg = '请求超时，请检查网络连接'
     } else if (error.message) {
       errorMsg = error.message
     }
     message.error(errorMsg)
-    // 返回 resolved Promise 但带上错误标记
-    return Promise.resolve({ __error: true, msg: errorMsg })
+    // reject，让调用方捕获
+    return Promise.reject(new Error(errorMsg))
   }
 )
 

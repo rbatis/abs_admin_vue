@@ -46,6 +46,7 @@
         v-model:open="visible"
         :width="500"
         :maskClosable="false"
+        :confirmLoading="dialogLoading"
         @ok="handleAddData"
       >
         <a-form labelAlign="right" :label-col="{ sm: { span: 4 } }" :wrapper-col="{ sm: { span: 20 } }">
@@ -68,7 +69,7 @@
   </AdminLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { Modal } from 'ant-design-vue'
 import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
@@ -86,6 +87,7 @@ const columns = [
 const data = ref([])
 const loading = ref(false)
 const visible = ref(false)
+const dialogLoading = ref(false)
 const dialogMode = ref('add')
 const all_res = ref([])
 const loading_all_res = ref(false)
@@ -137,13 +139,20 @@ function addData() {
 }
 
 async function handleAddData() {
-  if (dialogMode.value === 'add') {
-    await role_add(dialogData)
-  } else {
-    await role_update(dialogData)
+  dialogLoading.value = true
+  try {
+    if (dialogMode.value === 'add') {
+      await role_add(dialogData)
+    } else {
+      await role_update(dialogData)
+    }
+    visible.value = false
+    fetch()
+  } catch (err) {
+    // 失败时不关闭对话框，错误已在拦截器中处理
+  } finally {
+    dialogLoading.value = false
   }
-  visible.value = false
-  fetch()
 }
 
 function handleEdit(scope) {

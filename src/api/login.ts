@@ -1,39 +1,32 @@
 import request from '@/utils/request'
 
-const userApi = {
-  // Login: '/auth/login',
-  // Logout: '/auth/logout',
-  // ForgePassword: '/auth/forge-password',
-  // Register: '/auth/register',
-  // SendSms: '/account/sms',
-  // SendSmsErr: '/account/sms_err',
-  // // get my info
-  // UserInfo: '/user/info',
-  // UserMenu: '/user/nav'
+interface LoginParams {
+  account: string
+  password: string
+  vcode?: string
+}
 
+interface ApiResponse<T = any> {
+  code: string
+  msg?: string
+  data: T
+}
+
+const userApi = {
   Login: '/admin/sys_login',
   Logout: 'Logout',
   ForgePassword: '/admin/forge-password',
   Register: '/admin/register',
   SendSms: '/admin/sms',
   SendSmsErr: '/admin/sms_err',
-  // get my info
   UserInfo: '/admin/sys_user_info',
   UserMenu: '/admin/user/nav'
 }
 
 /**
  * login func
- * parameter: {
- *     username: '',
- *     password: '',
- *     remember_me: true,
- *     captcha: '12345'
- * }
- * @param parameter
- * @returns {*}
  */
-export function login(parameter) {
+export function login(parameter: LoginParams): Promise<ApiResponse> {
   return request({
     url: userApi.Login,
     method: 'post',
@@ -41,7 +34,7 @@ export function login(parameter) {
   })
 }
 
-export function getSmsCaptcha(parameter) {
+export function getSmsCaptcha(parameter: any): Promise<ApiResponse> {
   return request({
     url: userApi.SendSms,
     method: 'post',
@@ -49,7 +42,7 @@ export function getSmsCaptcha(parameter) {
   })
 }
 
-export function getInfo() {
+export function getInfo(): Promise<ApiResponse> {
   return request({
     url: userApi.UserInfo,
     method: 'post',
@@ -57,14 +50,14 @@ export function getInfo() {
   })
 }
 
-export function getCurrentUserNav() {
+export function getCurrentUserNav(): Promise<ApiResponse> {
   return request({
     url: userApi.UserMenu,
     method: 'get'
   })
 }
 
-export function logout() {
+export function logout(): Promise<ApiResponse> {
   return request({
     url: userApi.Logout,
     method: 'post',
@@ -73,4 +66,3 @@ export function logout() {
     }
   })
 }
-

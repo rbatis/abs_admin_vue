@@ -52,6 +52,7 @@
         :width="500"
         :maskClosable="false"
         centered
+        :confirmLoading="dialogLoading"
         @ok="handleAddData"
       >
         <a-form
@@ -83,7 +84,7 @@
   </AdminLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { Modal, message } from 'ant-design-vue'
 import { DownOutlined } from '@ant-design/icons-vue'
@@ -105,6 +106,7 @@ const columns = [
 const data = ref([])
 const loading = ref(false)
 const visible = ref(false)
+const dialogLoading = ref(false)
 const dialogMode = ref('add')
 const formAddRef = ref()
 
@@ -170,18 +172,20 @@ function handleAdd() {
 }
 
 async function handleAddData() {
+  dialogLoading.value = true
   try {
     await formAddRef.value.validate()
     if (dialogMode.value === 'add') {
       await dictAdd(dialogData)
-      showMsg({ message }, res)
     } else {
       await dictUpdate(dialogData)
     }
     visible.value = false
     fetch()
   } catch (e) {
-    console.log(e)
+    // 失败时不关闭对话框，错误已在拦截器中处理
+  } finally {
+    dialogLoading.value = false
   }
 }
 

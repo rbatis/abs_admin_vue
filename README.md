@@ -47,4 +47,4 @@ src/
 
 ## Browser Support
 
-Modern browsers (Chrome, Firefox, Safari, Edge - last 2 versions)
+- Chrome, Firefox, Safari, Edge

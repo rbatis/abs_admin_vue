@@ -1,14 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/user/Login.vue'
 import Home from '@/views/home/home.vue'
 import User from '@/views/setting/User.vue'
 import Role from '@/views/setting/Role.vue'
 import Res from '@/views/setting/Res.vue'
 import Dict from '@/views/setting/Dict.vue'
-import KV from '@/views/setting/KV.vue'
 import NotFound from '@/views/exception/404.vue'
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
@@ -40,11 +39,6 @@ const routes = [
     component: Dict
   },
   {
-    path: '/setting/kv',
-    name: 'setting_kv',
-    component: KV
-  },
-  {
     path: '/404',
     name: '404',
     component: NotFound
@@ -56,7 +50,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 

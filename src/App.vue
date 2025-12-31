@@ -1,18 +1,12 @@
 <template>
-  <a-config-provider :locale="zhCN">
+  <a-config-provider :locale="locale">
     <router-view />
   </a-config-provider>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 
-export default {
-  name: 'App',
-  data() {
-    return {
-      zhCN
-    }
-  }
-}
+const locale = ref(zhCN)
 </script>

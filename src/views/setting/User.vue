@@ -58,6 +58,7 @@
       v-model:open="visible"
       :width="500"
       :maskClosable="false"
+      :confirmLoading="dialogLoading"
       @ok="handleAddData"
     >
       <a-form labelAlign="right" :label-col="{ sm: { span: 4 } }" :wrapper-col="{ sm: { span: 20 } }">
@@ -84,7 +85,7 @@
   </AdminLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { Modal } from 'ant-design-vue'
 import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
@@ -105,6 +106,7 @@ const columns = [
 const data = ref([])
 const loading = ref(false)
 const visible = ref(false)
+const dialogLoading = ref(false)
 const dialogMode = ref('add')
 const all_role = ref([])
 
@@ -141,18 +143,22 @@ function fetch_no_page() {
   fetch()
 }
 
-function fetch() {
+async function fetch() {
   loading.value = true
-  const arg = { ...queryData }
-  if (arg.account === '') arg.account = null
-  if (arg.name === '') arg.name = null
+  try {
+    const arg = { ...queryData }
+    if (arg.account === '') arg.account = null
+    if (arg.name === '') arg.name = null
 
-  sys_user_page(arg).then((res) => {
+    const res = await sys_user_page(arg)
     loading.value = false
     data.value = res.data.records
     pagination.total = res.data.total
     pagination.pageSize = res.data.page_size
-  })
+  } catch (err) {
+    loading.value = false
+    // 错误已在拦截器中处理
+  }
 }
 
 function addData() {
@@ -162,13 +168,21 @@ function addData() {
 }
 
 async function handleAddData() {
-  if (dialogMode.value === 'add') {
-    await sys_user_add(dialogData)
-  } else if (dialogMode.value === 'edit') {
-    await sys_user_update(dialogData)
+  dialogLoading.value = true
+  try {
+    if (dialogMode.value === 'add') {
+      await sys_user_add(dialogData)
+    } else if (dialogMode.value === 'edit') {
+      await sys_user_update(dialogData)
+    }
+    // 成功后关闭对话框并刷新列表
+    visible.value = false
+    fetch()
+  } catch (err) {
+    // 失败时不关闭对话框，错误已在拦截器中处理
+  } finally {
+    dialogLoading.value = false
   }
-  visible.value = false
-  fetch()
 }
 
 function handleEdit(scope) {

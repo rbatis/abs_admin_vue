@@ -1,5 +1,11 @@
 import request from '@/utils/request'
 
+interface ApiResponse<T = any> {
+  code: string
+  msg?: string
+  data: T
+}
+
 const api = {
   sys_dict_page: '/admin/sys_dict_page',
   sys_dict_layer_top: '/admin/sys_dict_layer_top',
@@ -34,7 +40,7 @@ const api = {
 
 export default api
 
-export function getUserList (parameter) {
+export function getUserList(parameter: any): Promise<ApiResponse> {
   return request({
     url: api.user,
     method: 'get',
@@ -42,7 +48,7 @@ export function getUserList (parameter) {
   })
 }
 
-export function getRoleList (parameter) {
+export function getRoleList(parameter: any): Promise<ApiResponse> {
   return request({
     url: api.role,
     method: 'get',
@@ -50,7 +56,7 @@ export function getRoleList (parameter) {
   })
 }
 
-export function getServiceList (parameter) {
+export function getServiceList(parameter: any): Promise<ApiResponse> {
   return request({
     url: api.service,
     method: 'get',
@@ -58,7 +64,7 @@ export function getServiceList (parameter) {
   })
 }
 
-export function getPermissions (parameter) {
+export function getPermissions(parameter: any): Promise<ApiResponse> {
   return request({
     url: api.permissionNoPager,
     method: 'get',
@@ -66,7 +72,7 @@ export function getPermissions (parameter) {
   })
 }
 
-export function getOrgTree (parameter) {
+export function getOrgTree(parameter: any): Promise<ApiResponse> {
   return request({
     url: api.orgTree,
     method: 'get',
@@ -74,9 +80,7 @@ export function getOrgTree (parameter) {
   })
 }
 
-// id == 0 add     post
-// id != 0 update  put
-export function saveService (parameter) {
+export function saveService(parameter: any): Promise<ApiResponse> {
   return request({
     url: api.service,
     method: parameter.id === 0 ? 'post' : 'put',
@@ -84,7 +88,7 @@ export function saveService (parameter) {
   })
 }
 
-export function saveSub (sub) {
+export function saveSub(sub: any): Promise<ApiResponse> {
   return request({
     url: '/sub',
     method: sub.id === 0 ? 'post' : 'put',
@@ -92,7 +96,7 @@ export function saveSub (sub) {
   })
 }
 
-export function res_page (arg) {
+export function res_page(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_permission_page,
     method: 'post',
@@ -100,7 +104,7 @@ export function res_page (arg) {
   })
 }
 
-export function res_add (arg) {
+export function res_add(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_permission_add,
     method: 'post',
@@ -108,7 +112,7 @@ export function res_add (arg) {
   })
 }
 
-export function res_update (arg) {
+export function res_update(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_permission_update,
     method: 'post',
@@ -116,7 +120,7 @@ export function res_update (arg) {
   })
 }
 
-export function res_delete (arg) {
+export function res_delete(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_permission_delete,
     method: 'post',
@@ -124,7 +128,7 @@ export function res_delete (arg) {
   })
 }
 
-export function sys_permission_layer_top (arg) {
+export function sys_permission_layer_top(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_permission_layer_top,
     method: 'post',
@@ -132,7 +136,7 @@ export function sys_permission_layer_top (arg) {
   })
 }
 
-export function role_page (arg) {
+export function role_page(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_role_page,
     method: 'post',
@@ -140,7 +144,7 @@ export function role_page (arg) {
   })
 }
 
-export function role_add (arg) {
+export function role_add(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_role_add,
     method: 'post',
@@ -148,7 +152,7 @@ export function role_add (arg) {
   })
 }
 
-export function role_update (arg) {
+export function role_update(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_role_update,
     method: 'post',
@@ -156,7 +160,7 @@ export function role_update (arg) {
   })
 }
 
-export function role_delete (arg) {
+export function role_delete(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_role_delete,
     method: 'post',
@@ -164,7 +168,7 @@ export function role_delete (arg) {
   })
 }
 
-export function sys_user_page (arg) {
+export function sys_user_page(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_user_page,
     method: 'post',
@@ -172,7 +176,7 @@ export function sys_user_page (arg) {
   })
 }
 
-export function sys_user_remove (arg) {
+export function sys_user_remove(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_user_remove,
     method: 'post',
@@ -180,7 +184,7 @@ export function sys_user_remove (arg) {
   })
 }
 
-export function sys_user_add (arg) {
+export function sys_user_add(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_user_add,
     method: 'post',
@@ -188,7 +192,7 @@ export function sys_user_add (arg) {
   })
 }
 
-export function sys_user_update (arg) {
+export function sys_user_update(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_user_update,
     method: 'post',
@@ -196,7 +200,7 @@ export function sys_user_update (arg) {
   })
 }
 
-export function sys_role_layer_top(arg){
+export function sys_role_layer_top(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_role_layer_top,
     method: 'post',
@@ -204,7 +208,7 @@ export function sys_role_layer_top(arg){
   })
 }
 
-export function dictPage (arg) {
+export function dictPage(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_dict_page,
     method: 'post',
@@ -212,7 +216,7 @@ export function dictPage (arg) {
   })
 }
 
-export function dictAdd (arg) {
+export function dictAdd(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_dict_add,
     method: 'post',
@@ -220,7 +224,7 @@ export function dictAdd (arg) {
   })
 }
 
-export function dictUpdate (arg) {
+export function dictUpdate(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_dict_update,
     method: 'post',
@@ -228,7 +232,7 @@ export function dictUpdate (arg) {
   })
 }
 
-export function dictDelete (arg) {
+export function dictDelete(arg: any): Promise<ApiResponse> {
   return request({
     url: api.sys_dict_delete,
     method: 'post',

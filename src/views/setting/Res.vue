@@ -49,6 +49,7 @@
         v-model:open="visible"
         :width="500"
         :maskClosable="false"
+        :confirmLoading="dialogLoading"
         @ok="handleAddData"
       >
         <a-form labelAlign="right" :label-col="{ sm: { span: 4 } }" :wrapper-col="{ sm: { span: 20 } }">
@@ -91,7 +92,7 @@
   </AdminLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { Modal } from 'ant-design-vue'
 import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
@@ -111,6 +112,7 @@ const columns = [
 const data = ref([])
 const loading = ref(false)
 const visible = ref(false)
+const dialogLoading = ref(false)
 const dialogMode = ref('add')
 const all_res = ref([])
 const loading_all_res = ref(false)
@@ -167,16 +169,23 @@ function addData() {
 }
 
 async function handleAddData() {
-  if (!dialogData.is_menu) {
-    dialogData.path = null
+  dialogLoading.value = true
+  try {
+    if (!dialogData.is_menu) {
+      dialogData.path = null
+    }
+    if (dialogMode.value === 'add') {
+      await res_add(dialogData)
+    } else {
+      await res_update(dialogData)
+    }
+    visible.value = false
+    fetch()
+  } catch (err) {
+    // 失败时不关闭对话框，错误已在拦截器中处理
+  } finally {
+    dialogLoading.value = false
   }
-  if (dialogMode.value === 'add') {
-    await res_add(dialogData)
-  } else {
-    await res_update(dialogData)
-  }
-  visible.value = false
-  fetch()
 }
 
 function handleAddChild(scope) {
