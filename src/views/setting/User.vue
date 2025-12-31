@@ -212,16 +212,17 @@ function handleDelete(scope) {
 function handleEnableDisable(scope) {
   Modal.confirm({
     title: scope.state === 0 ? `你确定要启用账号:${scope.name}?` : `你确定要禁用账号:${scope.name}?`,
-    onOk() {
+    async onOk() {
       const state_old = scope.state
-      scope.state = scope.state === 0 ? 1 : 0
-      return sys_user_update(scope).then((res) => {
-        if (res.code === '0') {
-          fetch()
-        } else {
-          scope.state = state_old
-        }
-      })
+      const new_state = scope.state === 0 ? 1 : 0
+      // 先更新到服务器
+      try {
+        await sys_user_update({ ...scope, state: new_state })
+        // 成功后才更新本地状态和刷新列表
+        fetch()
+      } catch (err) {
+        // 失败时不修改状态，错误已在拦截器中处理
+      }
     }
   })
 }
