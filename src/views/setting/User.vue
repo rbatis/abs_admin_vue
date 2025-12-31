@@ -1,426 +1,256 @@
 <template>
-
-  <div class='dataBody'>
-    <a-form
-      layout='inline'
-    >
-      <!--<a-form-item>-->
-      <!--<a-input-->
-      <!--placeholder="请输入手机号"-->
-      <!--v-model="queryData.phone"-->
-      <!--&gt;-->
-      <!--<a-icon-->
-      <!--slot="prefix"-->
-      <!--type="user"-->
-      <!--style="color:rgba(0,0,0,.25)"-->
-      <!--/>-->
-      <!--</a-input>-->
-      <!--</a-form-item>-->
+  <AdminLayout>
+    <div class="dataBody">
+    <a-form layout="inline">
       <a-form-item>
-        <a-input
-          v-model='queryData.account'
-          placeholder='请输入账号'
-          :allowClear='true'
-          :maxLength='11'
-        >
-        </a-input>
+        <a-input v-model:value="queryData.account" placeholder="请输入账号" :allowClear="true" :maxLength="11" />
       </a-form-item>
       <a-form-item>
-        <a-input
-          v-model='queryData.name'
-          placeholder='请输入名称'
-          :allowClear='true'
-        >
-        </a-input>
+        <a-input v-model:value="queryData.name" placeholder="请输入名称" :allowClear="true" />
       </a-form-item>
-      <a-form-item
-        :wrapper-col='{ span: 12, offset: 5 }'
-      >
-        <a-button
-          type='primary'
-          html-type='submit'
-          @click='fetch_no_page'
-        >
-          查询
-        </a-button>
+      <a-form-item>
+        <a-button type="primary" @click="fetch_no_page">查询</a-button>
       </a-form-item>
     </a-form>
-    <div class='operate'>
-      <a-button type='dashed' style='width: 100%' icon='plus' @click='addData'>添加</a-button>
+    <div class="operate">
+      <a-button type="dashed" style="width: 100%" @click="addData">
+        <PlusOutlined /> 添加
+      </a-button>
     </div>
-    <a-table :columns='columns'
-             :rowKey='record => record.id'
-             :dataSource='data'
-             :pagination='pagination'
-             :loading='loading'
-             :indentSize='15'
-             childrenColumnName='childs'
-             @change='handleTableChange'
+    <a-table
+      :columns="columns"
+      :rowKey="record => record.id"
+      :dataSource="data"
+      :pagination="pagination"
+      :loading="loading"
+      @change="handleTableChange"
     >
-      <div
-        slot='expandedRowRender'
-        slot-scope='record'
-        style='margin: 0'>
-        <div
-          v-if='record!==null && record.role!==null'
-        >
-          <a-tag color='blue'>角色名称: {{ record.role.name }}</a-tag>
-          <a-tree
-            :selected-keys='[]'
-            :replace-fields="{  children: 'childs',  title: 'name',   key: 'id' }"
-            :autoExpandParent='true'
-            :tree-data='[record.role]'
-          />
-        </div>
-      </div>
-
-
-      <!--<template slot="rate" slot-scope="rate">-->
-      <!--{{rate+'%'}}-->
-      <!--</template>-->
-      <template slot='state' slot-scope='state'>
-        <a-tag color='blue' v-if='state === 1'>启用</a-tag>
-        <a-tag v-if='state === 0'>禁用</a-tag>
-      </template>
-      <template slot='action' slot-scope='scope'>
-        <div style='width: 110px;'>
-          <a style='color:#f5222d' @click='handleEnableDisable(scope)'>{{ scope.state === 0 ? '启用' : '禁用' }}</a>
-          <a-dropdown style='margin-left: 5px'>
-            <a class='ant-dropdown-link'>
-              更多
-              <a-icon type='down' />
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.dataIndex === 'state'">
+          <a-tag v-if="record.state === 1" color="blue">启用</a-tag>
+          <a-tag v-else>禁用</a-tag>
+        </template>
+        <template v-if="column.dataIndex === 'action'">
+          <div style="width: 110px;">
+            <a style="color:#f5222d" @click="handleEnableDisable(record)">
+              {{ record.state === 0 ? '启用' : '禁用' }}
             </a>
-            <a-menu slot='overlay'>
-              <a-menu-item>
-                <a style='color: #1890ff' @click='handleEdit(scope)'>编辑</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a style='color:#f5222d' @click='handleDelete(scope)'>删除</a>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
-        </div>
-
+            <a-dropdown>
+              <a class="ant-dropdown-link">更多 <DownOutlined /></a>
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item>
+                    <a style="color: #1890ff" @click="handleEdit(record)">编辑</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a style="color:#f5222d" @click="handleDelete(record)">删除</a>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </div>
+        </template>
       </template>
     </a-table>
 
     <a-modal
-      :title="dialogMode==='add'?'添加':'编辑'"
-      cancelText='取消'
-      okText='确定'
-      v-if='visible'
-      v-model='visible'
-      :width='500'
-      :maskClosable='false'
-      @ok='handleAddData'
+      :title="dialogMode === 'add' ? '添加' : '编辑'"
+      v-model:open="visible"
+      :width="500"
+      :maskClosable="false"
+      @ok="handleAddData"
     >
-      <a-form
-        labelAlign='right'
-        v-bind='{
-        labelCol: {
-          // xs: { span: 24 },
-          sm: { span: 4 },
-        },
-        wrapperCol: {
-          //xs: { span: 24 },
-          sm: { span: 20 },
-        },
-      }'
-      >
-        <!--        <a-form-item label='id'>-->
-        <!--          <a-input-->
-        <!--            style='width: 300px'-->
-        <!--            v-model='dialogData.id'-->
-        <!--            placeholder='请输入ID(唯一)'>-->
-        <!--          </a-input>-->
-        <!--        </a-form-item>-->
-
-        <a-form-item label='姓名'>
-          <a-input
-            v-model='dialogData.name'
-            placeholder='姓名'>
-          </a-input>
+      <a-form labelAlign="right" :label-col="{ sm: { span: 4 } }" :wrapper-col="{ sm: { span: 20 } }">
+        <a-form-item label="姓名">
+          <a-input v-model:value="dialogData.name" placeholder="姓名" />
         </a-form-item>
-        <a-form-item label='手机号'>
-          <a-input
-            v-model='dialogData.account'
-            :maxLength='11'
-            :disabled="dialogMode !== 'add'"
-            placeholder='账号/手机号'>
-          </a-input>
+        <a-form-item label="手机号">
+          <a-input v-model:value="dialogData.account" :maxLength="11" :disabled="dialogMode !== 'add'" placeholder="账号/手机号" />
         </a-form-item>
-        <a-form-item label='初始密码' v-if='dialogMode === "add" || dialogMode === "edit"'>
-          <a-switch default-checked v-model='dialogData.set_pwd' />
-          <label> 默认密码: 123456</label>
-        </a-form-item>
-        <a-form-item label='密码' v-if='dialogData.set_pwd===true'>
-          <a-input-password
-            v-model='dialogData.password'
-            placeholder='密码'>
-          </a-input-password>
-        </a-form-item>
-        <a-form-item label='确认密码' v-if='dialogData.set_pwd===true '>
-          <a-input-password
-            v-model='dialogData.password_confirm'
-            placeholder='确认密码'>
-          </a-input-password>
-        </a-form-item>
-        <a-form-item label='角色集'>
+        <a-form-item label="角色集">
           <a-tree
-            v-model='dialogData.role_ids'
-            :replace-fields="{ children: 'childs', title: 'name', key: 'id'  }"
+            v-model:checkedKeys="dialogData.role_ids"
+            :replace-fields="{ children: 'childs', title: 'name', key: 'id' }"
             checkable
-            :auto-expand-parent='true'
-            :tree-data='all_role'
-            :checkStrictly='true'
-            @check='onRolesCheck'
+            :auto-expand-parent="true"
+            :tree-data="all_role"
+            :checkStrictly="true"
+            @check="onRolesCheck"
           />
         </a-form-item>
       </a-form>
-
-
     </a-modal>
   </div>
-
+  </AdminLayout>
 </template>
 
-<script>
-const columns = [
-  {
-    title: 'id',
-    dataIndex: 'id'
-    // scopedSlots: {customRender: 'name'},
-  },
-  {
-    title: '名称',
-    dataIndex: 'name'
-    // scopedSlots: {customRender: 'name'},
-  },
-  {
-    title: '账号',
-    dataIndex: 'account'
-    // scopedSlots: {customRender: 'name'},
-  },
-  {
-    title: '角色名称',
-    dataIndex: 'role.name'
-    // scopedSlots: {customRender: 'name'},
-  },
-  {
-    title: '状态',
-    dataIndex: 'state',
-    scopedSlots: { customRender: 'state' }
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'create_date'
-    // scopedSlots: {customRender: 'name'},
-  },
-  {
-    title: '操作',
-    // dataIndex: 'create_time',
-    scopedSlots: { customRender: 'action' }
-  }
-]
-
+<script setup>
+import { ref, reactive, onMounted } from 'vue'
+import { Modal } from 'ant-design-vue'
+import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
 import { sys_role_layer_top, sys_user_add, sys_user_remove, sys_user_page, sys_user_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
+import AdminLayout from '@/components/AdminLayout.vue'
 
-export default {
-  mounted() {
-    this.fetch()
-    this.getAllRole()
-  },
-  data() {
-    return {
-      data: [],
-      pagination: {},
-      loading: false,
-      columns,
+const columns = [
+  { title: 'id', dataIndex: 'id' },
+  { title: '名称', dataIndex: 'name' },
+  { title: '账号', dataIndex: 'account' },
+  { title: '角色名称', dataIndex: ['role', 'name'] },
+  { title: '状态', dataIndex: 'state' },
+  { title: '创建时间', dataIndex: 'create_date' },
+  { title: '操作', dataIndex: 'action' }
+]
 
-      queryData: {
-        id: null,
-        account: null,
-        name: null,
-        page_no: 1,
-        page_size: 5
-      },
-      dialogData: {
-        id: null,
-        role_ids: [],
-        role_id: null,
-        password_confirm: null,
-        set_pwd: false
-      },
-      visible: false,
-      dialogMode: 'add',
-      all_role: []
-    }
-  },
-  methods: {
-    handleTableChange(pagination, filters, sorter) {
-      console.log(pagination)
-      const pager = { ...this.pagination }
-      pager.current = pagination.current
-      pager.pageSize = 5
-      this.pagination = pager
-      this.queryData.page_no = pagination.current
-      this.fetch()
-    },
-    fetch_no_page() {
-      this.pagination.current = 1
-      this.queryData.page_no = 1
-      this.queryData.page_size = 5
-      this.fetch()
-    },
-    fetch() {
-      this.loading = true
-      var arg = Object.assign({}, this.queryData)
-      if (arg.time_start != null) {
-        arg.time_start = arg.time_start.format('YYYY-MM-DDThh:mm:ss')
-      }
-      if (arg.time_end != null) {
-        arg.time_end = arg.time_end.format('YYYY-MM-DDThh:mm:ss')
-      }
+const data = ref([])
+const loading = ref(false)
+const visible = ref(false)
+const dialogMode = ref('add')
+const all_role = ref([])
 
-      if (arg.account === '') {
-        arg.account = null
-      }
-      if (arg.name === '') {
-        arg.name = null
-      }
-      //取分页数据
-      sys_user_page(arg).then((res) => {
-        //alert(JSON.stringify(res))
-        const pagination = { ...this.pagination }
-        this.loading = false
-        this.data = res.data.records
-        pagination.total = res.data.total
-        pagination.pageSize = res.data.page_size
-        this.pagination = pagination
-      })
-    },
+const queryData = reactive({
+  account: null,
+  name: null,
+  page_no: 1,
+  page_size: 5
+})
 
-    addData: function() {
-      this.handleDialogCancel()
-      this.visible = true
-      this.dialogMode = 'add'
-    },
-    //处理添加产品
-    handleAddData: function() {
-      if (this.dialogData.set_pwd && this.dialogData.password_confirm !== this.dialogData.password) {
-        this.$message.info('密码不一致!')
-        return
-      }
-      if (this.dialogMode === 'add') {
-        sys_user_add(this.dialogData)
-          .then((res) => {
-            this.visible = false
-            this.fetch()
-          }).catch(err => {
+const dialogData = reactive({
+  id: null,
+  name: null,
+  account: null,
+  role_ids: [],
+  role_id: null
+})
 
-        })
-      } else if (this.dialogMode === 'edit') {
+const pagination = reactive({
+  current: 1,
+  pageSize: 5,
+  total: 0
+})
 
-        sys_user_update(this.dialogData)
-          .then((res) => {
-            this.visible = false
-            this.fetch()
-          })
-      }
-    },
-    handleAddChild: function(scope) {
-      this.visible = true
-      this.dialogMode = 'add'
-      if (scope.role !== undefined && scope.role !== null) {
-        this.dialogData = Object.assign({ role_ids: [scope.role.id], role_id: scope.role.id }, scope)
-      } else {
-        this.dialogData = Object.assign({ role_ids: [], role_id: null }, scope)
-      }
-    },
-    //handleEdit
-    handleEdit: function(scope) {
-      this.visible = true
-      this.dialogMode = 'edit'
-      if (scope.role !== undefined && scope.role !== null) {
-        this.dialogData = Object.assign({ role_ids: [scope.role.id], role_id: scope.role.id }, scope)
-      } else {
-        this.dialogData = Object.assign({ role_ids: [], role_id: null }, scope)
-      }
-    },
-    handleDelete: function(scope) {
-      let self = this
-      this.$confirm({
-        title: '你确定要删除?',
-        content: '你确定要删除！',
-        onOk() {
-          sys_user_remove(scope)
-            .then((res) => {
-              showMsg(self, res)
-              self.visible = false
-              self.fetch()
-            })
-        },
-        onCancel() {
-          // console.log('Cancel');
-        },
-        class: 'test'
-      })
-    },
-    handleEnableDisable: function(scope) {
-      let self = this
-      this.$confirm({
-        title: scope.state === 0 ? '你确定要启用账号:'+scope.name+'?' : '你确定要禁用账号:'+scope.name+'?',
-        content: scope.state === 0 ? '你确定要启用账号:'+scope.name+'?' : '你确定要禁用账号:'+scope.name+'?',
-        onOk() {
-          let state_old = scope.state;
-          scope.state = scope.state === 0 ? 1 : 0;
-          sys_user_update(scope)
-            .then((res) => {
-              if (res.code === '0'){
-                self.fetch()
-              }else{
-                scope.state = state_old;
-              }
-            })
-        },
-        onCancel() {
-          // console.log('Cancel');
-        },
-        class: 'test'
-      })
-    },
-    handleDialogCancel: function() {
-      this.dialogData = {
-        id: null,
-        role_ids: [],
-        role_id: null
-      }
-    },
-    getAllRole: function() {
-      sys_role_layer_top({})
-        .then((res) => {
-          this.all_role = res.data
-        })
-    },
-    onRolesCheck: function(data) {
-      let len = data.checked.length
-      if (len >= 1) {
-        this.dialogData.role_ids = { 'checked': [data.checked[len - 1]], 'halfChecked': [] }
-        this.dialogData.role_id = data.checked[len - 1]
-      } else {
-        this.dialogData.role_ids = []
-        this.dialogData.role_id = null
-      }
-    }
+function handleTableChange(pag) {
+  pagination.current = pag.current
+  queryData.page_no = pag.current
+  fetch()
+}
 
+function fetch_no_page() {
+  pagination.current = 1
+  queryData.page_no = 1
+  fetch()
+}
+
+function fetch() {
+  loading.value = true
+  const arg = { ...queryData }
+  if (arg.account === '') arg.account = null
+  if (arg.name === '') arg.name = null
+
+  sys_user_page(arg).then((res) => {
+    loading.value = false
+    data.value = res.data.records
+    pagination.total = res.data.total
+    pagination.pageSize = res.data.page_size
+  })
+}
+
+function addData() {
+  handleDialogCancel()
+  visible.value = true
+  dialogMode.value = 'add'
+}
+
+async function handleAddData() {
+  if (dialogMode.value === 'add') {
+    await sys_user_add(dialogData)
+  } else if (dialogMode.value === 'edit') {
+    await sys_user_update(dialogData)
+  }
+  visible.value = false
+  fetch()
+}
+
+function handleEdit(scope) {
+  visible.value = true
+  dialogMode.value = 'edit'
+  if (scope.role !== undefined && scope.role !== null) {
+    Object.assign(dialogData, { role_ids: [scope.role.id], role_id: scope.role.id }, scope)
+  } else {
+    Object.assign(dialogData, { role_ids: [], role_id: null }, scope)
   }
 }
+
+function handleDelete(scope) {
+  Modal.confirm({
+    title: '你确定要删除?',
+    content: '你确定要删除！',
+    onOk() {
+      return sys_user_remove(scope).then((res) => {
+        showMsg({ message: {} }, res)
+        visible.value = false
+        fetch()
+      })
+    }
+  })
+}
+
+function handleEnableDisable(scope) {
+  Modal.confirm({
+    title: scope.state === 0 ? `你确定要启用账号:${scope.name}?` : `你确定要禁用账号:${scope.name}?`,
+    onOk() {
+      const state_old = scope.state
+      scope.state = scope.state === 0 ? 1 : 0
+      return sys_user_update(scope).then((res) => {
+        if (res.code === '0') {
+          fetch()
+        } else {
+          scope.state = state_old
+        }
+      })
+    }
+  })
+}
+
+function handleDialogCancel() {
+  Object.assign(dialogData, {
+    id: null,
+    name: null,
+    account: null,
+    role_ids: [],
+    role_id: null
+  })
+}
+
+function getAllRole() {
+  sys_role_layer_top({}).then((res) => {
+    all_role.value = res.data
+  })
+}
+
+function onRolesCheck(data) {
+  const len = data.checked.length
+  if (len >= 1) {
+    dialogData.role_ids = { checked: [data.checked[len - 1]], halfChecked: [] }
+    dialogData.role_id = data.checked[len - 1]
+  } else {
+    dialogData.role_ids = []
+    dialogData.role_id = null
+  }
+}
+
+onMounted(() => {
+  fetch()
+  getAllRole()
+})
 </script>
 
-<style lang='less'>
+<style lang="less">
 .dataBody {
   background: #ffffff;
   padding: 10px;
+  .operate {
+    margin-bottom: 16px;
+  }
 }
 </style>
