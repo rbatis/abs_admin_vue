@@ -24,17 +24,17 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
-            <div style="width: 110px;">
-              <a style="padding-right: 5px;" @click="handleAddChild({ parent_id: record.id })">添加下级</a>
+            <div class="flex gap-2">
+              <a class="text-blue-500" @click="handleAddChild({ parent_id: record.id })">添加下级</a>
               <a-dropdown>
-                <a class="ant-dropdown-link">更多 <DownOutlined /></a>
+                <a class="text-gray-600">更多 <DownOutlined /></a>
                 <template #overlay>
                   <a-menu>
                     <a-menu-item>
-                      <a style="color: #1890ff" @click="handleEdit(record)">编辑</a>
+                      <a class="text-blue-500" @click="handleEdit(record)">编辑</a>
                     </a-menu-item>
                     <a-menu-item>
-                      <a style="color:#f5222d" @click="handleDelete(record)">删除</a>
+                      <a class="text-red-500" @click="handleDelete(record)">删除</a>
                     </a-menu-item>
                   </a-menu>
                 </template>

@@ -24,14 +24,14 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
-            <div style="width: 80px">
-              <a @click="handleEdit(record)">编辑</a>
+            <div class="flex gap-2">
+              <a class="text-blue-500" @click="handleEdit(record)">编辑</a>
               <a-dropdown>
-                <a class="ant-dropdown-link">更多 <DownOutlined /></a>
+                <a class="text-gray-600">更多 <DownOutlined /></a>
                 <template #overlay>
                   <a-menu>
                     <a-menu-item>
-                      <a @click="handleDelete(record)">删除</a>
+                      <a class="text-red-500" @click="handleDelete(record)">删除</a>
                     </a-menu-item>
                   </a-menu>
                 </template>
