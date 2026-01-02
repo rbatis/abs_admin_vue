@@ -131,6 +131,20 @@ function changeLanguage(lang: string) {
   locale.value = lang
 }
 
+// 根据路径自动推导菜单 key（无需配置）
+// 规律：/ → home, /setting/xxx → xxx
+function updateSelectedKeys(path: string) {
+  if (path === '/') {
+    selectedKeys.value = ['home']
+  } else if (path.startsWith('/setting/')) {
+    // 提取路径最后一部分作为菜单 key
+    const key = path.split('/').pop() || ''
+    selectedKeys.value = [key]
+  } else {
+    selectedKeys.value = []
+  }
+}
+
 // 获取当前登录用户名
 const currentUserName = computed(() => {
   try {
@@ -145,20 +159,6 @@ const currentUserName = computed(() => {
   }
   return '用户'
 })
-
-function updateSelectedKeys(path: string) {
-  if (path === '/') {
-    selectedKeys.value = ['home']
-  } else if (path.includes('/setting/user')) {
-    selectedKeys.value = ['user']
-  } else if (path.includes('/setting/role')) {
-    selectedKeys.value = ['role']
-  } else if (path.includes('/setting/res')) {
-    selectedKeys.value = ['res']
-  } else if (path.includes('/setting/dict')) {
-    selectedKeys.value = ['dict']
-  }
-}
 
 function handleLogout() {
   Modal.confirm({
