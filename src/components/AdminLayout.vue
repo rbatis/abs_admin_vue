@@ -22,28 +22,28 @@
         <!-- 首页 -->
         <a-menu-item key="home" @click="$router.push('/')">
           <template #icon><HomeOutlined /></template>
-          首页
+          {{ $t('menu.home') }}
         </a-menu-item>
 
         <!-- 设置子菜单 -->
         <a-sub-menu key="setting">
           <template #icon><SettingOutlined /></template>
-          <template #title>设置</template>
+          <template #title>{{ $t('menu.setting') }}</template>
           <a-menu-item key="user" @click="$router.push('/setting/user')">
             <template #icon><UserOutlined /></template>
-            账号管理
+            {{ $t('menu.userManagement') }}
           </a-menu-item>
           <a-menu-item key="role" @click="$router.push('/setting/role')">
             <template #icon><TeamOutlined /></template>
-            角色管理
+            {{ $t('menu.roleManagement') }}
           </a-menu-item>
           <a-menu-item key="res" @click="$router.push('/setting/res')">
             <template #icon><SafetyOutlined /></template>
-            权限管理
+            {{ $t('menu.permissionManagement') }}
           </a-menu-item>
           <a-menu-item key="dict" @click="$router.push('/setting/dict')">
             <template #icon><BookOutlined /></template>
-            字典管理
+            {{ $t('menu.dictManagement') }}
           </a-menu-item>
         </a-sub-menu>
 
@@ -52,7 +52,7 @@
           <div class="user-name">{{ currentUserName }}</div>
           <a-menu-item key="logout" @click="handleLogout" class="logout-menu-item">
             <template #icon><LogoutOutlined /></template>
-            退出
+            {{ $t('common.logout') }}
           </a-menu-item>
         </div>
       </a-menu>
@@ -60,6 +60,23 @@
 
     <!-- 右侧内容区 -->
     <div class="admin-content">
+      <!-- 顶部栏 -->
+      <div class="admin-header">
+        <!-- 语言切换按钮 -->
+        <a-dropdown trigger="click" placement="bottomRight">
+          <GlobalOutlined class="language-icon-header" />
+          <template #overlay>
+            <a-menu>
+              <a-menu-item @click="changeLanguage('zh-CN')">
+                {{ currentLocale === 'zh-CN' ? '✓ ' : '' }}中文
+              </a-menu-item>
+              <a-menu-item @click="changeLanguage('en-US')">
+                {{ currentLocale === 'en-US' ? '✓ ' : '' }}English
+              </a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
+      </div>
       <div class="admin-content-inner">
         <slot></slot>
       </div>
@@ -85,6 +102,7 @@
  */
 import { ref, watch, onMounted, h, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { Modal } from 'ant-design-vue'
 import {
   HomeOutlined,
@@ -94,14 +112,24 @@ import {
   TeamOutlined,
   SafetyOutlined,
   BookOutlined,
-  ExclamationCircleOutlined
+  ExclamationCircleOutlined,
+  GlobalOutlined
 } from '@ant-design/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
+const { locale, t } = useI18n()
 
 const selectedKeys = ref(['home'])
 const openKeys = ref(['setting'])
+
+// 当前语言
+const currentLocale = computed(() => locale.value)
+
+// 切换语言
+function changeLanguage(lang: string) {
+  locale.value = lang
+}
 
 // 获取当前登录用户名
 const currentUserName = computed(() => {
@@ -134,11 +162,11 @@ function updateSelectedKeys(path) {
 
 function handleLogout() {
   Modal.confirm({
-    title: '确认退出',
+    title: t('common.logoutTitle'),
     icon: () => h(ExclamationCircleOutlined),
-    content: '确定要退出登录吗？',
-    okText: '确定',
-    cancelText: '取消',
+    content: t('common.logoutConfirm'),
+    okText: t('common.ok'),
+    cancelText: t('common.cancel'),
     onOk() {
       localStorage.removeItem('access_token')
       localStorage.removeItem('user_info')
@@ -216,6 +244,29 @@ onMounted(() => {
   flex: 1;
   background: #f0f2f5;
   margin-left: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-header {
+  height: 64px;
+  background: #ffffff;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+}
+
+.language-icon-header {
+  font-size: 20px;
+  color: #595959;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.language-icon-header:hover {
+  color: #1890ff;
 }
 
 .admin-content-inner {

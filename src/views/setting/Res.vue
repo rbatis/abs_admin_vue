@@ -3,15 +3,15 @@
     <div class="dataBody">
       <a-form layout="inline">
         <a-form-item>
-          <a-input v-model:value="queryData.name" placeholder="请输入名称" :allowClear="true" />
+          <a-input v-model:value="queryData.name" :placeholder="$t('common.enterName')" :allowClear="true" />
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" @click="fetch_no_page">查询</a-button>
+          <a-button type="primary" @click="fetch_no_page">{{ $t('common.query') }}</a-button>
         </a-form-item>
       </a-form>
       <div class="operate">
         <a-button type="dashed" style="width: 100%" @click="addData">
-          <PlusOutlined /> 添加
+          <PlusOutlined /> {{ $t('common.add') }}
         </a-button>
       </div>
       <a-table
@@ -25,16 +25,16 @@
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <div class="flex gap-2">
-              <a class="text-blue-500" @click="handleAddChild({ parent_id: record.id })">添加下级</a>
+              <a class="text-blue-500" @click="handleAddChild({ parent_id: record.id })">{{ $t('common.addChild') }}</a>
               <a-dropdown>
-                <a class="text-gray-600">更多 <DownOutlined /></a>
+                <a class="text-gray-600">{{ $t('common.more') }} <DownOutlined /></a>
                 <template #overlay>
                   <a-menu>
                     <a-menu-item>
-                      <a class="text-blue-500" @click="handleEdit(record)">编辑</a>
+                      <a class="text-blue-500" @click="handleEdit(record)">{{ $t('common.edit') }}</a>
                     </a-menu-item>
                     <a-menu-item>
-                      <a class="text-red-500" @click="handleDelete(record)">删除</a>
+                      <a class="text-red-500" @click="handleDelete(record)">{{ $t('common.delete') }}</a>
                     </a-menu-item>
                   </a-menu>
                 </template>
@@ -45,7 +45,7 @@
       </a-table>
 
       <a-modal
-        :title="dialogMode === 'add' ? '添加' : '编辑'"
+        :title="dialogMode === 'add' ? $t('common.add') : $t('common.edit')"
         v-model:open="visible"
         :width="500"
         :maskClosable="false"
@@ -53,15 +53,15 @@
         @ok="handleAddData"
       >
         <a-form labelAlign="right" :label-col="{ sm: { span: 4 } }" :wrapper-col="{ sm: { span: 20 } }">
-          <a-form-item :label="dialogData.is_menu ? '菜单名称' : '权限名称'">
+          <a-form-item :label="dialogData.is_menu ? $t('common.menuName') : $t('common.permissionName')">
             <a-input v-model:value="dialogData.name" />
           </a-form-item>
-          <a-form-item label="父级(选填)">
-            <a-input v-model:value="dialogData.parent_id" placeholder="父级id" />
+          <a-form-item :label="$t('common.parent')">
+            <a-input v-model:value="dialogData.parent_id" :placeholder="$t('common.parentId')" />
             <a-tree
               :disabled="loading_all_res"
               v-model:checkedKeys="dialogData.permission_ids"
-              :replace-fields="{ children: 'childs', title: 'name', key: 'id' }"
+              :field-names="{ children: 'childs', title: 'name', key: 'id' }"
               :autoExpandParent="true"
               :tree-data="all_res"
               checkable
@@ -69,20 +69,20 @@
               @check="onResCheck"
             />
           </a-form-item>
-          <a-form-item label="标识">
-            <a-input v-model:value="dialogData.permission" placeholder="菜单、权限标识" />
+          <a-form-item :label="$t('common.identifier')">
+            <a-input v-model:value="dialogData.permission" :placeholder="$t('common.permissionIdentifier')" />
           </a-form-item>
-          <a-form-item label="是否菜单">
+          <a-form-item :label="$t('common.isMenu')">
             <a-row>
               <a-col>
                 <a-switch
-                  checked-children="菜单"
-                  un-checked-children="权限"
+                  :checked-children="$t('common.menu')"
+                  :un-checked-children="$t('common.permission')"
                   v-model:checked="dialogData.is_menu"
                 />
               </a-col>
               <a-col>
-                <a-input :disabled="!dialogData.is_menu" v-model:value="dialogData.path" placeholder="填写路径为菜单！" />
+                <a-input :disabled="!dialogData.is_menu" v-model:value="dialogData.path" :placeholder="$t('common.pathPlaceholder')" />
               </a-col>
             </a-row>
           </a-form-item>
@@ -93,21 +93,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Modal } from 'ant-design-vue'
 import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
 import { res_add, res_delete, res_page, res_update, sys_permission_layer_top } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 import AdminLayout from '@/components/AdminLayout.vue'
 
-const columns = [
-  { title: 'id', dataIndex: 'id' },
-  { title: '名称', dataIndex: 'name' },
-  { title: '权限标识', dataIndex: 'permission' },
-  { title: '路由', dataIndex: 'path' },
-  { title: '创建时间', dataIndex: 'create_date' },
-  { title: '操作', dataIndex: 'action' }
-]
+const { t } = useI18n()
+
+const columns = computed(() => [
+  { title: t('common.id'), dataIndex: 'id' },
+  { title: t('common.name'), dataIndex: 'name' },
+  { title: t('res.permission'), dataIndex: 'permission' },
+  { title: t('common.route'), dataIndex: 'path' },
+  { title: t('common.createTime'), dataIndex: 'create_date' },
+  { title: t('common.operation'), dataIndex: 'action' }
+])
 
 const data = ref([])
 const loading = ref(false)
@@ -221,8 +224,8 @@ function handleEdit(scope) {
 
 function handleDelete(scope) {
   Modal.confirm({
-    title: '你确定要删除?',
-    content: '你确定要删除！',
+    title: t('common.deleteConfirm'),
+    content: t('common.deleteConfirmContent'),
     onOk() {
       return res_delete(scope).then((res) => {
         showMsg({ message: {} }, res)

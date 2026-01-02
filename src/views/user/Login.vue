@@ -13,7 +13,7 @@
       <div class="login-header">
         <img src="@/assets/logo.png" alt="Logo" class="login-logo" />
         <h1 class="login-title">AbsAdmin</h1>
-        <p class="login-subtitle">后台管理系统</p>
+        <p class="login-subtitle">{{ $t('common.loginSubTitle') || '后台管理系统' }}</p>
       </div>
 
       <!-- 登录表单 -->
@@ -26,7 +26,7 @@
           v-if="isLoginError"
           type="error"
           show-icon
-          message="账号或密码错误"
+          :message="$t('common.accountOrPasswordError')"
           class="login-alert"
         />
 
@@ -34,7 +34,7 @@
           <a-input
             size="large"
             v-model:value="formState.account"
-            placeholder="请输入账号"
+            :placeholder="$t('common.accountPlaceholder')"
             :maxLength="11"
             @change="handleAccountChange"
           >
@@ -48,7 +48,7 @@
           <a-input-password
             size="large"
             v-model:value="formState.password"
-            placeholder="请输入密码"
+            :placeholder="$t('common.passwordPlaceholder')"
           >
             <template #prefix>
               <LockOutlined class="login-icon" />
@@ -62,7 +62,7 @@
               <a-input
                 size="large"
                 v-model:value="formState.vcode"
-                placeholder="请输入验证码"
+                :placeholder="$t('common.vcodePlaceholder')"
               >
                 <template #prefix>
                   <SafetyOutlined class="login-icon" />
@@ -74,7 +74,7 @@
                 v-if="captchaUrl"
                 class="login-captcha"
                 @click="refreshCaptcha"
-                title="点击刷新验证码"
+                :title="$t('common.refreshCaptcha') || '点击刷新验证码'"
               >
                 <img :src="captchaUrl" class="login-captcha-img" alt="验证码" />
               </div>
@@ -90,7 +90,7 @@
             class="login-btn"
             :loading="state.loginBtn"
           >
-            {{ state.loginBtn ? '登录中...' : '登录' }}
+            {{ state.loginBtn ? $t('common.loginBtnLoading') : $t('common.loginBtn') }}
           </a-button>
         </a-form-item>
       </a-form>
@@ -106,12 +106,14 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { notification } from 'ant-design-vue'
 import md5 from 'md5'
 import { UserOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons-vue'
 import { login } from '@/api/login'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const isLoginError = ref(false)
 const captchaTimestamp = ref(0)
@@ -126,11 +128,11 @@ const state = reactive({
   loginBtn: false
 })
 
-const rules = {
-  account: [{ required: true, message: '请输入账号' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-  vcode: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
-}
+const rules = computed(() => ({
+  account: [{ required: true, message: t('common.accountPlaceholder') }],
+  password: [{ required: true, message: t('common.passwordPlaceholder'), trigger: 'blur' }],
+  vcode: [{ required: true, message: t('common.vcodePlaceholder'), trigger: 'blur' }]
+}))
 
 const captchaUrl = computed(() => {
   if (!formState.account) return ''
@@ -170,15 +172,15 @@ async function handleSubmit(values) {
       }
     }
     notification.success({
-      message: '欢迎',
-      description: '登录成功'
+      message: t('common.welcome'),
+      description: t('common.loginSuccess')
     })
     isLoginError.value = false
     router.push('/')
   } catch (err) {
     isLoginError.value = true
     notification.error({
-      message: '登录失败',
+      message: t('common.loginFailed'),
       description: ((err.response || {}).data || {}).msg || '请求出现错误，请稍后再试',
       duration: 4
     })

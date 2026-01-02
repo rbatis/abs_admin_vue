@@ -3,18 +3,18 @@
     <div class="dataBody">
     <a-form layout="inline">
       <a-form-item>
-        <a-input v-model:value="queryData.account" placeholder="请输入账号" :allowClear="true" :maxLength="11" />
+        <a-input v-model:value="queryData.account" :placeholder="$t('user.account')" :allowClear="true" :maxLength="11" />
       </a-form-item>
       <a-form-item>
-        <a-input v-model:value="queryData.name" placeholder="请输入名称" :allowClear="true" />
+        <a-input v-model:value="queryData.name" :placeholder="$t('common.enterName')" :allowClear="true" />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" @click="fetch_no_page">查询</a-button>
+        <a-button type="primary" @click="fetch_no_page">{{ $t('common.query') }}</a-button>
       </a-form-item>
     </a-form>
     <div class="operate">
       <a-button type="dashed" style="width: 100%" @click="addData">
-        <PlusOutlined /> 添加
+        <PlusOutlined /> {{ $t('common.add') }}
       </a-button>
     </div>
     <a-table
@@ -27,23 +27,23 @@
     >
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'state'">
-          <a-tag v-if="record.state === 1" color="blue">启用</a-tag>
-          <a-tag v-else>禁用</a-tag>
+          <a-tag v-if="record.state === 1" color="blue">{{ $t('common.enable') }}</a-tag>
+          <a-tag v-else>{{ $t('common.disable') }}</a-tag>
         </template>
         <template v-if="column.dataIndex === 'action'">
           <div class="flex gap-2">
             <a class="text-red-500" @click="handleEnableDisable(record)">
-              {{ record.state === 0 ? '启用' : '禁用' }}
+              {{ record.state === 0 ? $t('common.enable') : $t('common.disable') }}
             </a>
             <a-dropdown>
-              <a class="text-gray-600">更多 <DownOutlined /></a>
+              <a class="text-gray-600">{{ $t('common.more') }} <DownOutlined /></a>
               <template #overlay>
                 <a-menu>
                   <a-menu-item>
-                    <a class="text-blue-500" @click="handleEdit(record)">编辑</a>
+                    <a class="text-blue-500" @click="handleEdit(record)">{{ $t('common.edit') }}</a>
                   </a-menu-item>
                   <a-menu-item>
-                    <a class="text-red-500" @click="handleDelete(record)">删除</a>
+                    <a class="text-red-500" @click="handleDelete(record)">{{ $t('common.delete') }}</a>
                   </a-menu-item>
                 </a-menu>
               </template>
@@ -54,7 +54,7 @@
     </a-table>
 
     <a-modal
-      :title="dialogMode === 'add' ? '添加' : '编辑'"
+      :title="dialogMode === 'add' ? $t('common.add') : $t('common.edit')"
       v-model:open="visible"
       :width="500"
       :maskClosable="false"
@@ -62,13 +62,13 @@
       @ok="handleAddData"
     >
       <a-form labelAlign="right" :label-col="{ sm: { span: 4 } }" :wrapper-col="{ sm: { span: 20 } }">
-        <a-form-item label="姓名">
-          <a-input v-model:value="dialogData.name" placeholder="姓名" />
+        <a-form-item :label="$t('user.name')">
+          <a-input v-model:value="dialogData.name" :placeholder="$t('user.name')" />
         </a-form-item>
-        <a-form-item label="手机号">
-          <a-input v-model:value="dialogData.account" :maxLength="11" :disabled="dialogMode !== 'add'" placeholder="账号/手机号" />
+        <a-form-item :label="$t('user.account')">
+          <a-input v-model:value="dialogData.account" :maxLength="11" :disabled="dialogMode !== 'add'" :placeholder="$t('user.account')" />
         </a-form-item>
-        <a-form-item label="角色集">
+        <a-form-item :label="$t('common.roleSet')">
           <a-tree
             v-model:checkedKeys="dialogData.role_ids"
             :field-names="{ children: 'childs', title: 'name', key: 'id' }"
@@ -86,22 +86,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed, h } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Modal } from 'ant-design-vue'
 import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
 import { sys_role_layer_top, sys_user_add, sys_user_remove, sys_user_page, sys_user_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 import AdminLayout from '@/components/AdminLayout.vue'
 
-const columns = [
-  { title: 'id', dataIndex: 'id' },
-  { title: '名称', dataIndex: 'name' },
-  { title: '账号', dataIndex: 'account' },
-  { title: '角色名称', dataIndex: ['role', 'name'] },
-  { title: '状态', dataIndex: 'state' },
-  { title: '创建时间', dataIndex: 'create_date' },
-  { title: '操作', dataIndex: 'action' }
-]
+const { t } = useI18n()
+
+const columns = computed(() => [
+  { title: t('common.id'), dataIndex: 'id' },
+  { title: t('common.name'), dataIndex: 'name' },
+  { title: t('user.account'), dataIndex: 'account' },
+  { title: t('common.name') + '/' + t('role.name'), dataIndex: ['role', 'name'] },
+  { title: t('common.state'), dataIndex: 'state' },
+  { title: t('common.createTime'), dataIndex: 'create_date' },
+  { title: t('common.operation'), dataIndex: 'action' }
+])
 
 const data = ref([])
 const loading = ref(false)
@@ -197,8 +200,8 @@ function handleEdit(scope) {
 
 function handleDelete(scope) {
   Modal.confirm({
-    title: '你确定要删除?',
-    content: '你确定要删除！',
+    title: t('common.deleteConfirm'),
+    content: t('common.deleteConfirmContent'),
     onOk() {
       return sys_user_remove(scope).then((res) => {
         showMsg({ message: {} }, res)
@@ -210,8 +213,9 @@ function handleDelete(scope) {
 }
 
 function handleEnableDisable(scope) {
+  const key = scope.state === 0 ? 'user.enableConfirm' : 'user.disableConfirm'
   Modal.confirm({
-    title: scope.state === 0 ? `你确定要启用账号:${scope.name}?` : `你确定要禁用账号:${scope.name}?`,
+    title: t(key, { name: scope.name }),
     async onOk() {
       const state_old = scope.state
       const new_state = scope.state === 0 ? 1 : 0

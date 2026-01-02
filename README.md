@@ -2,6 +2,8 @@
 
 A modern admin panel built with Vue 3 + Ant Design Vue + Tailwind CSS
 
+> **AI-Powered Development** This project is built with AI assistance using prompts. Future extensions can continue using AI-assisted development.
+
 ## Tech Stack
 
 - **Vue 3.5** - Progressive JavaScript Framework
