@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn dev:*)",
+      "Bash(yarn add:*)",
+      "Bash(yarn serve:*)",
+      "Bash(timeout:*)",
+      "Bash(git reset:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

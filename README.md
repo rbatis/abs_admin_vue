@@ -1,131 +1,50 @@
-English | [简体中文](./README.zh-CN.md)
+# AbsAdmin Admin Panel
 
-<h1 align="center">Ant Design Vue Pro</h1>
-<div align="center">
-An out-of-box UI solution for enterprise applications as a Vue boilerplate. based on  <a href="https://vuecomponent.github.io/ant-design-vue/docs/vue/introduce-cn/" target="_blank">Ant Design of Vue</a>
-</div>
+A modern admin panel built with Vue 3 + Ant Design Vue + Tailwind CSS
 
-<div align="center">
+## Tech Stack
 
-[![License](https://img.shields.io/npm/l/package.json.svg?style=flat)](https://github.com/vueComponent/ant-design-vue-pro/blob/master/LICENSE)
-[![Release](https://img.shields.io/github/release/vueComponent/ant-design-vue-pro.svg?style=flat)](https://github.com/vueComponent/ant-design-vue-pro/releases/latest)
-[![Travis branch](https://travis-ci.org/vueComponent/ant-design-vue-pro.svg?branch=master)](https://travis-ci.org/vueComponent/ant-design-vue-pro)
+- **Vue 3.5** - Progressive JavaScript Framework
+- **Ant Design Vue 4.x** - Enterprise UI Components
+- **Vue Router 4.x** - Official Router
+- **Tailwind CSS 3.x** - Utility-first CSS Framework
+- **Axios** - HTTP Client
+- **Less** - CSS Preprocessor
 
-</div>
+## Development
 
-- Preview: https://preview.pro.antdv.com
-- Home Page: https://pro.antdv.com
-- Documentation: https://pro.antdv.com/docs/getting-started
-- ChangeLog: https://pro.antdv.com/docs/changelog
-- FAQ: https://pro.antdv.com/docs/faq
-
-Overview
-----
-
-![dashboard](https://static-2.loacg.com/open/static/github/SP1.png)
-
-### Env and dependencies
-
-- node(version 16)
-- yarn
-- webpack
-- eslint
-- @vue/cli ~3
-- [ant-design-vue](https://github.com/vueComponent/ant-design-vue) - Ant Design Of Vue 
-- [vue-cropper](https://github.com/xyxiao001/vue-cropper) - Picture edit
-- [@antv/g2](https://antv.alipay.com/zh-cn/index.html) - AntV G2
-- [Viser-vue](https://viserjs.github.io/docs.html#/viser/guide/installation)  - Antv/G2 of Vue
-
-> Note:  [Yarn](https://yarnpkg.com/) package management is recommended, the exact same version loaded with the demo site of this project (yarn.lock) . but you can also use npm
-
-
-### Project setup
-
-- install Nodejs 16 LTS or run command ```nvm use v16.14.0``` 
-
-- Clone repo
 ```bash
-git clone https://github.com/vueComponent/ant-design-vue-pro.git
-cd ant-design-vue-pro
-```
-
-- Install dependencies
-```
+# Install dependencies
 yarn install
+
+# Start dev server
+yarn dev
+
+# Build for production
+yarn build
 ```
 
-- Compiles and hot-reloads for development
-```
-yarn run serve
-```
+## Project Structure
 
-- Compiles and minifies for production
 ```
-yarn run build
-```
-
-- Lints and fixes files
-```
-yarn run lint
+src/
+├── api/          # API interfaces
+├── assets/       # Static assets
+├── components/   # Shared components
+├── router/       # Router configuration
+├── utils/        # Utility functions
+├── views/        # Page views
+└── main.js       # Entry file
 ```
 
+## Features
 
-- FAQ: if build Error: error:0308010C:digital envelope routines::unsupported
-* windows
-```json
-{
-  "scripts": {
-    "serve": "SET NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
-    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
-    "build:preview": "vue-cli-service build --mode preview",
-    "lint:nofix": "vue-cli-service lint --no-fix"
-  }
-}
-```
-* linux/mac
-```json
-{
-  "scripts": {
-    "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
-    "build:preview": "vue-cli-service build --mode preview",
-    "lint:nofix": "vue-cli-service lint --no-fix"
-  }
-}
-```
+- User Management
+- Role Management
+- Permission Management
+- Dictionary Management
+- KV Storage
 
-### Other
+## Browser Support
 
-- **IMPORTANT : About Issue feedback !! when opening Issue read [Issue / PR Contributing](https://github.com/vueComponent/ant-design-vue-pro/issues/90)**
-
-- [Vue-cli3](https://cli.vuejs.org/guide/) used by the project.
-
-- Disable Eslint (not recommended): remove `eslintConfig`  field in `package.json`  and `vue.config.js` field `lintOnSave: false`
-
-- Load on Demand `/src/main.js` L14, in `import './core/lazy_use'`, `import './core/use''`. more [load-on-demand.md](./docs/load-on-demand.md)
-
-- Customize Theme:  [Custom Theme Config (@kokoroli)](https://github.com/kokoroli/antd-awesome/blob/master/docs/Ant_Design_%E6%A0%B7%E5%BC%8F%E8%A6%86%E7%9B%96.md)
-
-- I18n: [locales (@musnow)](./src/locales/index.js)
-
-- Production env `mock` is disabled. use `src/mock/index.js`
-
-- pls use `release` version
-
-## Browsers support
-
-Modern browsers and IE10.
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
-| --- | --- | --- | --- | --- |
-| IE10, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-
-## Contributors
-
-This project exists thanks to all the people who contribute. 
-<a href="https://github.com/vueComponent/ant-design-vue-pro/graphs/contributors"><img src="https://opencollective.com/ant-design-pro-vue/contributors.svg?width=890&button=false" /></a>
+- Chrome, Firefox, Safari, Edge

@@ -1,233 +1,225 @@
 <template>
-  <div class="dataBody">
-    <a-form-model layout="inline">
-      <a-form-model-item>
-        <a-input
-          v-model="queryData.name"
-          placeholder="请输入名称"
-          :allowClear="true"
-        >
-        </a-input>
-      </a-form-model-item>
-      <a-form-model-item>
-        <a-input
-          v-model="queryData.code"
-          placeholder="请输入编码"
-          :allowClear="true"
-        >
-        </a-input>
-      </a-form-model-item>
-      <a-form-model-item>
-        <a-button-group>
-          <a-button
-            type="primary"
-            html-type="submit"
-            @click="fetch_no_page"
-          >
-            查询
-          </a-button>
-          <a-button @click="handleAdd()">添加</a-button>
-        </a-button-group>
-      </a-form-model-item>
-    </a-form-model>
-    <a-table
-      :columns="columns"
-      :rowKey="record => record.id"
-      :dataSource="data"
-      :pagination="pagination"
-      :loading="loading"
-      :indentSize="15"
-      childrenColumnName="childs"
-      @change="handleTableChange"
-    >
-      <template #state="value, record">{{ STATE[+value] }}</template>
-      <template slot="action" slot-scope="scope">
-        <div style="width: 110px;">
-          <a style="color: #1890ff;margin-right: 10px" @click="handleEdit(scope)">编辑</a>
-          <a-dropdown>
-            <a class="ant-dropdown-link">更多<a-icon type="down" /></a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-<!--                <a style="color: #1890ff" @click="handleEdit(scope)">编辑</a>-->
-              </a-menu-item>
-              <a-menu-item>
-                <a style="color:#f5222d" @click="handleDelete(scope)">删除</a>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
-        </div>
-      </template>
-    </a-table>
+  <AdminLayout>
+    <div class="dataBody">
+      <a-form layout="inline">
+        <a-form-item>
+          <a-input v-model:value="queryData.name" placeholder="请输入名称" :allowClear="true" />
+        </a-form-item>
+        <a-form-item>
+          <a-input v-model:value="queryData.code" placeholder="请输入编码" :allowClear="true" />
+        </a-form-item>
+        <a-form-item>
+          <a-button-group>
+            <a-button type="primary" @click="fetch_no_page">查询</a-button>
+            <a-button @click="handleAdd()">添加</a-button>
+          </a-button-group>
+        </a-form-item>
+      </a-form>
 
-    <a-modal
-      :title="dialogMode==='add'?'添加':'编辑'"
-      cancelText="取消"
-      okText="确定"
-      v-if="visible"
-      v-model="visible"
-      :width="500"
-      :maskClosable="false"
-      centered
-      @ok="handleAddData"
-    >
-      <a-form-model
-        ref="formAdd"
-        labelAlign="right"
-        :model="dialogData"
-        :rules="rules"
-        v-bind="{ labelCol: { sm: { span: 4 }, }, wrapperCol: { sm: { span: 20 }, } }"
+      <a-table
+        :columns="columns"
+        :rowKey="record => record.id"
+        :dataSource="data"
+        :pagination="pagination"
+        :loading="loading"
+        @change="handleTableChange"
       >
-        <a-form-model-item label="id" prop="name">
-          <a-input v-model="dialogData.id" placeholder="请输入id"></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="名称" prop="name">
-          <a-input v-model="dialogData.name" placeholder="请输入名称"></a-input>
-        </a-form-model-item>
-        <a-form-model-item label="编码" prop="code">
-          <a-textarea :rows="4" v-model="dialogData.code" placeholder="请输入编码"></a-textarea>
-        </a-form-model-item>
-        <a-form-model-item label="启用/停用" prop="state">
-          <a-radio-group v-model="dialogData.state">
-            <a-radio :value="1">{{ STATE[1] }}</a-radio>
-            <a-radio :value="0">{{ STATE[0] }}</a-radio>
-          </a-radio-group>
-        </a-form-model-item>
-      </a-form-model>
-    </a-modal>
-  </div>
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'state'">
+            <a-tag :color="record.state === 1 ? 'blue' : 'default'">{{ STATE[record.state] }}</a-tag>
+          </template>
+          <template v-if="column.dataIndex === 'action'">
+            <div class="flex gap-2">
+              <a class="text-blue-500" @click="handleEdit(record)">编辑</a>
+              <a-dropdown>
+                <a class="text-gray-600">更多 <DownOutlined /></a>
+                <template #overlay>
+                  <a-menu>
+                    <a-menu-item>
+                      <a class="text-red-500" @click="handleDelete(record)">删除</a>
+                    </a-menu-item>
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </div>
+          </template>
+        </template>
+      </a-table>
 
+      <a-modal
+        :title="dialogMode === 'add' ? '添加' : '编辑'"
+        v-model:open="visible"
+        :width="500"
+        :maskClosable="false"
+        centered
+        :confirmLoading="dialogLoading"
+        @ok="handleAddData"
+      >
+        <a-form
+          ref="formAddRef"
+          labelAlign="right"
+          :model="dialogData"
+          :rules="rules"
+          :label-col="{ sm: { span: 4 } }"
+          :wrapper-col="{ sm: { span: 20 } }"
+        >
+          <a-form-item label="id" name="id">
+            <a-input v-model:value="dialogData.id" placeholder="请输入id" />
+          </a-form-item>
+          <a-form-item label="名称" name="name">
+            <a-input v-model:value="dialogData.name" placeholder="请输入名称" />
+          </a-form-item>
+          <a-form-item label="编码" name="code">
+            <a-textarea :rows="4" v-model:value="dialogData.code" placeholder="请输入编码" />
+          </a-form-item>
+          <a-form-item label="启用/停用" name="state">
+            <a-radio-group v-model:value="dialogData.state">
+              <a-radio :value="1">{{ STATE[1] }}</a-radio>
+              <a-radio :value="0">{{ STATE[0] }}</a-radio>
+            </a-radio-group>
+          </a-form-item>
+        </a-form>
+      </a-modal>
+    </div>
+  </AdminLayout>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, reactive, onMounted } from 'vue'
+import { Modal, message } from 'ant-design-vue'
+import { DownOutlined } from '@ant-design/icons-vue'
 import { dictAdd, dictDelete, dictPage, dictUpdate } from '@/api/manage'
 import { showMsg } from '@/utils/data'
+import AdminLayout from '@/components/AdminLayout.vue'
+
+const STATE = ['停用', '启用']
+const RULE_REQUIRED = { required: true, message: '请输入编码', trigger: 'blur' }
+
 const columns = [
-  // { title: 'id', dataIndex: 'id' },
   { title: '名称', dataIndex: 'name' },
   { title: '编码', dataIndex: 'code' },
-  { title: '状态', dataIndex: 'state', scopedSlots: { customRender: 'state' } },
+  { title: '状态', dataIndex: 'state' },
   { title: '创建时间', dataIndex: 'create_date' },
-  { title: '操作', scopedSlots: { customRender: 'action' } }
+  { title: '操作', dataIndex: 'action' }
 ]
-const RULE_REQUIRED = { required: true, message: '请输入编码', trigger: 'blur' }
-const STATE = ['停用', '启用']
 
-export default {
-  data () {
-    return {
-      STATE,
-      data: [],
-      pagination: {},
-      loading: false,
-      columns,
+const data = ref([])
+const loading = ref(false)
+const visible = ref(false)
+const dialogLoading = ref(false)
+const dialogMode = ref('add')
+const formAddRef = ref()
 
-      queryData: {
-        name: null,
-        code: null,
-        page_no: 1,
-        page_size: 5
-      },
-      dialogData: { id: null, name: null, code: null, parent_id: null, state: 1 },
-      visible: false,
-      all_res: [],
-      loading_all: false,
-      rules: {
-        name: [RULE_REQUIRED],
-        code: [RULE_REQUIRED]
-      },
-      dialogMode: 'add'
+const queryData = reactive({
+  name: null,
+  code: null,
+  page_no: 1,
+  page_size: 5
+})
+
+const dialogData = reactive({
+  id: null,
+  name: null,
+  code: null,
+  parent_id: null,
+  state: 1
+})
+
+const pagination = reactive({
+  current: 1,
+  pageSize: 5,
+  total: 0
+})
+
+const rules = {
+  name: [RULE_REQUIRED],
+  code: [RULE_REQUIRED]
+}
+
+function handleTableChange(pag) {
+  pagination.current = pag.current
+  queryData.page_no = pag.current
+  fetch()
+}
+
+function fetch_no_page() {
+  pagination.current = 1
+  queryData.page_no = 1
+  fetch()
+}
+
+function fetch() {
+  loading.value = true
+  const arg = { ...queryData }
+  if (arg.name === '') arg.name = null
+  if (arg.code === '') arg.code = null
+
+  dictPage(arg).then((res) => {
+    loading.value = false
+    data.value = res.data.records
+    pagination.total = res.data.total
+    pagination.pageSize = res.data.page_size
+  })
+}
+
+function handleAdd() {
+  dialogMode.value = 'add'
+  queryData.page_no = 1
+  queryData.name = null
+  queryData.code = null
+  Object.assign(dialogData, { id: null, name: null, code: null, parent_id: null, state: 1 })
+  visible.value = true
+}
+
+async function handleAddData() {
+  dialogLoading.value = true
+  try {
+    await formAddRef.value.validate()
+    if (dialogMode.value === 'add') {
+      await dictAdd(dialogData)
+    } else {
+      await dictUpdate(dialogData)
     }
-  },
-  mounted () {
-    this.fetch()
-  },
-  methods: {
-    handleTableChange (pagination, filters, sorter) {
-      console.log(pagination)
-      const pager = { ...this.pagination }
-      pager.current = pagination.current
-      pager.pageSize = 5
-      this.pagination = pager
-      this.queryData.page_no = pagination.current
-      this.fetch()
-    },
-    fetch_no_page () {
-      this.pagination.current = 1
-      this.queryData.page_no = 1
-      this.queryData.page_size = 5
-      this.fetch()
-    },
-    fetch () {
-      this.loading = true
-      var arg = Object.assign({}, this.queryData)
-      if (arg.time_start != null) {
-        arg.time_start = arg.time_start.format('YYYY-MM-DDThh:mm:ss')
-      }
-      if (arg.time_end != null) {
-        arg.time_end = arg.time_end.format('YYYY-MM-DDThh:mm:ss')
-      }
-      // 取分页数据
-      dictPage(arg).then((res) => {
-        const pagination = { ...this.pagination }
-        this.loading = false
-        this.data = res.data.records
-        pagination.total = res.data.total
-        pagination.pageSize = res.data.page_size
-        this.pagination = pagination
-      })
-    },
-
-
-    handleAdd: function (scope) {
-      this.queryData.page_no = 1;
-      this.queryData.name = null;
-      this.queryData.code = null;
-      this.dialogData = { id: null, name: null, code: null, parent_id: null, state: 1 };
-      if (scope && scope.id) this.dialogData.parent_id = scope.id
-      this.visible = true
-    },
-    handleAddData: function () {
-      this.$refs.formAdd && this.$refs.formAdd.validate(valid => {
-        if (!valid) return
-        if (this.dialogMode === 'add') {
-          dictAdd(this.dialogData)
-            .then((res) => {
-              showMsg(this, res)
-              this.visible = false
-              this.fetch()
-            })
-        } else if (this.dialogMode === 'edit') {
-          dictUpdate(this.dialogData)
-            .then((res) => {
-              this.visible = false
-              this.fetch()
-            })
-        }
-      })
-    },
-    handleEdit: function (scope) {
-      this.dialogMode = 'edit';
-      this.visible = true
-      this.dialogData = Object.assign({}, scope)
-      if (this.dialogData.parent_id === '') {
-        this.dialogData.parent_id = null
-      }
-    },
-    handleDelete: function (scope) {
-      const self = this
-      this.$confirm({
-        title: '你确定要删除?',
-        content: `${scope.code} - ${scope.name}`,
-        onOk () {
-          dictDelete(scope)
-            .then((res) => {
-              showMsg(self, res)
-              self.visible = false
-              self.fetch()
-            })
-        }
-      })
-    },
+    visible.value = false
+    fetch()
+  } catch (e) {
+    // 失败时不关闭对话框，错误已在拦截器中处理
+  } finally {
+    dialogLoading.value = false
   }
 }
+
+function handleEdit(scope) {
+  dialogMode.value = 'edit'
+  visible.value = true
+  Object.assign(dialogData, scope)
+  if (dialogData.parent_id === '') {
+    dialogData.parent_id = null
+  }
+}
+
+function handleDelete(scope) {
+  Modal.confirm({
+    title: '你确定要删除?',
+    content: `${scope.code} - ${scope.name}`,
+    onOk() {
+      return dictDelete(scope).then((res) => {
+        showMsg({ message }, res)
+        visible.value = false
+        fetch()
+      })
+    }
+  })
+}
+
+onMounted(() => {
+  fetch()
+})
 </script>
+
+<style lang="less">
+.dataBody {
+  background: #ffffff;
+  padding: 10px;
+}
+</style>
