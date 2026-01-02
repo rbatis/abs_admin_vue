@@ -18,7 +18,7 @@ A modern admin panel built with Vue 3 + Ant Design Vue + Tailwind CSS
 yarn install
 
 # Start dev server
-yarn serve
+yarn dev
 
 # Build for production
 yarn build
