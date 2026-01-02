@@ -11,6 +11,14 @@
       <a-form-item>
         <a-button type="primary" @click="fetch_no_page">{{ $t('common.query') }}</a-button>
       </a-form-item>
+      <a-form-item>
+        <CsvExport
+          :api="sys_user_page"
+          :columns="exportColumns"
+          :query-params="exportQueryParams"
+          file-name-prefix="用户列表"
+        />
+      </a-form-item>
     </a-form>
     <div class="operate">
       <a-button type="dashed" style="width: 100%" @click="addData">
@@ -93,6 +101,7 @@ import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
 import { sys_role_layer_top, sys_user_add, sys_user_remove, sys_user_page, sys_user_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 import AdminLayout from '@/components/AdminLayout.vue'
+import CsvExport, { type CsvColumn } from '@/components/widgets/CsvExport.vue'
 
 const { t } = useI18n()
 
@@ -105,6 +114,45 @@ const columns = computed(() => [
   { title: t('common.createTime'), dataIndex: 'create_date' },
   { title: t('common.operation'), dataIndex: 'action' }
 ])
+
+// 导出列配置
+const exportColumns = computed<CsvColumn[]>(() => [
+  {
+    label: 'ID',
+    key: 'id'
+  },
+  {
+    label: t('common.name'),
+    key: 'name'
+  },
+  {
+    label: t('user.account'),
+    key: 'account'
+  },
+  {
+    label: t('common.name') + '/' + t('role.name'),
+    key: 'role',
+    formatter: (val) => val?.name || ''
+  },
+  {
+    label: t('common.state'),
+    key: 'state',
+    formatter: (val) => val === 1 ? t('common.enable') : t('common.disable')
+  },
+  {
+    label: t('common.createTime'),
+    key: 'create_date'
+  }
+])
+
+// 导出查询参数（过滤掉分页参数）
+const exportQueryParams = computed(() => {
+  const { account, name } = queryData
+  return {
+    account: account || undefined,
+    name: name || undefined
+  }
+})
 
 const data = ref([])
 const loading = ref(false)
