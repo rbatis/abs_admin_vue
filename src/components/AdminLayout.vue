@@ -21,23 +21,35 @@
       >
         <!-- 首页 -->
         <a-menu-item key="home" @click="$router.push('/')">
-          <template #icon><span>🏠</span></template>
+          <template #icon><HomeOutlined /></template>
           首页
         </a-menu-item>
 
         <!-- 设置子菜单 -->
         <a-sub-menu key="setting">
-          <template #icon><span>⚙️</span></template>
+          <template #icon><SettingOutlined /></template>
           <template #title>设置</template>
-          <a-menu-item key="user" @click="$router.push('/setting/user')">账号管理</a-menu-item>
-          <a-menu-item key="role" @click="$router.push('/setting/role')">角色管理</a-menu-item>
-          <a-menu-item key="res" @click="$router.push('/setting/res')">权限管理</a-menu-item>
-          <a-menu-item key="dict" @click="$router.push('/setting/dict')">字典管理</a-menu-item>
+          <a-menu-item key="user" @click="$router.push('/setting/user')">
+            <template #icon><UserOutlined /></template>
+            账号管理
+          </a-menu-item>
+          <a-menu-item key="role" @click="$router.push('/setting/role')">
+            <template #icon><TeamOutlined /></template>
+            角色管理
+          </a-menu-item>
+          <a-menu-item key="res" @click="$router.push('/setting/res')">
+            <template #icon><SafetyOutlined /></template>
+            权限管理
+          </a-menu-item>
+          <a-menu-item key="dict" @click="$router.push('/setting/dict')">
+            <template #icon><BookOutlined /></template>
+            字典管理
+          </a-menu-item>
         </a-sub-menu>
 
         <!-- 退出 -->
         <a-menu-item key="logout" @click="handleLogout">
-          <template #icon><span>🚪</span></template>
+          <template #icon><LogoutOutlined /></template>
           退出
         </a-menu-item>
       </a-menu>
@@ -70,6 +82,15 @@
  */
 import { ref, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import {
+  HomeOutlined,
+  SettingOutlined,
+  LogoutOutlined,
+  UserOutlined,
+  TeamOutlined,
+  SafetyOutlined,
+  BookOutlined
+} from '@ant-design/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
