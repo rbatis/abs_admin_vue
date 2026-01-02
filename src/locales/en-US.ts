@@ -54,6 +54,7 @@ export default {
     enabledDisabled: 'Enable/Disable',
     upload: 'Upload',
     uploadSuccess: 'Upload successful',
+    uploadFailed: 'Upload failed',
     onlyImageAllowed: 'Only images are allowed',
     imageSizeLimit: 'Image size must be less than {size}MB',
     reset: 'Reset',

@@ -35,7 +35,8 @@ const api = {
   service: '/service',
   permission: '/permission',
   permissionNoPager: '/permission/no-pager',
-  orgTree: '/org/tree'
+  orgTree: '/org/tree',
+  upload_file: '/admin/upload'
 }
 
 export default api
@@ -237,5 +238,13 @@ export function dictDelete(arg: any): Promise<ApiResponse> {
     url: api.sys_dict_delete,
     method: 'post',
     data: arg
+  })
+}
+
+export function upload_file(formData: FormData): Promise<ApiResponse> {
+  return request({
+    url: api.upload_file,
+    method: 'post',
+    data: formData
   })
 }

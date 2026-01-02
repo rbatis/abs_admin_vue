@@ -16,7 +16,10 @@ const request = axios.create({
 // 请求拦截器
 request.interceptors.request.use(
   config => {
-    config.headers['Content-Type'] = 'application/json'
+    // FormData 不需要手动设置 Content-Type，浏览器会自动设置
+    if (!(config.data instanceof FormData)) {
+      config.headers['Content-Type'] = 'application/json'
+    }
     const token = localStorage.getItem('access_token')
     if (token) {
       config.headers['Authorization'] = token

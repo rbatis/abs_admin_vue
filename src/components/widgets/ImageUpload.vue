@@ -72,6 +72,7 @@ import { message } from 'ant-design-vue'
 import { PlusOutlined, MinusOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { useI18n } from 'vue-i18n'
 import type { UploadProps } from 'ant-design-vue'
+import { upload_file } from '@/api/manage'
 
 const { t } = useI18n()
 
@@ -165,30 +166,27 @@ const beforeUpload: UploadProps['beforeUpload'] = (file) => {
 }
 
 // 自定义上传
-const customRequest: UploadProps['customRequest'] = (options) => {
+const customRequest: UploadProps['customRequest'] = async (options) => {
   if (!props.enable) return
 
   const { file, onSuccess, onError } = options
   const formData = new FormData()
   formData.append('file', file as File)
 
-  // 这里需要替换为实际的上传 API
-  // 暂时模拟上传成功
-  setTimeout(() => {
-    // 模拟返回 URL
-    const mockUrl = URL.createObjectURL(file as File)
-    onSuccess?.({ data: mockUrl })
-    message.success(t('common.uploadSuccess'))
-    emitChange()
-  }, 1000)
-
-  // 实际使用时，应该调用 API:
-  // uploadFile(formData).then(res => {
-  //   onSuccess?.(res)
-  //   emitChange()
-  // }).catch(err => {
-  //   onError?.(err)
-  // })
+  try {
+    const res = await upload_file(formData)
+    if (res.code === '0') {
+      onSuccess?.(res)
+      message.success(t('common.uploadSuccess'))
+      emitChange()
+    } else {
+      onError?.(new Error(res.msg || 'Upload failed'))
+      message.error(res.msg || t('common.uploadFailed'))
+    }
+  } catch (err) {
+    onError?.(err as Error)
+    message.error(t('common.uploadFailed'))
+  }
 }
 
 // 处理文件变化
@@ -206,7 +204,7 @@ const handleChange: UploadProps['onChange'] = (info) => {
 const emitChange = () => {
   const urls = fileList.value
     .filter(file => file.status === 'done')
-    .map(file => file.url || (file.response?.data))
+    .map(file => (file.response?.data) || file.url)
 
   if (isMultiple.value) {
     emit('update:modelValue', urls)

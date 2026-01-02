@@ -54,6 +54,7 @@ export default {
     enabledDisabled: '启用/停用',
     upload: '上传',
     uploadSuccess: '上传成功',
+    uploadFailed: '上传失败',
     onlyImageAllowed: '只允许上传图片',
     imageSizeLimit: '图片大小不能超过 {size}MB',
     reset: '重置',
