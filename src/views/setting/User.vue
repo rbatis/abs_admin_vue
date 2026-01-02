@@ -101,7 +101,7 @@ import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
 import { sys_role_layer_top, sys_user_add, sys_user_remove, sys_user_page, sys_user_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 import AdminLayout from '@/components/AdminLayout.vue'
-import CsvExport, { type CsvColumn } from '@/components/widgets/CsvExport.vue'
+import CsvExport, { type CsvColumn } from '@/components/CsvExport.vue'
 
 const { t } = useI18n()
 

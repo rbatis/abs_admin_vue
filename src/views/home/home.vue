@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import AdminLayout from '@/components/AdminLayout.vue'
-import ImageUpload from '@/components/widgets/ImageUpload.vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 // 单图
 const singleImage = ref<string>('')
