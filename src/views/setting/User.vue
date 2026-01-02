@@ -71,7 +71,7 @@
         <a-form-item label="角色集">
           <a-tree
             v-model:checkedKeys="dialogData.role_ids"
-            :replace-fields="{ children: 'childs', title: 'name', key: 'id' }"
+            :field-names="{ children: 'childs', title: 'name', key: 'id' }"
             checkable
             :auto-expand-parent="true"
             :tree-data="all_role"
