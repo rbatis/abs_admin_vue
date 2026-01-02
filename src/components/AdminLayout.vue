@@ -146,7 +146,7 @@ const currentUserName = computed(() => {
   return '用户'
 })
 
-function updateSelectedKeys(path) {
+function updateSelectedKeys(path: string) {
   if (path === '/') {
     selectedKeys.value = ['home']
   } else if (path.includes('/setting/user')) {
