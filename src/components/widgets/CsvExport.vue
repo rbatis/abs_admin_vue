@@ -1,3 +1,42 @@
+<!--
+  CsvExport - CSV导出组件
+
+  支持分页导出大量数据，带进度条和取消功能
+
+  @example
+  基础用法：
+  <CsvExport
+    :api="fetchUsers"
+    :columns="columns"
+    :query-params="searchParams"
+  />
+
+  自定义文件名前缀：
+  <CsvExport
+    :api="fetchUsers"
+    :columns="columns"
+    file-name-prefix="用户列表"
+  />
+
+  @props
+  - api: Function - 数据获取API（必需）
+  - columns: Array<{label: string, key: string, formatter?: Function}> - 列配置（必需）
+  - queryParams: Object - 查询参数
+  - disabled: boolean - 是否禁用
+  - fileNamePrefix: string - 文件名前缀，默认 'data'
+  - maxExport: number - 最大导出条数，默认 10000
+
+  @events
+  - export-complete - 导出完成时触发，参数: { data: any[], count: number }
+  - export-error - 导出失败时触发，参数: error
+
+  @columns 格式
+  {
+    label: '列名',
+    key: 'dataKey',
+    formatter: (value, row) => value || ''  // 可选，格式化函数
+  }
+-->
 <template>
   <div class="csv-export">
     <a-button

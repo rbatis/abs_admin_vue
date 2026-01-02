@@ -1,3 +1,41 @@
+<!--
+  CsvImport - CSV导入组件
+
+  解析 CSV 文件并提取指定列的数据
+
+  @example
+  基础用法：
+  <CsvImport
+    @import-data="handleImport"
+  />
+
+  自定义ID列映射：
+  <CsvImport
+    :import-config="{
+      idColumns: ['id', 'ID', 'userId'],
+      targetField: 'user_ids'
+    }"
+    @import-data="handleImport"
+  />
+
+  @props
+  - importConfig: Object - 导入配置
+    - idColumns: string[] - ID列名映射，默认 ['id', 'ID', 'userId', 'user_id']
+    - targetField: string - 目标字段名
+    - merge: boolean - 是否合并已有数据
+  - disabled: boolean - 是否禁用
+  - maxSize: number - 文件大小限制（MB），默认 2
+
+  @events
+  - import-data - 导入完成时触发，参数: { ids: string[], data: any[], file: File }
+
+  @importData 数据格式
+  {
+    ids: string[]      // 提取的ID列表
+    data: any[]        // 解析的CSV数据
+    file: File         // 上传的文件对象
+  }
+-->
 <template>
   <div class="csv-import">
     <a-upload

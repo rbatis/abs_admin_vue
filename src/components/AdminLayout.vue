@@ -20,28 +20,28 @@
         class="admin-menu"
       >
         <!-- 首页 -->
-        <a-menu-item key="home" @click="$router.push('/')">
+        <a-menu-item key="/" @click="$router.push('/')">
           <template #icon><HomeOutlined /></template>
           {{ $t('menu.home') }}
         </a-menu-item>
 
-        <!-- 设置子菜单 -->
-        <a-sub-menu key="setting">
+        <!-- 子菜单 -->
+        <a-sub-menu key="/setting">
           <template #icon><SettingOutlined /></template>
           <template #title>{{ $t('menu.setting') }}</template>
-          <a-menu-item key="user" @click="$router.push('/setting/user')">
+          <a-menu-item key="/setting/user" @click="$router.push('/setting/user')">
             <template #icon><UserOutlined /></template>
             {{ $t('menu.userManagement') }}
           </a-menu-item>
-          <a-menu-item key="role" @click="$router.push('/setting/role')">
+          <a-menu-item key="/setting/role" @click="$router.push('/setting/role')">
             <template #icon><TeamOutlined /></template>
             {{ $t('menu.roleManagement') }}
           </a-menu-item>
-          <a-menu-item key="res" @click="$router.push('/setting/res')">
+          <a-menu-item key="/setting/res" @click="$router.push('/setting/res')">
             <template #icon><SafetyOutlined /></template>
             {{ $t('menu.permissionManagement') }}
           </a-menu-item>
-          <a-menu-item key="dict" @click="$router.push('/setting/dict')">
+          <a-menu-item key="/setting/dict" @click="$router.push('/setting/dict')">
             <template #icon><BookOutlined /></template>
             {{ $t('menu.dictManagement') }}
           </a-menu-item>
@@ -120,8 +120,23 @@ const router = useRouter()
 const route = useRoute()
 const { locale, t } = useI18n()
 
-const selectedKeys = ref(['home'])
-const openKeys = ref(['setting'])
+// 从路由配置中自动提取所有父级路径（用于子菜单展开）
+const getParentPaths = () => {
+  const paths = new Set<string>()
+  router.getRoutes().forEach(route => {
+    const path = route.path
+    // 提取父级路径（如 /setting/user → /setting）
+    const segments = path.split('/').filter(Boolean)
+    if (segments.length > 1) {
+      const parentPath = '/' + segments[0]
+      paths.add(parentPath)
+    }
+  })
+  return Array.from(paths)
+}
+
+const selectedKeys = ref<string[]>([])
+const openKeys = ref<string[]>(getParentPaths())  // 自动生成
 
 // 当前语言
 const currentLocale = computed(() => locale.value)
@@ -131,18 +146,9 @@ function changeLanguage(lang: string) {
   locale.value = lang
 }
 
-// 根据路径自动推导菜单 key（无需配置）
-// 规律：/ → home, /setting/xxx → xxx
-function updateSelectedKeys(path: string) {
-  if (path === '/') {
-    selectedKeys.value = ['home']
-  } else if (path.startsWith('/setting/')) {
-    // 提取路径最后一部分作为菜单 key
-    const key = path.split('/').pop() || ''
-    selectedKeys.value = [key]
-  } else {
-    selectedKeys.value = []
-  }
+// 直接用当前路由 path 作为菜单 key（无需任何配置）
+function updateSelectedKeys() {
+  selectedKeys.value = [route.path]
 }
 
 // 获取当前登录用户名
@@ -175,12 +181,12 @@ function handleLogout() {
   })
 }
 
-watch(() => route.path, (newPath) => {
-  updateSelectedKeys(newPath)
+watch(() => route.path, () => {
+  updateSelectedKeys()
 })
 
 onMounted(() => {
-  updateSelectedKeys(route.path)
+  updateSelectedKeys()
 })
 </script>
 

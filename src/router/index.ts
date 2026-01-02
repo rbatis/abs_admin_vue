@@ -38,6 +38,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'setting_dict',
     component: Dict
   },
+  // 添加新模块示例（订单模块）
+  // {
+  //   path: '/order/list',
+  //   name: 'order_list',
+  //   component: () => import('@/views/order/List.vue')
+  // },
   {
     path: '/404',
     name: '404',

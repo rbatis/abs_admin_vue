@@ -1,3 +1,29 @@
+<!--
+  ImageUpload - 图片上传组件
+
+  支持单图/多图上传，带预览功能（缩放、拖拽）
+
+  @example
+  单图上传：
+  <ImageUpload v-model="imageUrl" :max-count="1" />
+
+  多图上传（最多5张）：
+  <ImageUpload v-model="imageUrls" :max-count="5" />
+
+  禁用状态：
+  <ImageUpload v-model="imageUrl" :enable="false" />
+
+  @props
+  - modelValue: string | string[] - v-model 绑定的图片 URL
+  - maxCount: number - 最大上传数量，默认 Infinity（多图）
+  - enable: boolean - 是否启用，默认 true
+  - accept: string - 接受的文件类型，默认 'image/*'
+  - maxSize: number - 文件大小限制（MB），默认 5
+
+  @events
+  - update:modelValue - 图片 URL 变化时触发
+  - change - 图片 URL 变化时触发
+-->
 <template>
   <div class="image-upload">
     <a-upload
