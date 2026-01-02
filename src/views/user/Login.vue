@@ -158,6 +158,16 @@ async function handleSubmit(values) {
     const res = await login(loginParams)
     if (res && res.data && res.data.access_token) {
       localStorage.setItem('access_token', res.data.access_token)
+      // 登录成功后获取用户信息
+      const { getInfo } = await import('@/api/login')
+      try {
+        const userInfo = await getInfo()
+        if (userInfo && userInfo.data) {
+          localStorage.setItem('user_info', JSON.stringify(userInfo.data))
+        }
+      } catch (e) {
+        console.error('获取用户信息失败', e)
+      }
     }
     notification.success({
       message: '欢迎',

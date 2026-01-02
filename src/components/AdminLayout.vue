@@ -47,11 +47,14 @@
           </a-menu-item>
         </a-sub-menu>
 
-        <!-- 退出 -->
-        <a-menu-item key="logout" @click="handleLogout">
-          <template #icon><LogoutOutlined /></template>
-          退出
-        </a-menu-item>
+        <!-- 用户信息 -->
+        <div class="user-info">
+          <div class="user-name">{{ currentUserName }}</div>
+          <a-menu-item key="logout" @click="handleLogout" class="logout-menu-item">
+            <template #icon><LogoutOutlined /></template>
+            退出
+          </a-menu-item>
+        </div>
       </a-menu>
     </a-layout-sider>
 
@@ -80,8 +83,9 @@
  * - 使用 Less 编写样式，避免与 Tailwind 冲突
  * - 其他页面组件可以正常使用 Tailwind（只要不混用在 Ant Design 组件上）
  */
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, h, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { Modal } from 'ant-design-vue'
 import {
   HomeOutlined,
   SettingOutlined,
@@ -89,7 +93,8 @@ import {
   UserOutlined,
   TeamOutlined,
   SafetyOutlined,
-  BookOutlined
+  BookOutlined,
+  ExclamationCircleOutlined
 } from '@ant-design/icons-vue'
 
 const router = useRouter()
@@ -97,6 +102,21 @@ const route = useRoute()
 
 const selectedKeys = ref(['home'])
 const openKeys = ref(['setting'])
+
+// 获取当前登录用户名
+const currentUserName = computed(() => {
+  try {
+    const userInfo = localStorage.getItem('user_info')
+    if (userInfo) {
+      const data = JSON.parse(userInfo)
+      // 尝试常见的用户名字段
+      return data.username || data.name || data.nickname || data.account || data.user_name || '用户'
+    }
+  } catch (e) {
+    console.error('解析用户信息失败', e)
+  }
+  return '用户'
+})
 
 function updateSelectedKeys(path) {
   if (path === '/') {
@@ -113,8 +133,18 @@ function updateSelectedKeys(path) {
 }
 
 function handleLogout() {
-  localStorage.removeItem('access_token')
-  router.push('/user/login')
+  Modal.confirm({
+    title: '确认退出',
+    icon: () => h(ExclamationCircleOutlined),
+    content: '确定要退出登录吗？',
+    okText: '确定',
+    cancelText: '取消',
+    onOk() {
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('user_info')
+      router.push('/user/login')
+    }
+  })
 }
 
 watch(() => route.path, (newPath) => {
@@ -162,6 +192,24 @@ onMounted(() => {
 
 .admin-menu {
   background: #001529 !important;
+}
+
+.user-info {
+  padding: 8px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-name {
+  padding: 8px 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logout-menu-item {
+  margin-top: 0 !important;
 }
 
 .admin-content {
