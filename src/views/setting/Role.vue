@@ -104,7 +104,7 @@ const queryData = reactive({
 const dialogData = reactive({
   id: null,
   name: null,
-  permission_ids: []
+  permission_ids: [] as any
 })
 
 const pagination = reactive({
@@ -113,7 +113,7 @@ const pagination = reactive({
   total: 0
 })
 
-function handleTableChange(pag) {
+function handleTableChange(pag: any) {
   pagination.current = pag.current
   queryData.page_no = pag.current
   fetch()
@@ -158,13 +158,13 @@ async function handleAddData() {
   }
 }
 
-function handleEdit(scope) {
+function handleEdit(scope: any) {
   visible.value = true
   dialogMode.value = 'edit'
   Object.assign(dialogData, scope)
 }
 
-function handleDelete(scope) {
+function handleDelete(scope: any) {
   Modal.confirm({
     title: t('common.deleteConfirm'),
     content: t('common.deleteConfirmContent'),
@@ -179,7 +179,7 @@ function handleDelete(scope) {
 }
 
 function handleDialogCancel() {
-  Object.assign(dialogData, { id: null, name: null, permission_ids: [] })
+  Object.assign(dialogData, { id: null, name: null, permission_ids: [] as any })
 }
 
 function getAllRes() {

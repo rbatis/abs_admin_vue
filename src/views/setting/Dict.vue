@@ -139,7 +139,7 @@ const rules = computed(() => ({
   code: [RULE_REQUIRED.value]
 }))
 
-function handleTableChange(pag) {
+function handleTableChange(pag: any) {
   pagination.current = pag.current
   queryData.page_no = pag.current
   fetch()
@@ -192,7 +192,7 @@ async function handleAddData() {
   }
 }
 
-function handleEdit(scope) {
+function handleEdit(scope: any) {
   dialogMode.value = 'edit'
   visible.value = true
   Object.assign(dialogData, scope)
@@ -201,7 +201,7 @@ function handleEdit(scope) {
   }
 }
 
-function handleDelete(scope) {
+function handleDelete(scope: any) {
   Modal.confirm({
     title: t('common.deleteConfirm'),
     content: `${scope.code} - ${scope.name}`,

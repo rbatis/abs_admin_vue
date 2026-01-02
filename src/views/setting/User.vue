@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed, h } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Modal } from 'ant-design-vue'
 import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
@@ -124,7 +124,7 @@ const dialogData = reactive({
   id: null,
   name: null,
   account: null,
-  role_ids: [],
+  role_ids: [] as any,
   role_id: null
 })
 
@@ -134,7 +134,7 @@ const pagination = reactive({
   total: 0
 })
 
-function handleTableChange(pag) {
+function handleTableChange(pag: any) {
   pagination.current = pag.current
   queryData.page_no = pag.current
   fetch()
@@ -188,7 +188,7 @@ async function handleAddData() {
   }
 }
 
-function handleEdit(scope) {
+function handleEdit(scope: any) {
   visible.value = true
   dialogMode.value = 'edit'
   if (scope.role !== undefined && scope.role !== null) {
@@ -198,7 +198,7 @@ function handleEdit(scope) {
   }
 }
 
-function handleDelete(scope) {
+function handleDelete(scope: any) {
   Modal.confirm({
     title: t('common.deleteConfirm'),
     content: t('common.deleteConfirmContent'),
@@ -212,12 +212,11 @@ function handleDelete(scope) {
   })
 }
 
-function handleEnableDisable(scope) {
+function handleEnableDisable(scope: any) {
   const key = scope.state === 0 ? 'user.enableConfirm' : 'user.disableConfirm'
   Modal.confirm({
     title: t(key, { name: scope.name }),
     async onOk() {
-      const state_old = scope.state
       const new_state = scope.state === 0 ? 1 : 0
       // 先更新到服务器
       try {
@@ -236,7 +235,7 @@ function handleDialogCancel() {
     id: null,
     name: null,
     account: null,
-    role_ids: [],
+    role_ids: [] as any,
     role_id: null
   })
 }
@@ -247,7 +246,7 @@ function getAllRole() {
   })
 }
 
-function onRolesCheck(data) {
+function onRolesCheck(data: any) {
   const len = data.checked.length
   if (len >= 1) {
     dialogData.role_ids = { checked: [data.checked[len - 1]], halfChecked: [] }

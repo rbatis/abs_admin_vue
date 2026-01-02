@@ -133,7 +133,7 @@ const dialogData = reactive({
   path: null,
   parent_id: null,
   is_menu: false,
-  permission_ids: []
+  permission_ids: [] as any
 })
 
 const pagination = reactive({
@@ -142,7 +142,7 @@ const pagination = reactive({
   total: 0
 })
 
-function handleTableChange(pag) {
+function handleTableChange(pag: any) {
   pagination.current = pag.current
   queryData.page_no = pag.current
   fetch()
@@ -191,7 +191,7 @@ async function handleAddData() {
   }
 }
 
-function handleAddChild(scope) {
+function handleAddChild(scope: any) {
   getAllRes()
   visible.value = true
   dialogMode.value = 'add'
@@ -204,7 +204,7 @@ function handleAddChild(scope) {
   }
 }
 
-function handleEdit(scope) {
+function handleEdit(scope: any) {
   getAllRes(scope.id)
   visible.value = true
   dialogMode.value = 'edit'
@@ -222,7 +222,7 @@ function handleEdit(scope) {
   }
 }
 
-function handleDelete(scope) {
+function handleDelete(scope: any) {
   Modal.confirm({
     title: t('common.deleteConfirm'),
     content: t('common.deleteConfirmContent'),
@@ -244,11 +244,11 @@ function handleDialogCancel() {
     path: null,
     parent_id: null,
     is_menu: false,
-    permission_ids: []
+    permission_ids: [] as any
   })
 }
 
-function onResCheck(data) {
+function onResCheck(data: any) {
   const len = data.checked.length
   if (len >= 1) {
     dialogData.permission_ids = { checked: [data.checked[len - 1]], halfChecked: [] }
@@ -259,7 +259,7 @@ function onResCheck(data) {
   }
 }
 
-function getAllRes(skipId) {
+function getAllRes(skipId?: any) {
   loading_all_res.value = true
   sys_permission_layer_top({})
     .then((res) => {
@@ -272,7 +272,7 @@ function getAllRes(skipId) {
         }
         arr.push(item)
       }
-      all_res.value = arr
+      all_res.value = arr as any
     })
     .catch(() => {
       loading_all_res.value = false
