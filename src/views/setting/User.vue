@@ -9,7 +9,10 @@
         <a-input v-model:value="queryData.name" :placeholder="$t('common.enterName')" :allowClear="true" />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" @click="fetch_no_page">{{ $t('common.query') }}</a-button>
+        <a-button-group>
+          <a-button type="primary" @click="fetch_no_page">{{ $t('common.query') }}</a-button>
+          <a-button @click="addData">{{ $t('common.add') }}</a-button>
+        </a-button-group>
       </a-form-item>
       <a-form-item>
         <CsvExport
@@ -20,11 +23,6 @@
         />
       </a-form-item>
     </a-form>
-    <div class="operate">
-      <a-button type="dashed" style="width: 100%" @click="addData">
-        <PlusOutlined /> {{ $t('common.add') }}
-      </a-button>
-    </div>
     <a-table
       :columns="columns"
       :rowKey="record => record.id"
@@ -97,7 +95,7 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Modal } from 'ant-design-vue'
-import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
+import { DownOutlined } from '@ant-design/icons-vue'
 import { sys_role_layer_top, sys_user_add, sys_user_remove, sys_user_page, sys_user_update } from '@/api/manage'
 import { showMsg } from '@/utils/data'
 import AdminLayout from '@/components/AdminLayout.vue'
