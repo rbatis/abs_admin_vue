@@ -62,6 +62,10 @@
           </a-form-item>
           <a-form-item>
             <CsvImport
+              :import-config="{
+                idColumns: ['id'],
+                targetField: 'id'
+              }"
               @import-data="handleDictImport"
             />
           </a-form-item>
@@ -77,13 +81,8 @@
           <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex === 'state'">
               <a-tag :color="record.state === 1 ? 'blue' : 'default'">
-                {{ record.state === 1 ? '启用' : '停用' }}
+                {{ record.state === 1 ? 'Enable' : 'Disable' }}
               </a-tag>
-            </template>
-            <template v-if="column.dataIndex === 'action'">
-              <div class="flex gap-2">
-                <a class="text-blue-500" @click="handleDictEdit(record)">{{ $t('common.edit') }}</a>
-              </div>
             </template>
           </template>
         </a-table>
@@ -116,8 +115,8 @@
             </a-form-item>
             <a-form-item :label="$t('common.enabledDisabled')" name="state">
               <a-radio-group v-model:value="dictDialogData.state">
-                <a-radio :value="1">启用</a-radio>
-                <a-radio :value="0">停用</a-radio>
+                <a-radio :value="1">Enable</a-radio>
+                <a-radio :value="0">Disable</a-radio>
               </a-radio-group>
             </a-form-item>
           </a-form>
@@ -134,7 +133,7 @@ import AdminLayout from '@/components/AdminLayout.vue'
 import ImageUpload from '@/components/ImageUpload.vue'
 import CsvExport from '@/components/CsvExport.vue'
 import CsvImport from '@/components/CsvImport.vue'
-import { dictPage, dictAdd, dictUpdate } from '@/api/manage'
+import { dictPage, dictAdd } from '@/api/manage'
 
 // 单图
 const singleImage = ref<string>('')
@@ -166,7 +165,6 @@ const dictDialogData = reactive({
   id: null,
   name: null,
   code: null,
-  parent_id: null,
   state: 1
 })
 
@@ -176,11 +174,11 @@ const dictRules = {
 }
 
 const dictColumns = [
-  { title: '字典名称', label: '字典名称', dataIndex: 'name', key: 'name' },
-  { title: '字典编码', label: '字典编码', dataIndex: 'code', key: 'code' },
-  { title: '状态', label: '状态', dataIndex: 'state', key: 'state' },
-  { title: '创建时间', label: '创建时间', dataIndex: 'create_date', key: 'create_date' },
-  { title: '操作', label: '操作', dataIndex: 'action', key: 'action' }
+  { title: 'ID', label: 'id', dataIndex: 'id', key: 'id' },
+  { title: 'Name', label: 'name', dataIndex: 'name', key: 'name' },
+  { title: 'Code', label: 'code', dataIndex: 'code', key: 'code' },
+  { title: 'State', label: 'state', dataIndex: 'state', key: 'state' },
+  { title: 'Create time', label: 'create_date', dataIndex: 'create_date', key: 'create_date' }
 ]
 
 // 加载字典数据
@@ -203,10 +201,10 @@ function handleDictImport({ data }: { ids: string[], data: any[], file: File }) 
   // 批量添加字典
   const promises = data.map((item: any) => {
     return dictAdd({
-      name: item.name || item.字典名称,
-      code: item.code || item.字典编码 || item.字典CODE,
-      state: item.state ?? item.状态 ?? 1,
-      parent_id: null
+      id: item.id,
+      name: item.name,
+      code: item.code,
+      state: parseInt(item.state) || 1
     })
   })
 
@@ -224,18 +222,8 @@ function handleDictOpenAdd() {
   dictQueryParams.page_no = 1
   dictQueryParams.name = null
   dictQueryParams.code = null
-  Object.assign(dictDialogData, { id: null, name: null, code: null, parent_id: null, state: 1 })
+  Object.assign(dictDialogData, { id: null, name: null, code: null, state: 1 })
   dictVisible.value = true
-}
-
-// 编辑字典
-function handleDictEdit(record: any) {
-  dictDialogMode.value = 'edit'
-  dictVisible.value = true
-  Object.assign(dictDialogData, record)
-  if (dictDialogData.parent_id === '') {
-    dictDialogData.parent_id = null
-  }
 }
 
 // 保存字典
@@ -243,11 +231,7 @@ async function handleDictSave() {
   dictDialogLoading.value = true
   try {
     await dictFormRef.value.validate()
-    if (dictDialogMode.value === 'add') {
-      await dictAdd(dictDialogData)
-    } else {
-      await dictUpdate(dictDialogData)
-    }
+    await dictAdd(dictDialogData)
     dictVisible.value = false
     loadDictData()
   } catch (e) {
